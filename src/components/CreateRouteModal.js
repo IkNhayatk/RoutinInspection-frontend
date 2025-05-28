@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import ConfirmModal from './ConfirmModal.js';
+import { apiClient } from '../services/authService.js'; // Assuming this path is correct
 
 // --- 樣式 ---
 const customStyles = {
@@ -20,32 +21,94 @@ if (typeof window !== 'undefined') {
     Modal.setAppElement(document.getElementById('root') || document.body);
 }
 
-function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEditing = false, editData = null }) {
+function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editData = null }) {
     // --- 狀態 ---
     const [routeName, setRouteName] = useState('');
     const [selectedFormId, setSelectedFormId] = useState('');
+    const [fetchedForms, setFetchedForms] = useState([]); // State for forms fetched from API
+    const [isLoadingForms, setIsLoadingForms] = useState(false); // Loading state for forms
+
     const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
-    
-    // --- 初始化編輯資料 ---
+    // --- Fetch available forms when modal opens ---
+    useEffect(() => {
+        if (isOpen) {
+            const fetchFormsForSelection = async () => {
+                setIsLoadingForms(true);
+                setFetchedForms([]); // Clear previous forms
+                let departmentCode = null;
+
+                try {
+                    const userInfoString = localStorage.getItem('userInfo');
+                    if (userInfoString) {
+                        const userInfo = JSON.parse(userInfoString);
+                        if (userInfo && userInfo.department) {
+                            departmentCode = userInfo.department;
+                        } else {
+                            throw new Error('使用者資訊中未找到部門代號。');
+                        }
+                    } else {
+                        throw new Error('無法從 localStorage 獲取使用者資訊。');
+                    }
+
+                    if (!departmentCode) {
+                         throw new Error('部門代號為空，無法查詢表單。');
+                    }
+
+                    // Call /search-department with the department code
+                    const response = await apiClient.get('/search-department', {
+                        params: { code: departmentCode }
+                    });
+
+                    if (response.data && response.data.success && Array.isArray(response.data.forms)) {
+                        setFetchedForms(response.data.forms);
+                        if (response.data.forms.length === 0) {
+                            setErrorMessage(`部門 ${departmentCode} 未找到可綁定的表單。`);
+                            setIsErrorModalOpen(true); // Optionally show this as a non-blocking info
+                        }
+                    } else {
+                        console.error('Failed to fetch forms or unexpected format:', response.data);
+                        throw new Error(response.data?.message || '無法載入表單列表或回傳格式錯誤。');
+                    }
+                } catch (error) {
+                    console.error('Error fetching forms for selection:', error);
+                    setFetchedForms([]);
+                    setErrorMessage(error.message || '載入表單列表失敗，請檢查網絡或聯繫管理員');
+                    setIsErrorModalOpen(true);
+                } finally {
+                    setIsLoadingForms(false);
+                }
+            };
+
+            fetchFormsForSelection();
+        }
+    }, [isOpen]); // Re-fetch if isOpen changes
+
+    // --- 初始化編輯資料 & 重設模態框狀態 ---
     useEffect(() => {
         if (isOpen) {
             if (isEditing && editData) {
                 setRouteName(editData.routeName || '');
+                // Ensure selectedFormId is valid after forms are fetched,
+                // especially if editData.formId might not be in the new list.
+                // This might need further logic if forms list changes dynamically for the same department.
                 setSelectedFormId(editData.formId || '');
             } else {
                 // 清除表單
                 setRouteName('');
                 setSelectedFormId('');
             }
-            // 重設模態框狀態
+            // 重設訊息模態框狀態
             setIsErrorModalOpen(false);
             setErrorMessage('');
             setIsSuccessModalOpen(false);
             setSuccessMessage('');
+        } else {
+            // Reset fetched forms when modal is closed to ensure fresh data next time
+             // Handled by the fetchFormsForSelection on isOpen true
         }
     }, [isOpen, isEditing, editData]);
     
@@ -79,8 +142,6 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
             setSuccessMessage(isEditing ? '路線修改成功！' : '路線新增成功！');
             setIsSuccessModalOpen(true);
             
-            // 關閉模態框
-            onClose();
         } catch (error) {
             console.error('Error submitting route:', error);
             setErrorMessage(error.message || '操作失敗，請稍後再試');
@@ -98,6 +159,7 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
     const handleSuccessModalClose = () => {
         setIsSuccessModalOpen(false);
         setSuccessMessage('');
+        onClose(); // Close the main modal after success confirmation
     };
     
     return (
@@ -135,14 +197,18 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
                         value={selectedFormId} 
                         onChange={(e) => setSelectedFormId(e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                        disabled={isLoadingForms || fetchedForms.length === 0}
                     >
-                        <option value="" disabled>-- 請選擇表單 --</option>
-                        {availableForms.map(form => (
+                        <option value="" disabled>
+                            {isLoadingForms ? "載入表單中..." : (fetchedForms.length === 0 ? "無可用表單" : "-- 請選擇表單 --")}
+                        </option>
+                        {fetchedForms.map(form => (
                             <option key={form.id} value={form.id}>
-                                {form.displayName || form.name}
+                                {form.eFormName ? form.eFormName.trim() : `ID: ${form.id} (名稱未提供)`}
                             </option>
                         ))}
                     </select>
+                    {isLoadingForms && <p className="text-xs text-gray-500 mt-1">正在從伺服器獲取表單列表...</p>}
                 </div>
             </div>
             
@@ -158,6 +224,7 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
                     <button 
                         onClick={handleSubmit} 
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-150"
+                        disabled={isLoadingForms || fetchedForms.length === 0}
                     >
                         {isEditing ? "確認修改" : "確認新增"}
                     </button>
@@ -169,7 +236,7 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
                 isOpen={isErrorModalOpen}
                 onClose={handleErrorModalClose}
                 onConfirm={handleErrorModalClose}
-                title="錯誤"
+                title="提示" // Changed from "錯誤" to "提示" as some messages are informational
                 message={errorMessage}
                 confirmText="確認"
                 theme="warning"
@@ -179,8 +246,8 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, availableForms = [], isEd
             {/* 成功模態框 */}
             <ConfirmModal
                 isOpen={isSuccessModalOpen}
-                onClose={handleSuccessModalClose}
-                onConfirm={handleSuccessModalClose}
+                onClose={handleSuccessModalClose} 
+                onConfirm={handleSuccessModalClose} 
                 title="成功"
                 message={successMessage}
                 confirmText="確認"
