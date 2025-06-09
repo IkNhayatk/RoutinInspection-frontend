@@ -21,7 +21,6 @@ function RouteBinding() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [routeToDelete, setRouteToDelete] = useState(null);
   const [editingRoute, setEditingRoute] = useState(null);
-  const [availableForms, setAvailableForms] = useState([]);
 
   // 載入路線資料
   useEffect(() => {
@@ -32,7 +31,7 @@ function RouteBinding() {
         const response = await apiClient.get(`/routes?page=${currentPage}&limit=${rowsPerPage}&search=${searchTerm}`);
         if (response.data.success) {
           setRoutes(response.data.routes || []);
-          setTotalItems(response.data.total || 0);
+          setTotalItems(response.data.pagination?.total_records || response.data.total || 0);
         } else {
           console.error('Failed to fetch routes:', response.data.message);
           setRoutes([]);
@@ -72,6 +71,12 @@ function RouteBinding() {
 
   // 編輯路線
   const handleEditRoute = (route) => {
+    console.log('=== RouteBinding Edit Debug ===');
+    console.log('Editing route:', route);
+    console.log('route.RouteId:', route.RouteId);
+    console.log('route.RouteName:', route.RouteName);
+    console.log('route.BindingTableId:', route.BindingTableId);
+    console.log('================================');
     setEditingRoute(route);
     setIsModalOpen(true);
   };
@@ -85,9 +90,18 @@ function RouteBinding() {
   const handleConfirmDelete = async () => {
     if (routeToDelete) {
       try {
-        await apiClient.delete(`/routes/${routeToDelete.id}`);
-        // 成功刪除後更新路線列表
-        setRoutes(routes.filter(route => route.id !== routeToDelete.id));
+        const response = await apiClient.delete(`/routes/${routeToDelete.RouteId}`);
+        
+        if (response.data && response.data.success) {
+          // 成功刪除後重新載入路線列表
+          const refreshResponse = await apiClient.get(`/routes?page=${currentPage}&limit=${rowsPerPage}&search=${searchTerm}`);
+          if (refreshResponse.data.success) {
+            setRoutes(refreshResponse.data.routes || []);
+            setTotalItems(refreshResponse.data.pagination?.total_records || refreshResponse.data.total || 0);
+          }
+        } else {
+          console.error('Delete failed:', response.data?.message);
+        }
       } catch (error) {
         console.error('Error deleting route:', error);
       } finally {
@@ -116,12 +130,20 @@ function RouteBinding() {
   // 提交路線資料
   const handleRouteSubmit = async (routeData) => {
     const isEditing = !!editingRoute;
+    console.log('=== RouteBinding Submit Debug ===');
+    console.log('isEditing:', isEditing);
+    console.log('editingRoute:', editingRoute);
+    console.log('editingRoute?.RouteId:', editingRoute?.RouteId);
+    console.log('routeData:', routeData);
+    
     try {
       if (isEditing) {
-        // 編輯現有路線
-        await apiClient.put(`/routes/${editingRoute.id}`, routeData);
+        // 編輯現有路線 - 修正：使用 RouteId 而不是 id
+        console.log('Using PUT to:', `/routes/${editingRoute.RouteId}`);
+        await apiClient.put(`/routes/${editingRoute.RouteId}`, routeData);
       } else {
         // 新增路線
+        console.log('Using POST to: /routes');
         await apiClient.post('/routes', routeData);
       }
       
@@ -129,7 +151,7 @@ function RouteBinding() {
       const response = await apiClient.get(`/routes?page=${currentPage}&limit=${rowsPerPage}&search=${searchTerm}`);
       if (response.data.success) {
         setRoutes(response.data.routes || []);
-        setTotalItems(response.data.total || 0);
+        setTotalItems(response.data.pagination?.total_records || response.data.total || 0);
       }
     } catch (error) {
       console.error(`Error ${isEditing ? 'updating' : 'creating'} route:`, error);
@@ -137,13 +159,14 @@ function RouteBinding() {
   };
 
   // 計算總頁數
-  const totalPages = Math.ceil(totalItems / rowsPerPage);
+  const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
 
   // 根據搜索條件過濾路線
   let displayedRoutes = routes;
   if (searchTerm) {
     displayedRoutes = routes.filter(route => 
-      route.routeName.toLowerCase().includes(searchTerm.toLowerCase())
+      route.RouteName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      route.BindingTableName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 
@@ -159,18 +182,6 @@ function RouteBinding() {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             {/* 路線綁定內容 */}
             <div className="flex justify-between items-center mb-4 gap-4">
-              <div className="relative flex-grow max-w-xs">
-                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaSearch className="text-gray-400" />
-                </span>
-                <input 
-                  type="text" 
-                  placeholder="搜尋路線名稱" 
-                  value={searchTerm} 
-                  onChange={handleSearchChange} 
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
               <button 
                 onClick={handleOpenCreateModal} 
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -280,7 +291,6 @@ function RouteBinding() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleRouteSubmit}
-        availableForms={availableForms}
         isEditing={!!editingRoute}
         editData={editingRoute}
       />
@@ -291,7 +301,7 @@ function RouteBinding() {
         onClose={handleCancelDelete}
         onConfirm={handleConfirmDelete}
         title="確認刪除路線"
-        message={routeToDelete ? `確定要刪除路線「${routeToDelete.routeName}」嗎？` : "確定要刪除這個路線嗎？"}
+        message={routeToDelete ? `確定要刪除路線「${routeToDelete.RouteName}」嗎？` : "確定要刪除這個路線嗎？"}
         confirmText="刪除"
         cancelText="取消"
         theme="delete" 

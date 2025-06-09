@@ -88,15 +88,31 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
     }, [isOpen]); // Re-fetch if isOpen changes
 
     // --- 初始化編輯資料 & 重設模態框狀態 ---
+    // --- 初始化編輯資料 & 重設模態框狀態 ---
     useEffect(() => {
         if (isOpen) {
             if (isEditing && editData) {
-                setRouteName(editData.routeName || '');
-                // Ensure selectedFormId is valid after forms are fetched,
-                // especially if editData.formId might not be in the new list.
-                // This might need further logic if forms list changes dynamically for the same department.
-                setSelectedFormId(editData.formId || '');
+                console.log('=== CreateRouteModal Debug ===');
+                console.log('isEditing:', isEditing);
+                console.log('editData:', editData);
+                console.log('editData.RouteId:', editData.RouteId);
+                console.log('editData.RouteName:', editData.RouteName);
+                console.log('editData.BindingTableId:', editData.BindingTableId);
+                console.log('============================');
+                
+                // --- 更正開始 ---
+                // 原本是 editData.routeName，假設您的 route 物件中的屬性名稱為 RouteName (大寫 N)
+                setRouteName(editData.RouteName || ''); 
+                // --- 更正結束 ---
+                
+                // 確保 selectedFormId 在表單列表載入後是有效的，
+                // 特別是如果 editData.formId 可能不在新的列表中。
+                // 如果同一部門的表單列表會動態變化，這裡可能需要進一步的邏輯。
+                setSelectedFormId(editData.BindingTableId || ''); 
             } else {
+                console.log('=== CreateRouteModal Debug ===');
+                console.log('Creating new route - isEditing:', isEditing, 'editData:', editData);
+                console.log('============================');
                 // 清除表單
                 setRouteName('');
                 setSelectedFormId('');
@@ -107,13 +123,19 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
             setIsSuccessModalOpen(false);
             setSuccessMessage('');
         } else {
-            // Reset fetched forms when modal is closed to ensure fresh data next time
-             // Handled by the fetchFormsForSelection on isOpen true
+            // 當模態框關閉時重置已獲取的表單，以確保下次打開時是最新數據
+            // 這部分邏輯已由 fetchFormsForSelection 在 isOpen 為 true 時處理
         }
     }, [isOpen, isEditing, editData]);
     
     // --- 處理提交 ---
     const handleSubmit = async () => {
+         // 調試輸出
+        console.log('=== CreateRouteModal Submit Debug ===');
+        console.log('isEditing:', isEditing);
+        console.log('editData:', editData);
+        console.log('editData.RouteId:', editData?.RouteId);
+        console.log('Condition result:', isEditing && editData && editData.RouteId);
         // 基本驗證
         if (!routeName.trim()) {
             setErrorMessage('請輸入路線名稱');
@@ -129,22 +151,46 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
         
         try {
             // 準備資料
+            const selectedForm = fetchedForms.find(form => form.id === selectedFormId);
             const routeData = {
-                routeName: routeName.trim(),
-                formId: selectedFormId,
-                ...(isEditing && editData ? { id: editData.id } : {})
+                RouteName: routeName.trim(),
+                BindingTableId: selectedFormId,
+                BindingTableName: selectedForm?.eFormName || selectedForm?.name || `表單ID: ${selectedFormId}`
             };
             
-            // 提交資料
-            await onSubmit(routeData);
+            //console.log('Selected Form:', selectedForm);
+            //console.log('Route Data:', routeData);
             
-            // 顯示成功訊息
-            setSuccessMessage(isEditing ? '路線修改成功！' : '路線新增成功！');
-            setIsSuccessModalOpen(true);
+            let response;
+            
+            console.log('=== Submit Debug ===');
+            console.log('isEditing:', isEditing);
+            console.log('editData:', editData);
+            console.log('editData?.RouteId:', editData?.RouteId);
+            console.log('Condition result:', isEditing && editData && editData.RouteId);
+            console.log('routeData:', routeData);
+            
+            if (isEditing && editData && editData.RouteId) {
+                console.log('執行 PUT 請求到:', `/routes/${editData.RouteId}`);
+                response = await apiClient.put(`/routes/${editData.RouteId}`, routeData);
+            } else {
+                console.log('執行 POST 請求到:', '/routes');
+                response = await apiClient.post('/routes', routeData);
+            }
+            console.log('===================');
+            
+            if (response.data && response.data.success) {
+                // 顯示成功訊息
+                setSuccessMessage(isEditing ? '路線修改成功！' : '路線新增成功！');
+                setIsSuccessModalOpen(true);
+            } else {
+                throw new Error(response.data?.message || '操作失敗');
+            }
             
         } catch (error) {
             console.error('Error submitting route:', error);
-            setErrorMessage(error.message || '操作失敗，請稍後再試');
+            const errorMsg = error.response?.data?.message || error.message || '操作失敗，請稍後再試';
+            setErrorMessage(errorMsg);
             setIsErrorModalOpen(true);
         }
     };
@@ -160,6 +206,11 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
         setIsSuccessModalOpen(false);
         setSuccessMessage('');
         onClose(); // Close the main modal after success confirmation
+        
+        // 呼叫父組件的 onSubmit 來重新整理路線列表
+        if (onSubmit) {
+            onSubmit();
+        }
     };
     
     return (
