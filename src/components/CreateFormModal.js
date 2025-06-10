@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Modal from 'react-modal';
 import { produce } from "immer";
 // Import chevron icons
-import { FaPlusCircle, FaQuestionCircle, FaTrashAlt, FaSlidersH, FaChevronRight, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaPlusCircle, FaQuestionCircle, FaTrashAlt, FaSlidersH, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ValidationRuleModal from './ValidationRuleModal.js';
 import ConfirmModal from './ConfirmModal.js';
-import { apiClient } from '../services/authService.js'; // 導入 apiClient
+
 
 // --- Styles ---
 const customStyles = {
@@ -197,7 +197,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
 
     // --- Handlers wrapped in useCallback ---
     const handleAddItem = useCallback((path, itemType) => {
-        const newItem = itemType === 'group' ? createNewGroup(false) : createNewField();
+        const newItem = itemType === 'group' ? createNewGroup({}, false) : createNewField();
         setFormItems(produce(draft => {
             if (!path || path.length === 0) { draft.push(newItem); }
             else {
@@ -211,7 +211,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
     const handleDeleteItem = useCallback((path) => {
         if (!path || path.length === 0) return;
         setFormItems(produce(draft => {
-            const parentArray = findDraftParentArray(draft);
+            const parentArray = findDraftParentArray(draft, path);
             const itemIndexToDelete = path[path.length - 1];
             if (parentArray?.[itemIndexToDelete]) { parentArray.splice(itemIndexToDelete, 1); }
             else { console.error("[handleDeleteItem] Could not find valid parent or index at path:", path); }
@@ -263,8 +263,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
     }, [editingValidationRulePath, setFormItems, closeValidationModal]);
 
     // --- JSON Transformation (Modified for sequential ItemId) ---
-    // Removed useCallback as it depends on the counter created in handleShowJson
-    const transformItemsToElements = (items, counterRef) => { // Added counterRef parameter
+    const transformItemsToElements = useCallback((items, counterRef) => { // Added counterRef parameter
         if (!Array.isArray(items)) return [];
         return items.map((item, index) => {
             if (item.type === 'field') {
@@ -304,10 +303,10 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
             }
             return null;
         }).filter(Boolean);
-    }; // Removed useCallback dependency array
+    }, []); // Added useCallback with empty dependency array
     
     // --- Calculate total items count ---
-    const calculateItemsCount = (items) => {
+    const calculateItemsCount = useCallback((items) => {
         let count = 0;
         items.forEach(item => {
             if (item.type === 'field') {
@@ -317,7 +316,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
             }
         });
         return count;
-    };
+    }, []);
 
     // --- Submit/Show JSON ---
     const handleSubmit = useCallback(async () => {
@@ -354,7 +353,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
 
         try {
             // Assume onSubmit returns a promise
-            const result = await onSubmit(formData); // Pass formData to the parent's submit handler
+            await onSubmit(formData); // Pass formData to the parent's submit handler
 
             // If onSubmit resolves, close this modal and show success
             onClose(); // Close CreateFormModal first
@@ -368,7 +367,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
             setIsErrorModalOpen(true);
         }
 
-    }, [formIdentifier, formDisplayName, formItems, onSubmit, editingForm, onClose, originalFormIdentifier]); // Add onClose and originalFormIdentifier to dependencies
+    }, [formIdentifier, formDisplayName, formItems, onSubmit, editingForm, onClose, originalFormIdentifier, calculateItemsCount, transformItemsToElements]); // Add missing dependencies
 
     const handleErrorModalClose = () => {
         setIsErrorModalOpen(false);
@@ -401,7 +400,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
         console.log('Preview JSON:', JSON.stringify(finalJson, null, 2));
         // Log the final counter value (optional debugging)
         // console.log('Final ItemId Counter:', itemIdCounter.current - 1);
-    }, [formIdentifier, formDisplayName, formItems]); // Removed transformItemsToElements from deps as it's defined inside
+    }, [formIdentifier, formDisplayName, formItems, transformItemsToElements]); // Add missing dependency
 
 
     // --- === Recursive Rendering Component (Using Local State) === ---

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { apiClient } from '../services/authService.js';
 import { useAuth } from '../context/AuthContext.js';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaDownload, FaUpload } from 'react-icons/fa';
 import ConfirmModal from '../components/ConfirmModal.js';
+import UserModal from '../components/UserModal.js';
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -13,8 +14,13 @@ function UserManagement() {
   const [error, setError] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [isEditingUser, setIsEditingUser] = useState(false);
+  const [editUserData, setEditUserData] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('');
   const { isAdmin, isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   // 獲取用戶列表
   const fetchUsers = async () => {
@@ -70,11 +76,135 @@ function UserManagement() {
     }
   };
 
-  // 編輯用戶 (暫時導航到添加用戶頁面)
+  // 編輯用戶
   const handleEditUser = (user) => {
-    // TODO: 實現編輯功能或導航到編輯頁面
-    console.log('編輯用戶:', user);
-    navigate('/add_user', { state: { editUser: user } });
+    setEditUserData({
+      id: user.ID,
+      userName: user.UserName,
+      userID: user.UserID,
+      engName: user.EngName,
+      email: user.Email,
+      priorityLevel: user.PriorityLevel,
+      position: user.Position,
+      remark: user.Remark,
+      department: user.Department,
+      isAtWork: user.IsAtWork
+    });
+    setIsEditingUser(true);
+    setIsUserModalOpen(true);
+  };
+
+  // 新增用戶
+  const handleAddUser = () => {
+    setEditUserData(null);
+    setIsEditingUser(false);
+    setIsUserModalOpen(true);
+  };
+
+  // 關閉用戶模態框
+  const handleUserModalClose = () => {
+    setIsUserModalOpen(false);
+    setIsEditingUser(false);
+    setEditUserData(null);
+  };
+
+  // 用戶模態框提交成功後的處理
+  const handleUserModalSubmit = () => {
+    fetchUsers(); // 重新載入用戶列表
+  };
+
+  // 下載Excel範例
+  const handleDownloadExcelTemplate = () => {
+    // 創建範例數據
+    const templateData = [
+      [
+        '巡檢人姓名', '巡檢人ID', '主管姓名', '主管ID', '課長姓名', '課長ID', 
+        '廠工安人員1', '廠工安人員1ID', '廠PSM專人姓名', '廠PSM專人ID', 
+        '廠長姓名', '廠長ID', '工安主管姓名', '工安主管ID', '工安高專姓名', '工安高專ID',
+        '廠', '課', '部門', '部門縮寫', '職稱', '第二部門', 'PriorityLevel'
+      ],
+      [
+        '張三', 'N000156652', '李主管', 'N000156652', '王課長', 'N000156652',
+        '陳工安', 'N000156652', '林專員', 'N000156652', '陳建全', 'N000005047',
+        '陳祈旭', 'N000019799', '吳聲君', 'N000005040', '製膜一廠', '',
+        'J020', 'J020', '保養員', '', '1'
+      ],
+      [
+        '陳課長', 'N000156653', '', '', '', '',
+        '林工安', 'N000156652', '黃專員', 'N000156652', '劉廠長', 'N000005018',
+        '陳祈旭', 'N000019799', '吳聲君', 'N000005040', '製膜二廠', '',
+        'J720', 'J720', '課長', '', '2'
+      ],
+      [
+        '林工安', 'N000156654', '', '', '', '',
+        '', '', '黃專員', 'N000156652', '林鴻祥', 'N000003986',
+        '陳祈旭', 'N000019799', '吳聲君', 'N000005041', '離型膜廠', '',
+        'JH50', 'JH50', '工三專員', '', '3'
+      ]
+    ];
+
+    // 創建CSV內容
+    const csvContent = templateData.map(row => row.join(',')).join('\n');
+    
+    // 創建並下載文件
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', '巡檢人員核簽資料匯入範例.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // 觸發文件選擇
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // 處理文件上傳
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // 檢查文件類型
+    const allowedTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+    if (!allowedTypes.includes(file.type) && !file.name.endsWith('.csv')) {
+      setUploadStatus('請選擇CSV或Excel文件');
+      return;
+    }
+
+    setUploadStatus('上傳中...');
+    
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await apiClient.post('/users/bulk-import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.data.success) {
+        setUploadStatus(`成功匯入 ${response.data.imported_count} 位用戶`);
+        await fetchUsers(); // 重新載入用戶列表
+      } else {
+        setUploadStatus(`匯入失敗: ${response.data.message}`);
+      }
+    } catch (err) {
+      console.error('批量匯入錯誤:', err);
+      setUploadStatus(`匯入失敗: ${err.response?.data?.message || '未知錯誤'}`);
+    }
+
+    // 清空文件輸入
+    event.target.value = '';
+    
+    // 3秒後清空狀態訊息
+    setTimeout(() => {
+      setUploadStatus('');
+    }, 3000);
   };
 
   // 在組件掛載時獲取用戶列表
@@ -98,9 +228,9 @@ function UserManagement() {
   const getPriorityLevelText = (level) => {
     switch (level) {
       case 1:
-        return '一般用戶';
+        return '巡檢人員';
       case 2:
-        return '進階用戶';
+        return '主管';
       case 3:
         return '管理員';
       case 4:
@@ -130,13 +260,65 @@ function UserManagement() {
 
             {/* 操作按鈕區 */}
             <div className="flex justify-between items-center mb-4 gap-4">
-              <button
-                onClick={() => navigate('/add_user')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-              >
-                新增用戶
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleAddUser}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                >
+                  新增用戶
+                </button>
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={handleDownloadExcelTemplate}
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 flex items-center gap-2"
+                  title="下載Excel範例文件"
+                >
+                  <FaDownload />
+                  下載範例
+                </button>
+                
+                <button
+                  onClick={handleUploadClick}
+                  className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 flex items-center gap-2"
+                  title="上傳Excel文件批量匯入用戶"
+                >
+                  <FaUpload />
+                  上傳Excel
+                </button>
+                
+                {/* 隱藏的文件輸入 */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv,.xlsx,.xls"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
             </div>
+
+            {/* 說明文字 */}
+            <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                <span className="font-medium">📋 批次匯入說明：</span>
+                批次匯入使用者預設密碼為工號後6碼
+              </p>
+            </div>
+
+            {/* 上傳狀態訊息 */}
+            {uploadStatus && (
+              <div className={`mb-4 p-3 rounded ${
+                uploadStatus.includes('成功') 
+                  ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200' 
+                  : uploadStatus.includes('上傳中') 
+                  ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200' 
+                  : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200'
+              }`}>
+                {uploadStatus}
+              </div>
+            )}
 
             {/* 用戶表格 */}
             {loading ? (
@@ -226,6 +408,15 @@ function UserManagement() {
         confirmText="刪除"
         cancelText="取消"
         theme="danger"
+      />
+
+      {/* 用戶模態框 */}
+      <UserModal
+        isOpen={isUserModalOpen}
+        onClose={handleUserModalClose}
+        onSubmit={handleUserModalSubmit}
+        isEditing={isEditingUser}
+        editData={editUserData}
       />
     </div>
   );
