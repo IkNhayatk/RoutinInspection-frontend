@@ -83,3 +83,6 @@ export function useAuth() {
   }
   return context;
 }
+
+// Export AuthContext for testing
+export { AuthContext };

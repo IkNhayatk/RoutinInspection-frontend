@@ -22,6 +22,8 @@ function FormSettings() {
   const [formToDelete, setFormToDelete] = useState(null); // State to store the form to be deleted
   const [editingForm, setEditingForm] = useState(null); // 新增: 編輯中的表單
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // State for the success confirmation modal
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); // State for error modal
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
   // --- Handlers for FormSettings page (Search, Pagination, API calls for list) ---
   useEffect(() => {
@@ -92,6 +94,8 @@ function FormSettings() {
         console.error('Error fetching data:', error);
         setFormData([]);
         setTotalItems(0);
+        setErrorMessage(`載入資料失敗: ${error.message || '網路錯誤'}`);
+        setIsErrorModalOpen(true);
       } finally {
         setLoading(false);
       }
@@ -131,10 +135,17 @@ function FormSettings() {
   const handleConfirmDelete = async () => {
     if (formToDelete) {
       try {
-        await apiClient.put(`/forms/${formToDelete.id}/mode`, { mode: 3 });
-        setFormData(formData.filter(form => form.id !== formToDelete.id));
+        const response = await apiClient.put(`/forms/${formToDelete.id}/mode`, { mode: 3 });
+        if (response.data.success) {
+          setFormData(formData.filter(form => form.id !== formToDelete.id));
+        } else {
+          setErrorMessage(`刪除表單失敗: ${response.data.message || '未知錯誤'}`);
+          setIsErrorModalOpen(true);
+        }
       } catch (error) {
         console.error('Error deleting form:', error);
+        setErrorMessage(`刪除表單失敗: ${error.message || '網路錯誤'}`);
+        setIsErrorModalOpen(true);
       } finally {
         setIsDeleteModalOpen(false);
         setFormToDelete(null);
@@ -170,9 +181,13 @@ function FormSettings() {
         ));
       } else {
         console.error('Failed to update mode:', response.data.message);
+        setErrorMessage(`更新表單模式失敗: ${response.data.message || '未知錯誤'}`);
+        setIsErrorModalOpen(true);
       }
     } catch (error) {
       console.error('Error updating mode:', error);
+      setErrorMessage(`更新表單模式失敗: ${error.message || '網路錯誤'}`);
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -242,12 +257,15 @@ function FormSettings() {
 
       } else {
         console.error(`Error ${isEditing ? 'updating' : 'creating'} form:`, response.data.message);
-        // TODO: Show error message to user
+        setErrorMessage(`${isEditing ? '更新' : '建立'}表單失敗: ${response.data.message || '未知錯誤'}`);
+        setIsErrorModalOpen(true);
+        return;
       }
       setIsSuccessModalOpen(true); // 顯示成功提示模態框
     } catch (error) {
       console.error(`Error ${isEditing ? 'updating' : 'creating'} form:`, error);
-      // TODO: Show error message to user
+      setErrorMessage(`${isEditing ? '更新' : '建立'}表單失敗: ${error.message || '網路錯誤'}`);
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -404,6 +422,22 @@ function FormSettings() {
           confirmText="確認"
           cancelText="關閉"
           theme="success"
+        />
+        <ConfirmModal
+          isOpen={isErrorModalOpen}
+          onClose={() => {
+            setIsErrorModalOpen(false);
+            setErrorMessage('');
+          }}
+          onConfirm={() => {
+            setIsErrorModalOpen(false);
+            setErrorMessage('');
+          }}
+          title="操作失敗"
+          message={errorMessage}
+          confirmText="確認"
+          cancelText="關閉"
+          theme="delete"
         />
       </div>
     </div>

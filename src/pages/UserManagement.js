@@ -4,7 +4,7 @@ import { apiClient } from '../services/authService.js';
 import { useAuth } from '../context/AuthContext.js';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
-import { FaPencilAlt, FaTrashAlt, FaDownload, FaUpload } from 'react-icons/fa';
+import { FaPencilAlt, FaTrashAlt, FaDownload, FaUpload, FaRegCopy } from 'react-icons/fa';
 import ConfirmModal from '../components/ConfirmModal.js';
 import UserModal from '../components/UserModal.js';
 
@@ -88,9 +88,68 @@ function UserManagement() {
       position: user.Position,
       remark: user.Remark,
       department: user.Department,
-      isAtWork: user.IsAtWork
+      isAtWork: user.IsAtWork,
+      // 包含核簽資料
+      supervisorName: user.supervisorName || '',
+      supervisorID: user.supervisorID || '',
+      sectionChiefName: user.sectionChiefName || '',
+      sectionChiefID: user.sectionChiefID || '',
+      safetyOfficer1: user.safetyOfficer1 || '',
+      safetyOfficer1ID: user.safetyOfficer1ID || '',
+      psmSpecialistName: user.psmSpecialistName || '',
+      psmSpecialistID: user.psmSpecialistID || '',
+      factoryManagerName: user.factoryManagerName || '',
+      factoryManagerID: user.factoryManagerID || '',
+      safetySupervisorName: user.safetySupervisorName || '',
+      safetySupervisorID: user.safetySupervisorID || '',
+      safetySpecialistName: user.safetySpecialistName || '',
+      safetySpecialistID: user.safetySpecialistID || '',
+      factory: user.factory || '',
+      section: user.section || '',
+      departmentAbbr: user.departmentAbbr || '',
+      jobTitle: user.jobTitle || '',
+      secondDepartment: user.secondDepartment || ''
     });
     setIsEditingUser(true);
+    setIsUserModalOpen(true);
+  };
+
+  // 複製用戶
+  const handleCopyUser = (user) => {
+    setEditUserData({
+      id: user.ID,
+      userName: '', // 複製時清空使用者姓名
+      userID: '', // 複製時清空使用者ID
+      engName: user.EngName,
+      email: user.Email,
+      priorityLevel: user.PriorityLevel,
+      position: user.Position,
+      remark: user.Remark,
+      department: user.Department,
+      isAtWork: user.IsAtWork,
+      isCopy: true, // 標記為複製模式
+      // 包含核簽資料（複製時保留）
+      supervisorName: user.supervisorName || '',
+      supervisorID: user.supervisorID || '',
+      sectionChiefName: user.sectionChiefName || '',
+      sectionChiefID: user.sectionChiefID || '',
+      safetyOfficer1: user.safetyOfficer1 || '',
+      safetyOfficer1ID: user.safetyOfficer1ID || '',
+      psmSpecialistName: user.psmSpecialistName || '',
+      psmSpecialistID: user.psmSpecialistID || '',
+      factoryManagerName: user.factoryManagerName || '',
+      factoryManagerID: user.factoryManagerID || '',
+      safetySupervisorName: user.safetySupervisorName || '',
+      safetySupervisorID: user.safetySupervisorID || '',
+      safetySpecialistName: user.safetySpecialistName || '',
+      safetySpecialistID: user.safetySpecialistID || '',
+      factory: user.factory || '',
+      section: user.section || '',
+      departmentAbbr: user.departmentAbbr || '',
+      jobTitle: user.jobTitle || '',
+      secondDepartment: user.secondDepartment || ''
+    });
+    setIsEditingUser(false); // 複製時設為false，因為這是新增而非編輯
     setIsUserModalOpen(true);
   };
 
@@ -378,6 +437,13 @@ function UserManagement() {
                               title="編輯用戶"
                             >
                               <FaPencilAlt />
+                            </button>
+                            <button
+                              onClick={() => handleCopyUser(user)}
+                              className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-300 p-2 rounded-full hover:bg-green-100 dark:hover:bg-green-900"
+                              title="複製用戶"
+                            >
+                              <FaRegCopy />
                             </button>
                             <button
                               onClick={() => handleDeleteClick(user)}

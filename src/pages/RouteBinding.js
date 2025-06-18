@@ -3,7 +3,7 @@ import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
 import { useAuth } from '../context/AuthContext.js'; // Import useAuth
 import { apiClient } from '../services/authService.js';
-import { FaSearch, FaRegFolderOpen, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaRegFolderOpen, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import CreateRouteModal from '../components/CreateRouteModal.js';
 import ConfirmModal from '../components/ConfirmModal.js';
 
@@ -182,6 +182,13 @@ function RouteBinding() {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             {/* 路線綁定內容 */}
             <div className="flex justify-between items-center mb-4 gap-4">
+              <input 
+                type="text" 
+                placeholder="搜尋路線..." 
+                value={searchTerm} 
+                onChange={handleSearchChange} 
+                className="border border-gray-300 rounded p-2"
+              />
               <button 
                 onClick={handleOpenCreateModal} 
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"

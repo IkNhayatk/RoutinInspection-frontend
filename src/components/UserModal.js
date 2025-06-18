@@ -75,10 +75,10 @@ function UserModal({ isOpen, onClose, onSubmit, isEditing = false, editData = nu
     // --- 初始化編輯資料 ---
     useEffect(() => {
         if (isOpen) {
-            if (isEditing && editData) {
-                // SysUser 資料
-                setUserName(editData.userName || '');
-                setUserID(editData.userID || '');
+            if ((isEditing || editData?.isCopy) && editData) {
+                // SysUser 資料 - 複製模式時姓名和ID留空
+                setUserName(editData.isCopy ? '' : (editData.userName || ''));
+                setUserID(editData.isCopy ? '' : (editData.userID || ''));
                 setEngName(editData.engName || '');
                 setEmail(editData.email || '');
                 setPassword(''); // 編輯時不顯示密碼
@@ -240,15 +240,17 @@ function UserModal({ isOpen, onClose, onSubmit, isEditing = false, editData = nu
             
             let response;
             
-            if (isEditing && editData && editData.id) {
+            // 如果是編輯模式且不是複製模式，則使用PUT；否則使用POST
+            if (isEditing && editData && editData.id && !editData.isCopy) {
                 response = await apiClient.put(`/users/${editData.id}`, userData);
             } else {
+                // 複製模式或新增模式都使用POST
                 response = await apiClient.post('/users', userData);
             }
             
             if (response.data && response.data.success) {
                 // 顯示成功訊息
-                setSuccessMessage(isEditing ? '使用者修改成功！' : '使用者新增成功！');
+                setSuccessMessage(editData?.isCopy ? '使用者複製成功！' : (isEditing ? '使用者修改成功！' : '使用者新增成功！'));
                 setIsSuccessModalOpen(true);
             } else {
                 throw new Error(response.data?.message || '操作失敗');
@@ -285,11 +287,13 @@ function UserModal({ isOpen, onClose, onSubmit, isEditing = false, editData = nu
             isOpen={isOpen} 
             onRequestClose={onClose} 
             style={customStyles} 
-            contentLabel={isEditing ? "編輯使用者" : "新增使用者"}
+            contentLabel={editData?.isCopy ? "複製使用者" : (isEditing ? "編輯使用者" : "新增使用者")}
         >
             {/* 標題 */}
             <div className="flex justify-between items-center mb-6 pb-2 border-b border-gray-300">
-                <h2 className="text-xl font-semibold text-gray-800">{isEditing ? "編輯使用者" : "新增使用者"}</h2>
+                <h2 className="text-xl font-semibold text-gray-800">
+                    {editData?.isCopy ? "複製使用者" : (isEditing ? "編輯使用者" : "新增使用者")}
+                </h2>
             </div>
             
             {/* 頁籤 */}
@@ -725,7 +729,7 @@ function UserModal({ isOpen, onClose, onSubmit, isEditing = false, editData = nu
                         onClick={handleSubmit} 
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-150"
                     >
-                        {isEditing ? "確認修改" : "確認新增"}
+                        {editData?.isCopy ? "確認複製" : (isEditing ? "確認修改" : "確認新增")}
                     </button>
                 </div>
             </div>
