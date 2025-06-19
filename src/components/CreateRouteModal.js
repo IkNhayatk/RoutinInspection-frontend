@@ -92,13 +92,6 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
     useEffect(() => {
         if (isOpen) {
             if (isEditing && editData) {
-                console.log('=== CreateRouteModal Debug ===');
-                console.log('isEditing:', isEditing);
-                console.log('editData:', editData);
-                console.log('editData.RouteId:', editData.RouteId);
-                console.log('editData.RouteName:', editData.RouteName);
-                console.log('editData.BindingTableId:', editData.BindingTableId);
-                console.log('============================');
                 
                 // --- 更正開始 ---
                 // 原本是 editData.routeName，假設您的 route 物件中的屬性名稱為 RouteName (大寫 N)
@@ -110,9 +103,6 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
                 // 如果同一部門的表單列表會動態變化，這裡可能需要進一步的邏輯。
                 setSelectedFormId(editData.BindingTableId || ''); 
             } else {
-                console.log('=== CreateRouteModal Debug ===');
-                console.log('Creating new route - isEditing:', isEditing, 'editData:', editData);
-                console.log('============================');
                 // 清除表單
                 setRouteName('');
                 setSelectedFormId('');
@@ -130,12 +120,6 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
     
     // --- 處理提交 ---
     const handleSubmit = async () => {
-         // 調試輸出
-        console.log('=== CreateRouteModal Submit Debug ===');
-        console.log('isEditing:', isEditing);
-        console.log('editData:', editData);
-        console.log('editData.RouteId:', editData?.RouteId);
-        console.log('Condition result:', isEditing && editData && editData.RouteId);
         // 基本驗證
         if (!routeName.trim()) {
             setErrorMessage('請輸入路線名稱');
@@ -163,21 +147,12 @@ function CreateRouteModal({ isOpen, onClose, onSubmit, isEditing = false, editDa
             
             let response;
             
-            console.log('=== Submit Debug ===');
-            console.log('isEditing:', isEditing);
-            console.log('editData:', editData);
-            console.log('editData?.RouteId:', editData?.RouteId);
-            console.log('Condition result:', isEditing && editData && editData.RouteId);
-            console.log('routeData:', routeData);
             
             if (isEditing && editData && editData.RouteId) {
-                console.log('執行 PUT 請求到:', `/routes/${editData.RouteId}`);
                 response = await apiClient.put(`/routes/${editData.RouteId}`, routeData);
             } else {
-                console.log('執行 POST 請求到:', '/routes');
                 response = await apiClient.post('/routes', routeData);
             }
-            console.log('===================');
             
             if (response.data && response.data.success) {
                 // 顯示成功訊息

@@ -1,14 +1,16 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import RouteBinding from '../RouteBinding';
 import { useAuth } from '../../context/AuthContext';
 import { apiClient } from '../../services/authService';
+import { renderWithRouter } from '../../testUtils';
 
 // Mock dependencies
 jest.mock('../../context/AuthContext');
 jest.mock('../../services/authService');
+jest.mock('../../context/ThemeContext', () => require('../../__mocks__/ThemeContext'));
 jest.mock('../../components/Layout/Sidebar', () => {
   return function MockSidebar({ isAdmin }) {
     return <div data-testid="sidebar">Sidebar - Admin: {isAdmin.toString()}</div>;
@@ -115,7 +117,7 @@ describe('RouteBinding Component', () => {
 
   describe('初始渲染', () => {
     test('應該正確渲染主要組件', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 檢查標題
       expect(screen.getByText('路線綁定')).toBeInTheDocument();
@@ -137,7 +139,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該正確顯示表格標題', () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       expect(screen.getByText('路線名稱')).toBeInTheDocument();
       expect(screen.getByText('綁定表單')).toBeInTheDocument();
@@ -146,7 +148,7 @@ describe('RouteBinding Component', () => {
 
     test('應該將isAdmin狀態傳遞給Sidebar', () => {
       mockUseAuth.mockReturnValue({ isAdmin: true });
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       expect(screen.getByText('Sidebar - Admin: true')).toBeInTheDocument();
     });
@@ -161,7 +163,7 @@ describe('RouteBinding Component', () => {
       });
       mockApiClient.get.mockReturnValue(delayedPromise);
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 檢查載入狀態
       expect(screen.getByText('載入中...')).toBeInTheDocument();
@@ -175,7 +177,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該正確顯示路線數據', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -196,7 +198,7 @@ describe('RouteBinding Component', () => {
         }
       });
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByTestId('folder-icon')).toBeInTheDocument();
@@ -208,7 +210,7 @@ describe('RouteBinding Component', () => {
       mockApiClient.get.mockRejectedValue(new Error('API Error'));
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith('Error fetching routes:', expect.any(Error));
@@ -221,7 +223,7 @@ describe('RouteBinding Component', () => {
 
   describe('搜尋功能', () => {
     test('應該根據路線名稱過濾數據', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -236,7 +238,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該根據表單名稱過濾數據', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試表單1')).toBeInTheDocument();
@@ -260,7 +262,7 @@ describe('RouteBinding Component', () => {
         }
       });
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 等待初始載入完成
       await waitFor(() => {
@@ -287,7 +289,7 @@ describe('RouteBinding Component', () => {
 
   describe('分頁功能', () => {
     test('應該正確顯示分頁信息', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('頁面 1 / 1')).toBeInTheDocument();
@@ -295,7 +297,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠更改每頁顯示數量', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByDisplayValue('10')).toBeInTheDocument();
@@ -319,7 +321,7 @@ describe('RouteBinding Component', () => {
         }
       });
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('頁面 1 / 3')).toBeInTheDocument();
@@ -347,7 +349,7 @@ describe('RouteBinding Component', () => {
         });
       });
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 等待初始載入
       await waitFor(() => {
@@ -374,7 +376,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('第一頁時上一頁按鈕應該被禁用', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         const prevButton = screen.getByText('上一頁');
@@ -391,7 +393,7 @@ describe('RouteBinding Component', () => {
         }
       });
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         const nextButton = screen.getByText('下一頁');
@@ -402,7 +404,7 @@ describe('RouteBinding Component', () => {
 
   describe('新增路線功能', () => {
     test('應該能夠打開新增路線模態框', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 等待初始載入完成
       await waitFor(() => {
@@ -417,7 +419,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠關閉模態框', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       const addButton = screen.getByText('新增路線');
       await userEvent.click(addButton);
@@ -429,7 +431,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠提交新路線', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       const addButton = screen.getByText('新增路線');
       await userEvent.click(addButton);
@@ -454,7 +456,7 @@ describe('RouteBinding Component', () => {
 
   describe('編輯路線功能', () => {
     test('應該能夠打開編輯路線模態框', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -472,7 +474,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠提交編輯的路線', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -496,7 +498,7 @@ describe('RouteBinding Component', () => {
 
   describe('刪除路線功能', () => {
     test('應該能夠打開刪除確認模態框', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -511,7 +513,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠取消刪除', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -528,7 +530,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('應該能夠確認刪除路線', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -559,7 +561,7 @@ describe('RouteBinding Component', () => {
       });
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -589,7 +591,7 @@ describe('RouteBinding Component', () => {
       });
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith('Failed to fetch routes:', 'Server error');
@@ -603,7 +605,7 @@ describe('RouteBinding Component', () => {
       mockApiClient.get.mockRejectedValue(new Error('Network error'));
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith('Error fetching routes:', expect.any(Error));
@@ -615,7 +617,7 @@ describe('RouteBinding Component', () => {
 
   describe('響應式設計', () => {
     test('應該正確應用dark mode類名', () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       // 查找具有dark mode類名的根容器
       const containers = document.querySelectorAll('.bg-gray-100.dark\\:bg-gray-900');
@@ -623,7 +625,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('表格應該具有響應式樣式', () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       const tableContainer = screen.getByRole('table').parentElement;
       expect(tableContainer).toHaveClass('overflow-x-auto');
@@ -632,7 +634,7 @@ describe('RouteBinding Component', () => {
 
   describe('輔助功能測試', () => {
     test('按鈕應該有適當的title屬性', async () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       await waitFor(() => {
         expect(screen.getByText('測試路線1')).toBeInTheDocument();
@@ -646,7 +648,7 @@ describe('RouteBinding Component', () => {
     });
 
     test('表格應該有適當的語義結構', () => {
-      render(<RouteBinding />);
+      renderWithRouter(<RouteBinding />);
 
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();

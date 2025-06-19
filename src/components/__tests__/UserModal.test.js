@@ -51,7 +51,7 @@ jest.mock('react-icons/fa', () => ({
 
 // Sample test data
 const mockUserData = {
-  id: 'user123',
+  id: 123, // Auto-generated ID from SQL Server IDENTITY(1,1)
   userName: '測試使用者',
   userID: 'testuser',
   engName: 'Test User',

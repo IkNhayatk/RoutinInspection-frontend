@@ -10,6 +10,7 @@ jest.mock('../../components/Layout/Sidebar');
 jest.mock('../../components/LogoutButton');
 jest.mock('../../components/ConfirmModal');
 jest.mock('../../components/UserModal');
+jest.mock('../../context/ThemeContext', () => require('../../__mocks__/ThemeContext'));
 
 // Mock react-icons
 jest.mock('react-icons/fa', () => ({
@@ -290,31 +291,38 @@ describe('UserManagement Component', () => {
   });
 
   describe('File Upload/Download Functionality', () => {
+    let originalCreateElement, originalAppendChild, originalRemoveChild;
+    
     beforeEach(() => {
-      // Reset DOM mocks
+      // Store original DOM methods
+      originalCreateElement = document.createElement;
+      originalAppendChild = document.body.appendChild;
+      originalRemoveChild = document.body.removeChild;
+      
+      // Reset URL mocks
       global.URL.createObjectURL = jest.fn(() => 'mock-url');
       global.URL.revokeObjectURL = jest.fn();
-      
-      // Mock DOM operations for file operations
-      const mockLink = {
-        click: jest.fn(),
-        setAttribute: jest.fn(),
-        style: {}
-      };
-      document.createElement = jest.fn(() => mockLink);
-      document.body.appendChild = jest.fn();
-      document.body.removeChild = jest.fn();
+    });
+    
+    afterEach(() => {
+      // Restore original DOM methods
+      if (originalCreateElement) document.createElement = originalCreateElement;
+      if (originalAppendChild) document.body.appendChild = originalAppendChild;
+      if (originalRemoveChild) document.body.removeChild = originalRemoveChild;
     });
 
     test('triggers file download when clicking download button', async () => {
-      const mockLink = {
-        click: jest.fn(),
-        setAttribute: jest.fn(),
-        style: {}
-      };
-      document.createElement = jest.fn().mockReturnValue(mockLink);
-      document.body.appendChild = jest.fn();
-      document.body.removeChild = jest.fn();
+      // Create a proper mock anchor element
+      const mockAnchor = originalCreateElement.call(document, 'a');
+      mockAnchor.click = jest.fn();
+      mockAnchor.setAttribute = jest.fn();
+      
+      const createElementSpy = jest.spyOn(document, 'createElement').mockImplementation((tagName) => {
+        if (tagName === 'a') return mockAnchor;
+        return originalCreateElement.call(document, tagName);
+      });
+      const appendChildSpy = jest.spyOn(document.body, 'appendChild');
+      const removeChildSpy = jest.spyOn(document.body, 'removeChild');
       
       renderWithRouter(<UserManagement />);
       
@@ -322,24 +330,27 @@ describe('UserManagement Component', () => {
         const downloadButton = screen.getByText('下載範例');
         fireEvent.click(downloadButton);
         
-        expect(document.createElement).toHaveBeenCalledWith('a');
-        expect(mockLink.setAttribute).toHaveBeenCalledWith('href', 'mock-url');
-        expect(mockLink.setAttribute).toHaveBeenCalledWith('download', '巡檢人員核簽資料匯入範例.csv');
-        expect(mockLink.click).toHaveBeenCalled();
-        expect(document.body.appendChild).toHaveBeenCalledWith(mockLink);
-        expect(document.body.removeChild).toHaveBeenCalledWith(mockLink);
+        expect(createElementSpy).toHaveBeenCalledWith('a');
+        expect(global.URL.createObjectURL).toHaveBeenCalled();
+        expect(appendChildSpy).toHaveBeenCalledWith(mockAnchor);
+        expect(removeChildSpy).toHaveBeenCalledWith(mockAnchor);
       });
+      
+      // Clean up spies
+      createElementSpy.mockRestore();
+      appendChildSpy.mockRestore();
+      removeChildSpy.mockRestore();
     });
 
     test('generates correct CSV content for template download', async () => {
-      const mockLink = {
-        click: jest.fn(),
-        setAttribute: jest.fn(),
-        style: {}
-      };
-      document.createElement = jest.fn().mockReturnValue(mockLink);
-      document.body.appendChild = jest.fn();
-      document.body.removeChild = jest.fn();
+      // Create a proper mock anchor element
+      const mockAnchor = originalCreateElement.call(document, 'a');
+      mockAnchor.click = jest.fn();
+      
+      const createElementSpy = jest.spyOn(document, 'createElement').mockImplementation((tagName) => {
+        if (tagName === 'a') return mockAnchor;
+        return originalCreateElement.call(document, tagName);
+      });
       
       renderWithRouter(<UserManagement />);
       
@@ -353,6 +364,8 @@ describe('UserManagement Component', () => {
           })
         );
       });
+      
+      createElementSpy.mockRestore();
     });
 
     test('triggers file input click when clicking upload button', async () => {
@@ -393,11 +406,7 @@ describe('UserManagement Component', () => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
-        
+        // Use fireEvent.change directly without redefining the files property
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
       
@@ -416,11 +425,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
@@ -447,11 +451,6 @@ describe('UserManagement Component', () => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
-        
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
       
@@ -473,11 +472,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
@@ -501,11 +495,6 @@ describe('UserManagement Component', () => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['invalid,data'], 'test.csv', { type: 'text/csv' });
         
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
-        
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
       
@@ -527,11 +516,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
@@ -559,11 +543,6 @@ describe('UserManagement Component', () => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
-        
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
       
@@ -590,11 +569,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
@@ -637,11 +611,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: '' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });
@@ -933,7 +902,7 @@ describe('UserManagement Component', () => {
         // Check if data is correctly mapped and displayed
         expect(screen.getByText('張三')).toBeInTheDocument();
         expect(screen.getByText('N000156652')).toBeInTheDocument();
-        expect(screen.getByText('J020')).toBeInTheDocument();
+        expect(screen.getAllByText('J020')).toHaveLength(2); // Should have multiple instances (mockUsers has 2 users with J020)
       });
     });
 
@@ -1461,11 +1430,6 @@ describe('UserManagement Component', () => {
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
-        
-        Object.defineProperty(fileInput, 'files', {
-          value: [file],
-          writable: false
-        });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
       });

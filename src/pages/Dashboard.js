@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
 import { useAuth } from '../context/AuthContext.js';
 
 function Dashboard() {
-  const navigate = useNavigate();
   const { isAdmin } = useAuth();
   useEffect(() => {
     console.log('進入dashboard頁面');
