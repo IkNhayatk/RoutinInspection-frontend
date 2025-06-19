@@ -135,16 +135,18 @@ function FormSettings() {
   const handleConfirmDelete = async () => {
     if (formToDelete) {
       try {
-        const response = await apiClient.put(`/forms/${formToDelete.id}/mode`, { mode: 3 });
+        const response = await apiClient.delete(`/forms/${formToDelete.id}`);
         if (response.data.success) {
           setFormData(formData.filter(form => form.id !== formToDelete.id));
+          setTotalItems(prev => prev - 1); // Update total count
         } else {
           setErrorMessage(`刪除表單失敗: ${response.data.message || '未知錯誤'}`);
           setIsErrorModalOpen(true);
         }
       } catch (error) {
         console.error('Error deleting form:', error);
-        setErrorMessage(`刪除表單失敗: ${error.message || '網路錯誤'}`);
+        const errorMsg = error.response?.data?.message || error.message || '網路錯誤';
+        setErrorMessage(`刪除表單失敗: ${errorMsg}`);
         setIsErrorModalOpen(true);
       } finally {
         setIsDeleteModalOpen(false);
@@ -346,9 +348,9 @@ function FormSettings() {
                         <td className="px-6 py-4 text-center">
                           <div className="flex items-center justify-center space-x-3">
                             {/* Use handlers specific to FormSettings list items */}
-                            <button onClick={() => handleEditForm(item)} className="text-blue-600 ..."><FaPencilAlt /></button> {/* <--- 這個按鈕觸發 handleEditForm */}
-                            <button onClick={() => handleDeleteForm(item)} className="text-red-600 ..."><FaTrashAlt /></button>
+                            <button onClick={() => handleEditForm(item)} className="text-blue-600 ..."><FaPencilAlt /></button> {/* <--- 這個按鈕觸發 handleEditForm */}                            
                             <button onClick={() => handleCopyForm(item)} className="text-green-600 ..."><FaRegCopy /></button>
+                            <button onClick={() => handleDeleteForm(item)} className="text-red-600 ..."><FaTrashAlt /></button>
                           </div>
                         </td>
                         {/* Stringify the object before rendering, even if hidden */}

@@ -23,42 +23,99 @@ function ValidationRuleModal({ isOpen, onClose, onSave, currentRule }) {
 
   useEffect(() => {
     console.log("Initializing validation modal with rule:", currentRule);
-    // TODO: Parse 'currentRule' string and set initial state
-    if (currentRule) {
-        if (currentRule.includes('&&') && currentRule.includes('>=')) {
-            setSelectedOption('range');
-            // setRangeMin(...) // Extract value
-            // setRangeMax(...) // Extract value
-        } else if (currentRule.includes('==') || currentRule.includes('||')) {
-            setSelectedOption('equals');
-            // setEqualsValue(...) // Extract value(s)
-        } else {
-             setSelectedOption('no_condition');
-        }
-    } else {
+    
+    if (currentRule && currentRule.trim() !== '') {
+      // Parse range condition: "value >= 10 && value <= 50"
+      const rangeMatch = currentRule.match(/value\s*>=\s*(\d*\.?\d+)\s*&&\s*value\s*<=\s*(\d*\.?\d+)/);
+      const minOnlyMatch = currentRule.match(/value\s*>=\s*(\d*\.?\d+)$/);
+      const maxOnlyMatch = currentRule.match(/value\s*<=\s*(\d*\.?\d+)$/);
+      
+      // Parse equals condition: "value == 1 || value == 2" or "value == 1"
+      const equalsMatch = currentRule.match(/value\s*==\s*([\d\s,.|]+)/g);
+      
+      if (rangeMatch) {
+        setSelectedOption('range');
+        setRangeMin(rangeMatch[1]);
+        setRangeMax(rangeMatch[2]);
+        setEqualsValue('');
+      } else if (minOnlyMatch && !currentRule.includes('<=')) {
+        setSelectedOption('range');
+        setRangeMin(minOnlyMatch[1]);
+        setRangeMax('');
+        setEqualsValue('');
+      } else if (maxOnlyMatch && !currentRule.includes('>=')) {
+        setSelectedOption('range');
+        setRangeMin('');
+        setRangeMax(maxOnlyMatch[1]);
+        setEqualsValue('');
+      } else if (equalsMatch) {
+        setSelectedOption('equals');
+        setRangeMin('');
+        setRangeMax('');
+        // Extract all values from equals conditions
+        const values = equalsMatch.map(match => {
+          const valueMatch = match.match(/value\s*==\s*([\d.]+)/);
+          return valueMatch ? valueMatch[1] : '';
+        }).filter(val => val !== '');
+        setEqualsValue(values.join(', '));
+      } else {
         setSelectedOption('no_condition');
         setRangeMin('');
         setRangeMax('');
         setEqualsValue('');
+      }
+    } else {
+      setSelectedOption('no_condition');
+      setRangeMin('');
+      setRangeMax('');
+      setEqualsValue('');
     }
   }, [currentRule, isOpen]);
 
 
   const handleConfirm = () => {
     let newRule = '';
-    // TODO: Construct 'newRule' based on state
-     switch (selectedOption) {
+    
+    switch (selectedOption) {
       case 'range':
-        if (rangeMin.trim() !== '' && rangeMax.trim() !== '') newRule = `value >= ${rangeMin} && value <= ${rangeMax}`;
-        else if (rangeMin.trim() !== '') newRule = `value >= ${rangeMin}`;
-        else if (rangeMax.trim() !== '') newRule = `value <= ${rangeMax}`;
+        const min = rangeMin.trim();
+        const max = rangeMax.trim();
+        
+        if (min !== '' && max !== '') {
+          const minNum = parseFloat(min);
+          const maxNum = parseFloat(max);
+          if (minNum <= maxNum) {
+            newRule = `value >= ${min} && value <= ${max}`;
+          } else {
+            alert('最小值不能大於最大值');
+            return;
+          }
+        } else if (min !== '') {
+          newRule = `value >= ${min}`;
+        } else if (max !== '') {
+          newRule = `value <= ${max}`;
+        }
         break;
+        
       case 'equals':
-        if (equalsValue.trim() !== '') newRule = `value == ${equalsValue}`; // Needs logic for multiple values
+        if (equalsValue.trim() !== '') {
+          const values = equalsValue.split(',').map(v => v.trim()).filter(v => v !== '');
+          if (values.length === 1) {
+            newRule = `value == ${values[0]}`;
+          } else if (values.length > 1) {
+            newRule = values.map(v => `value == ${v}`).join(' || ');
+          }
+        }
         break;
-      case 'no_condition': default: newRule = ''; break;
+        
+      case 'no_condition':
+      default:
+        newRule = '';
+        break;
     }
+    
     onSave(newRule);
+    onClose();
   };
 
   return (
