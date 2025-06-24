@@ -105,3 +105,8 @@ Desktop.ini
 # Temporary folders
 tmp/
 temp/
+
+
+#playwright
+/playwright-report
+/test-results

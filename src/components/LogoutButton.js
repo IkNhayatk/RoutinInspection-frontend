@@ -13,6 +13,7 @@ function LogoutButton() {
   return (
     <button 
       onClick={handleLogout}
+      data-testid="logout-button"
       className="p-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-gray-800 transition flex items-center justify-center"
       aria-label="登出"
       title="登出"

@@ -49,7 +49,7 @@ function LoginForm() {
         {/* Add dark mode text color */}
         <h1 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-gray-100">登入系統</h1>
         {/* Adjust error text color for dark mode if needed */}
-        {error && <div className="mb-4 text-red-500 dark:text-red-400 text-center">{error}</div>}
+        {error && <div data-testid="error-message" className="mb-4 text-red-500 dark:text-red-400 text-center">{error}</div>}
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             {/* Add dark mode text color for label */}
@@ -60,6 +60,7 @@ function LoginForm() {
             <input
               type="text"
               id="userId"
+              data-testid="username-input"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
@@ -76,6 +77,7 @@ function LoginForm() {
             <input
               type="password"
               id="password"
+              data-testid="password-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
@@ -87,6 +89,7 @@ function LoginForm() {
             {/* Add dark mode styles for submit button */}
             <button
               type="submit"
+              data-testid="login-button"
               disabled={loading}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 disabled:opacity-50 dark:disabled:opacity-60"
             >

@@ -105,7 +105,7 @@ export const checkUserAuthStatus = () => {
       // 可以選擇性地在這裡解碼 token 來檢查是否過期，但後端攔截器會處理
       return {
         isLoggedIn: true,
-        isAdmin: userInfo.priorityLevel >= 1, // 優先級別 1 或以上視為管理員 (根據用戶要求)
+        isAdmin: userInfo.priorityLevel >= 3, // 優先級別 3 為管理員
         user: userInfo,
         token: token,
       };

@@ -18,7 +18,12 @@ jest.mock('react-icons/fa', () => ({
   FaTrashAlt: () => <div data-testid="delete-icon" />,
   FaDownload: () => <div data-testid="download-icon" />,
   FaUpload: () => <div data-testid="upload-icon" />,
-  FaRegCopy: () => <div data-testid="copy-icon" />
+  FaRegCopy: () => <div data-testid="copy-icon" />,
+  FaSearch: () => <div data-testid="search-icon" />,
+  FaChevronLeft: () => <div data-testid="chevron-left-icon" />,
+  FaChevronRight: () => <div data-testid="chevron-right-icon" />,
+  FaChevronUp: () => <div data-testid="chevron-up-icon" />,
+  FaChevronDown: () => <div data-testid="chevron-down-icon" />
 }));
 
 // Mock components
@@ -69,7 +74,7 @@ jest.mock('react-router', () => ({
   useNavigate: () => mockNavigate
 }));
 
-// Mock data
+// Mock data - 更新為包含分頁信息的格式
 const mockUsers = [
   {
     ID: 1,
@@ -101,16 +106,26 @@ const mockUsers = [
   }
 ];
 
+const mockPaginationResponse = {
+  success: true,
+  users: mockUsers,
+  pagination: {
+    current_page: 1,
+    page_size: 10,
+    total_count: 2,
+    total_pages: 1,
+    has_next: false,
+    has_prev: false
+  }
+};
+
 
 describe('UserManagement Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockNavigate.mockClear();
     apiClient.get.mockResolvedValue({
-      data: {
-        success: true,
-        users: mockUsers
-      }
+      data: mockPaginationResponse
     });
     
     // Reset DOM mocks
@@ -133,7 +148,7 @@ describe('UserManagement Component', () => {
       });
     });
 
-    test('displays user list table with correct headers', async () => {
+    test('displays user list table with correct headers and pagination info', async () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
@@ -142,6 +157,9 @@ describe('UserManagement Component', () => {
         expect(screen.getByText('優先級別')).toBeInTheDocument();
         expect(screen.getByText('部門')).toBeInTheDocument();
         expect(screen.getByText('操作')).toBeInTheDocument();
+        
+        // 檢查分頁信息
+        expect(screen.getByText(/顯示\s+1\s+到\s+2\s+條，共\s+2\s+條記錄/)).toBeInTheDocument();
       });
     });
 
@@ -167,7 +185,15 @@ describe('UserManagement Component', () => {
       apiClient.get.mockResolvedValue({
         data: {
           success: true,
-          users: []
+          users: [],
+          pagination: {
+            current_page: 1,
+            page_size: 10,
+            total_count: 0,
+            total_pages: 1,
+            has_next: false,
+            has_prev: false
+          }
         }
       });
       
@@ -1252,6 +1278,631 @@ describe('UserManagement Component', () => {
         expect(screen.getByText('超級管理員')).toBeInTheDocument();
         expect(screen.getByText('級別 999')).toBeInTheDocument();
         expect(screen.getByText('級別 null')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Batch Import Access Control for Priority Levels 1 and 2', () => {
+    test('shows collapsible actions button for priority level 1 users', async () => {
+      const priorityLevel1Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 1 User', priorityLevel: 1 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel1Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        expect(toggleButton).toBeInTheDocument();
+      });
+    });
+
+    test('shows collapsible actions button for priority level 2 users', async () => {
+      const priorityLevel2Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 2 User', priorityLevel: 2 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel2Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        expect(toggleButton).toBeInTheDocument();
+      });
+    });
+
+    test('shows collapsible actions button for priority level 3+ users', async () => {
+      const priorityLevel3Context = {
+        isAdmin: true,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Admin User', priorityLevel: 3 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel3Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        expect(toggleButton).toBeInTheDocument();
+      });
+    });
+
+    test('shows appropriate explanation text for priority level 1 users', async () => {
+      const priorityLevel1Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 1 User', priorityLevel: 1 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel1Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/批次匯入功能限制為優先級別1和2的用戶使用/)).toBeInTheDocument();
+        expect(screen.getByText(/只能匯入同部門前3碼的用戶/)).toBeInTheDocument();
+      });
+    });
+
+    test('shows appropriate explanation text for priority level 2 users', async () => {
+      const priorityLevel2Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 2 User', priorityLevel: 2 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel2Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/批次匯入功能限制為優先級別1和2的用戶使用/)).toBeInTheDocument();
+        expect(screen.getByText(/只能匯入同部門前3碼的用戶/)).toBeInTheDocument();
+      });
+    });
+
+    test('shows standard explanation text for priority level 3+ users', async () => {
+      const priorityLevel3Context = {
+        isAdmin: true,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Admin User', priorityLevel: 3 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel3Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/批次匯入使用者預設密碼為工號後6碼/)).toBeInTheDocument();
+        expect(screen.queryByText(/批次匯入功能限制為優先級別1和2的用戶使用/)).not.toBeInTheDocument();
+      });
+    });
+
+    test('batch import functionality works for priority level 1 users', async () => {
+      apiClient.post.mockResolvedValue({
+        data: {
+          success: true,
+          imported_count: 2,
+          error_count: 0,
+          message: '匯入完成：成功 2 個，失敗 0 個',
+          imported_users: [
+            { row: 2, user_name: '張三', user_id: 'N000156652', priority_level: 1 },
+            { row: 3, user_name: '李四', user_id: 'N000156653', priority_level: 2 }
+          ]
+        }
+      });
+
+      const priorityLevel1Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 1 User', priorityLevel: 1 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel1Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
+        
+        fireEvent.change(fileInput, { target: { files: [file] } });
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.post).toHaveBeenCalledWith('/users/bulk-import', expect.any(FormData), {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        expect(screen.getByText('匯入完成：成功 2 個，失敗 0 個')).toBeInTheDocument();
+      });
+    });
+
+    test('batch import functionality works for priority level 2 users', async () => {
+      apiClient.post.mockResolvedValue({
+        data: {
+          success: true,
+          imported_count: 1,
+          error_count: 1,
+          message: '匯入完成：成功 1 個，失敗 1 個',
+          imported_users: [
+            { row: 2, user_name: '王五', user_id: 'N000156654', priority_level: 2 }
+          ],
+          errors: ['第3行：只能匯入優先級別1和2的用戶，實際為級別3']
+        }
+      });
+
+      const priorityLevel2Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 2 User', priorityLevel: 2 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel2Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
+        
+        fireEvent.change(fileInput, { target: { files: [file] } });
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.post).toHaveBeenCalledWith('/users/bulk-import', expect.any(FormData), {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        expect(screen.getByText('匯入完成：成功 1 個，失敗 1 個')).toBeInTheDocument();
+      });
+    });
+
+    test('handles batch import API error for department restrictions', async () => {
+      apiClient.post.mockRejectedValue({
+        response: {
+          data: {
+            message: '批量匯入功能只開放給優先級別1和2的用戶使用'
+          }
+        }
+      });
+
+      const priorityLevel3Context = {
+        isAdmin: true,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Admin User', priorityLevel: 3 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel3Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
+        
+        fireEvent.change(fileInput, { target: { files: [file] } });
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('匯入失敗: 批量匯入功能只開放給優先級別1和2的用戶使用')).toBeInTheDocument();
+      });
+    });
+
+    test('handles batch import with mixed results', async () => {
+      apiClient.post.mockResolvedValue({
+        data: {
+          success: true,
+          imported_count: 2,
+          error_count: 3,
+          message: '匯入完成：成功 2 個，失敗 3 個',
+          imported_users: [
+            { row: 2, user_name: '張三', user_id: 'N000156652', priority_level: 1 },
+            { row: 4, user_name: '李四', user_id: 'N000156653', priority_level: 2 }
+          ],
+          errors: [
+            '第3行：只能匯入部門前3碼與您相同(J02)的用戶，實際為JH5',
+            '第5行：用戶ID N000156654 已存在',
+            '第6行：只能匯入優先級別1和2的用戶，實際為級別3'
+          ]
+        }
+      });
+
+      const priorityLevel1Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 1 User', priorityLevel: 1, department: 'J020' }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel1Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = new File(['complex,data'], 'complex_test.csv', { type: 'text/csv' });
+        
+        fireEvent.change(fileInput, { target: { files: [file] } });
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('匯入完成：成功 2 個，失敗 3 個')).toBeInTheDocument();
+      });
+    });
+
+    test('validates CSV file format for batch import', async () => {
+      const priorityLevel1Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 1 User', priorityLevel: 1 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel1Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const invalidFile = new File(['invalid content'], 'test.txt', { type: 'text/plain' });
+        
+        fireEvent.change(fileInput, { target: { files: [invalidFile] } });
+      });
+      
+      await waitFor(() => {
+        expect(screen.getByText('請選擇CSV或Excel文件')).toBeInTheDocument();
+      });
+      
+      expect(apiClient.post).not.toHaveBeenCalled();
+    });
+
+    test('clears file input after successful batch import', async () => {
+      apiClient.post.mockResolvedValue({
+        data: {
+          success: true,
+          imported_count: 1,
+          error_count: 0,
+          message: '匯入完成：成功 1 個，失敗 0 個'
+        }
+      });
+
+      const priorityLevel2Context = {
+        isAdmin: false,
+        isLoggedIn: true,
+        user: { id: 1, userName: 'Priority 2 User', priorityLevel: 2 }
+      };
+      
+      renderWithRouter(<UserManagement />, priorityLevel2Context);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
+        
+        fireEvent.change(fileInput, { target: { files: [file] } });
+      });
+      
+      await waitFor(() => {
+        const fileInput = document.querySelector('input[type="file"]');
+        expect(fileInput.value).toBe('');
+      });
+    });
+  });
+
+  describe('New Features - Search, Pagination, and Collapsible Actions', () => {
+    test('renders search input with proper placeholder', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const searchInput = screen.getByPlaceholderText('搜索用戶ID（輸入10位自動搜索）');
+        expect(searchInput).toBeInTheDocument();
+        expect(searchInput).toHaveValue('');
+      });
+    });
+
+    test('automatically searches when typing 10 characters', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const searchInput = screen.getByPlaceholderText('搜索用戶ID（輸入10位自動搜索）');
+        
+        // Clear previous calls
+        apiClient.get.mockClear();
+        
+        // Type 10 characters
+        fireEvent.change(searchInput, { target: { value: 'N000156652' } });
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('search=N000156652')
+        );
+      });
+    });
+
+    test('resets search when typing less than 10 characters after 10', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const searchInput = screen.getByPlaceholderText('搜索用戶ID（輸入10位自動搜索）');
+        
+        // First type 10 characters
+        fireEvent.change(searchInput, { target: { value: 'N000156652' } });
+        
+        // Clear previous calls
+        apiClient.get.mockClear();
+        
+        // Then reduce to less than 10
+        fireEvent.change(searchInput, { target: { value: 'N00015665' } });
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('search=N00015665')
+        );
+      });
+    });
+
+    test('renders collapsible actions button', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        expect(toggleButton).toBeInTheDocument();
+        expect(screen.getByTestId('chevron-down-icon')).toBeInTheDocument();
+      });
+    });
+
+    test('expands and collapses actions section', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const toggleButton = screen.getByTitle('展開操作選項');
+        
+        // Initially collapsed - should not see download/upload buttons
+        expect(screen.queryByText('下載範例')).not.toBeInTheDocument();
+        
+        // Click to expand
+        fireEvent.click(toggleButton);
+      });
+      
+      await waitFor(() => {
+        // Should now see the expanded content
+        expect(screen.getByText('下載範例')).toBeInTheDocument();
+        expect(screen.getByText('上傳Excel')).toBeInTheDocument();
+        expect(screen.getByText('📋 批次匯入說明：')).toBeInTheDocument();
+        
+        // Button should now show "收起"
+        expect(screen.getByTitle('收起操作選項')).toBeInTheDocument();
+        expect(screen.getByTestId('chevron-up-icon')).toBeInTheDocument();
+      });
+      
+      // Click again to collapse
+      const collapseButton = screen.getByTitle('收起操作選項');
+      fireEvent.click(collapseButton);
+      
+      await waitFor(() => {
+        // Should be collapsed again
+        expect(screen.queryByText('下載範例')).not.toBeInTheDocument();
+        expect(screen.getByTitle('展開操作選項')).toBeInTheDocument();
+      });
+    });
+
+    test('renders page size selector', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const pageSizeSelector = screen.getByDisplayValue('10');
+        expect(pageSizeSelector).toBeInTheDocument();
+        
+        // Should have options
+        expect(screen.getByText('每頁顯示：')).toBeInTheDocument();
+      });
+    });
+
+    test('changes page size and triggers API call', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const pageSizeSelector = screen.getByDisplayValue('10');
+        
+        // Clear previous calls
+        apiClient.get.mockClear();
+        
+        // Change page size to 20
+        fireEvent.change(pageSizeSelector, { target: { value: '20' } });
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('page_size=20')
+        );
+      });
+    });
+
+    test('renders pagination controls', async () => {
+      // Mock data with multiple pages
+      const multiPageResponse = {
+        success: true,
+        users: mockUsers,
+        pagination: {
+          current_page: 1,
+          page_size: 5,
+          total_count: 15,
+          total_pages: 3,
+          has_next: true,
+          has_prev: false
+        }
+      };
+      
+      apiClient.get.mockResolvedValue({ data: multiPageResponse });
+      
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        // Should show pagination info
+        expect(screen.getByText(/顯示\\s+1\\s+到\\s+5\\s+條，共\\s+15\\s+條記錄/)).toBeInTheDocument();
+        
+        // Should show navigation buttons
+        expect(screen.getByTitle('上一頁')).toBeInTheDocument();
+        expect(screen.getByTitle('下一頁')).toBeInTheDocument();
+        
+        // Should show page numbers
+        expect(screen.getByText('1')).toBeInTheDocument();
+        expect(screen.getByText('2')).toBeInTheDocument();
+        expect(screen.getByText('3')).toBeInTheDocument();
+      });
+    });
+
+    test('navigates to next page', async () => {
+      // Mock data with multiple pages
+      const multiPageResponse = {
+        success: true,
+        users: mockUsers,
+        pagination: {
+          current_page: 1,
+          page_size: 5,
+          total_count: 15,
+          total_pages: 3,
+          has_next: true,
+          has_prev: false
+        }
+      };
+      
+      apiClient.get.mockResolvedValue({ data: multiPageResponse });
+      
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const nextButton = screen.getByTitle('下一頁');
+        
+        // Clear previous calls
+        apiClient.get.mockClear();
+        
+        // Click next page
+        fireEvent.click(nextButton);
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('page=2')
+        );
+      });
+    });
+
+    test('navigates to specific page', async () => {
+      // Mock data with multiple pages
+      const multiPageResponse = {
+        success: true,
+        users: mockUsers,
+        pagination: {
+          current_page: 1,
+          page_size: 5,
+          total_count: 15,
+          total_pages: 3,
+          has_next: true,
+          has_prev: false
+        }
+      };
+      
+      apiClient.get.mockResolvedValue({ data: multiPageResponse });
+      
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        // Find page 3 button (should be clickable)
+        const page3Button = screen.getByText('3');
+        
+        // Clear previous calls
+        apiClient.get.mockClear();
+        
+        // Click page 3
+        fireEvent.click(page3Button);
+      });
+      
+      await waitFor(() => {
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('page=3')
+        );
+      });
+    });
+
+    test('disables navigation buttons appropriately', async () => {
+      // Mock data for first page
+      const firstPageResponse = {
+        success: true,
+        users: mockUsers,
+        pagination: {
+          current_page: 1,
+          page_size: 5,
+          total_count: 15,
+          total_pages: 3,
+          has_next: true,
+          has_prev: false
+        }
+      };
+      
+      apiClient.get.mockResolvedValue({ data: firstPageResponse });
+      
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        const prevButton = screen.getByTitle('上一頁');
+        const nextButton = screen.getByTitle('下一頁');
+        
+        // Previous should be disabled on first page
+        expect(prevButton).toBeDisabled();
+        expect(nextButton).not.toBeDisabled();
+      });
+    });
+
+    test('handles scrollable table content', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        // Find the table container
+        const tableContainer = document.querySelector('.overflow-auto');
+        expect(tableContainer).toBeInTheDocument();
+        expect(tableContainer).toHaveClass('border');
+        expect(tableContainer).toHaveClass('rounded-lg');
+      });
+    });
+
+    test('shows user list title', async () => {
+      renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        expect(screen.getByText('用戶列表')).toBeInTheDocument();
       });
     });
   });
