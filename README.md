@@ -26,15 +26,18 @@ RoutinInspection-Frontend 是一個現代化的企業級例行巡檢管理系統
 
 ### 🔐 身份驗證系統
 - **安全登入**: JWT Token 認證機制
-- **自動登出**: 30 分鐘閒置自動登出
+- **自動登出**: 30 分鐘閒置自動登出，支援活動監控
 - **密碼管理**: 安全密碼變更功能
 - **記住登入**: 本地儲存登入狀態
+- **Token 刷新**: 自動 Token 驗證與刷新機制
 
 ### 👥 使用者管理
 - **角色權限**: 三級權限控制 (基本/主管/管理員)
-- **使用者 CRUD**: 完整的使用者增刪改查
+- **部門權限**: 基於部門前3碼的權限控制系統
+- **使用者 CRUD**: 完整的使用者增刪改查功能
 - **狀態管理**: 工作狀態和線上狀態追蹤
-- **批次操作**: 支援批次使用者管理
+- **批次操作**: 支援批次使用者管理和匯入功能
+- **分頁查詢**: 支援分頁、搜尋和篩選功能
 
 ### 📊 儀表板
 - **數據視覺化**: 巡檢統計和趨勢圖表
@@ -83,10 +86,12 @@ RoutinInspection-Frontend 是一個現代化的企業級例行巡檢管理系統
 
 - **建置工具**: Create React App 5.0.1
 - **打包工具**: Webpack (透過 react-app-rewired 自訂)
-- **測試框架**: Jest + React Testing Library
+- **測試框架**: Jest + React Testing Library + Playwright
+- **E2E 測試**: Playwright 端對端測試框架
 - **程式碼品質**: ESLint
 - **版本控制**: Git
 - **套件管理**: npm
+- **瀏覽器兼容**: 支援 crypto 和 Node.js API 的 polyfills
 
 ## 🚀 快速開始
 
@@ -205,7 +210,7 @@ RoutinInspection-frontend/
 │   │   ├── ConfirmModal.js   # 確認對話框
 │   │   ├── CreateFormModal.js # 表單建立 Modal
 │   │   ├── CreateRouteModal.js # 路由建立 Modal
-│   │   ├── LogoutButton.js   # 登出按鈕
+│   │   ├── LogoutButton.js   # 登出按鈕 (支援活動監控)
 │   │   ├── TodoForm.js       # 待辦事項表單
 │   │   ├── TodoItem.js       # 待辦事項項目
 │   │   ├── UserModal.js      # 使用者 Modal
@@ -217,18 +222,18 @@ RoutinInspection-frontend/
 │   ├── pages/                # 📱 頁面元件
 │   │   ├── auth/            # 認證相關頁面
 │   │   │   ├── AddUser.js   # 新增使用者頁面
-│   │   │   └── LoginForm.js # 登入表單頁面
+│   │   │   └── LoginForm.js # 登入表單頁面 (改進錯誤處理)
 │   │   ├── Dashboard.js     # 儀表板主頁
 │   │   ├── FormSettings.js  # 表單設定頁面
 │   │   ├── LikeTrello.js    # 類 Trello 看板頁面
 │   │   ├── RouteBinding.js  # 路由綁定頁面
 │   │   ├── TodoList.js      # 待辦事項列表
-│   │   ├── UserManagement.js # 使用者管理頁面
+│   │   ├── UserManagement.js # 使用者管理頁面 (支援分頁和權限控制)
 │   │   └── __tests__/       # 頁面測試檔案
 │   ├── routes/              # 🛣️ 路由配置
 │   │   └── AppRoutes.js     # 主要路由設定
 │   ├── services/            # 🔌 API 服務層
-│   │   ├── authService.js   # 身份驗證 API 服務
+│   │   ├── authService.js   # 身份驗證 API 服務 (改進 token 處理)
 │   │   └── todoService.js   # 待辦事項 API 服務
 │   ├── __tests__/           # 🧪 整合測試
 │   │   └── RouteBinding.integration.test.js
@@ -240,7 +245,15 @@ RoutinInspection-frontend/
 │   ├── testUtils.js         # 測試工具函式
 │   ├── reportWebVitals.js   # Web Vitals 效能監測
 │   └── logo.svg             # React Logo
-├── config-overrides.js       # 📋 Webpack 自訂配置
+├── e2e/                      # 🎭 端對端測試
+│   ├── auth.spec.js         # 身份驗證 E2E 測試
+│   ├── user-management.spec.js # 使用者管理 E2E 測試
+│   ├── form-management.spec.js # 表單管理 E2E 測試
+│   ├── fixtures/            # 測試資料固定裝置
+│   ├── utils/               # E2E 測試工具
+│   └── README.md            # E2E 測試說明
+├── config-overrides.js       # 📋 Webpack 自訂配置 (修復中間件)
+├── playwright.config.js      # 🎭 Playwright 配置
 ├── postcss.config.js         # 🎨 PostCSS 配置
 ├── tailwind.config.js        # 🎨 Tailwind CSS 配置
 ├── package.json              # 📦 專案配置與依賴
@@ -278,11 +291,23 @@ User Interaction → Component → Context/State → Service → API
 # 🚀 開發模式啟動
 npm start
 
-# 🧪 執行測試
+# 🧪 執行單元測試
 npm test
 
 # 🧪 執行測試 (監視模式)
 npm test -- --watchAll
+
+# 🧪 執行測試並產生覆蓋率報告
+npm test -- --coverage --watchAll=false
+
+# 🎭 執行 Playwright E2E 測試
+npx playwright test
+
+# 🎭 執行 E2E 測試並開啟報告
+npx playwright test --ui
+
+# 🎭 Playwright 測試除錯模式
+npx playwright test --debug
 
 # 📦 建置生產版本
 npm run build
@@ -524,12 +549,15 @@ export const useApiError = () => {
 ### 測試環境設定
 ```bash
 # 安裝測試依賴 (已包含在 devDependencies 中)
-npm install --save-dev @testing-library/jest-dom @testing-library/react @testing-library/user-event
+npm install --save-dev @testing-library/jest-dom @testing-library/react @testing-library/user-event @playwright/test
+
+# 安裝 Playwright 瀏覽器
+npx playwright install
 ```
 
 ### 測試指令
 ```bash
-# 執行所有測試
+# 執行所有單元測試
 npm test
 
 # 執行測試並產生覆蓋率報告
@@ -540,6 +568,18 @@ npm test UserModal.test.js
 
 # 除錯模式執行測試
 npm test -- --no-cache --verbose
+
+# 執行 E2E 測試
+npx playwright test
+
+# 執行特定 E2E 測試
+npx playwright test auth.spec.js
+
+# E2E 測試除錯模式
+npx playwright test --debug
+
+# 查看 E2E 測試報告
+npx playwright show-report
 ```
 
 ### 測試類型與範例
@@ -615,11 +655,41 @@ describe('RouteBinding Integration', () => {
 });
 ```
 
+#### 🎭 端對端測試
+```javascript
+// auth.spec.js
+import { test, expect } from '@playwright/test';
+
+test.describe('Authentication', () => {
+  test('should login successfully with valid credentials', async ({ page }) => {
+    await page.goto('/login');
+    
+    await page.fill('[data-testid="user-id-input"]', 'admin');
+    await page.fill('[data-testid="password-input"]', 'password');
+    await page.click('[data-testid="login-button"]');
+    
+    await expect(page).toHaveURL('/dashboard');
+    await expect(page.locator('text=歡迎')).toBeVisible();
+  });
+
+  test('should show error for invalid credentials', async ({ page }) => {
+    await page.goto('/login');
+    
+    await page.fill('[data-testid="user-id-input"]', 'invalid');
+    await page.fill('[data-testid="password-input"]', 'invalid');
+    await page.click('[data-testid="login-button"]');
+    
+    await expect(page.locator('text=登入失敗')).toBeVisible();
+  });
+});
+```
+
 ### 測試覆蓋率目標
 - **語句覆蓋率**: > 80%
 - **分支覆蓋率**: > 75%
 - **函式覆蓋率**: > 85%
 - **行覆蓋率**: > 80%
+- **E2E 測試覆蓋**: 核心用戶流程 100%
 
 ## 🚀 生產部署
 
