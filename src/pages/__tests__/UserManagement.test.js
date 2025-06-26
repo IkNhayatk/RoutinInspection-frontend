@@ -28,8 +28,8 @@ jest.mock('react-icons/fa', () => ({
 
 // Mock components
 jest.mock('../../components/Layout/Sidebar', () => {
-  return function MockSidebar({ isAdmin }) {
-    return <div data-testid="sidebar">Sidebar - Admin: {isAdmin.toString()}</div>;
+  return function MockSidebar() {
+    return <div data-testid="sidebar">Sidebar</div>;
   };
 });
 
@@ -353,6 +353,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const downloadButton = screen.getByText('下載範例');
         fireEvent.click(downloadButton);
         
@@ -381,6 +387,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const downloadButton = screen.getByText('下載範例');
         fireEvent.click(downloadButton);
         
@@ -397,6 +409,12 @@ describe('UserManagement Component', () => {
     test('triggers file input click when clicking upload button', async () => {
       renderWithRouter(<UserManagement />);
       
+      await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
       await waitFor(() => {
         // Find the upload button
         const uploadButton = screen.getByText('上傳Excel');
@@ -429,6 +447,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
@@ -448,6 +472,12 @@ describe('UserManagement Component', () => {
     test('handles file upload with invalid file type', async () => {
       renderWithRouter(<UserManagement />);
       
+      await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test'], 'test.txt', { type: 'text/plain' });
@@ -474,6 +504,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
@@ -495,6 +531,12 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -518,6 +560,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['invalid,data'], 'test.csv', { type: 'text/csv' });
         
@@ -539,6 +587,12 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
@@ -566,6 +620,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
@@ -592,12 +652,22 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      // First expand the actions section
       await waitFor(() => {
-        const fileInput = document.querySelector('input[type="file"]');
-        const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
-        
-        fireEvent.change(fileInput, { target: { files: [file] } });
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
       });
+
+      // Wait for the section to expand and file input to be available
+      await waitFor(() => {
+        expect(screen.getByText('上傳Excel')).toBeInTheDocument();
+      });
+      
+      const fileInput = document.querySelector('input[type="file"]');
+      expect(fileInput).toBeInTheDocument();
+      const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
+      
+      fireEvent.change(fileInput, { target: { files: [file] } });
       
       await waitFor(() => {
         expect(screen.getByText('成功匯入 1 位用戶')).toBeInTheDocument();
@@ -617,6 +687,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         fireEvent.change(fileInput, { target: { files: [] } });
       });
@@ -634,6 +710,12 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      await waitFor(() => {
+        // First expand the actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: '' });
@@ -669,12 +751,19 @@ describe('UserManagement Component', () => {
     test('refreshes user list after successful user modal submit', async () => {
       renderWithRouter(<UserManagement />);
       
-      // Clear previous API calls
+      // Wait for initial load to complete
+      await waitFor(() => {
+        expect(screen.getByText('新增用戶')).toBeInTheDocument();
+      });
+      
+      // Clear previous API calls after initial load
       apiClient.get.mockClear();
       
+      const addButton = screen.getByText('新增用戶');
+      fireEvent.click(addButton);
+      
       await waitFor(() => {
-        const addButton = screen.getByText('新增用戶');
-        fireEvent.click(addButton);
+        expect(screen.getByTestId('user-modal')).toBeInTheDocument();
       });
       
       const submitButton = screen.getByTestId('submit-button');
@@ -682,8 +771,10 @@ describe('UserManagement Component', () => {
       
       await waitFor(() => {
         // Should call the API again to refresh the user list
-        expect(apiClient.get).toHaveBeenCalledWith('/users');
-      });
+        expect(apiClient.get).toHaveBeenCalledWith(
+          expect.stringContaining('/users')
+        );
+      }, { timeout: 3000 });
     });
   });
 
@@ -715,7 +806,7 @@ describe('UserManagement Component', () => {
       const nonAdminContext = {
         isAdmin: false,
         isLoggedIn: true,
-        user: { id: 1, userName: 'Regular User' }
+        user: { id: 1, userName: 'Regular User', priorityLevel: 1 }
       };
       
       renderWithRouter(<UserManagement />, nonAdminContext);
@@ -1410,13 +1501,21 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />, priorityLevel1Context);
       
+      // First expand the actions section
       await waitFor(() => {
         const toggleButton = screen.getByTitle('展開操作選項');
         fireEvent.click(toggleButton);
       });
 
+      // Wait for the section to expand and file input to be available
+      await waitFor(() => {
+        expect(screen.getByText('上傳Excel')).toBeInTheDocument();
+      });
+
+      // Now interact with the file input
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
+        expect(fileInput).toBeInTheDocument();
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
@@ -1454,13 +1553,21 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />, priorityLevel2Context);
       
+      // First expand the actions section
       await waitFor(() => {
         const toggleButton = screen.getByTitle('展開操作選項');
         fireEvent.click(toggleButton);
       });
 
+      // Wait for the section to expand and file input to be available
+      await waitFor(() => {
+        expect(screen.getByText('上傳Excel')).toBeInTheDocument();
+      });
+
+      // Now interact with the file input
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
+        expect(fileInput).toBeInTheDocument();
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
@@ -1537,13 +1644,21 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />, priorityLevel1Context);
       
+      // First expand the actions section
       await waitFor(() => {
         const toggleButton = screen.getByTitle('展開操作選項');
         fireEvent.click(toggleButton);
       });
 
+      // Wait for the section to expand and file input to be available
+      await waitFor(() => {
+        expect(screen.getByText('上傳Excel')).toBeInTheDocument();
+      });
+
+      // Now interact with the file input
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
+        expect(fileInput).toBeInTheDocument();
         const file = new File(['complex,data'], 'complex_test.csv', { type: 'text/csv' });
         
         fireEvent.change(fileInput, { target: { files: [file] } });
@@ -1733,21 +1848,25 @@ describe('UserManagement Component', () => {
     test('changes page size and triggers API call', async () => {
       renderWithRouter(<UserManagement />);
       
+      // Wait for initial render and page size selector to be available
       await waitFor(() => {
-        const pageSizeSelector = screen.getByDisplayValue('10');
-        
-        // Clear previous calls
-        apiClient.get.mockClear();
-        
-        // Change page size to 20
-        fireEvent.change(pageSizeSelector, { target: { value: '20' } });
+        expect(screen.getByDisplayValue('10')).toBeInTheDocument();
       });
       
+      const pageSizeSelector = screen.getByDisplayValue('10');
+      
+      // Clear previous calls after initial load
+      apiClient.get.mockClear();
+      
+      // Change page size to 20
+      fireEvent.change(pageSizeSelector, { target: { value: '20' } });
+      
+      // Wait longer for the setTimeout in handlePageSizeChange to execute
       await waitFor(() => {
         expect(apiClient.get).toHaveBeenCalledWith(
           expect.stringContaining('page_size=20')
         );
-      });
+      }, { timeout: 3000 });
     });
 
     test('renders pagination controls', async () => {
@@ -1803,21 +1922,25 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      // Wait for the page to load and next button to be enabled
       await waitFor(() => {
         const nextButton = screen.getByTitle('下一頁');
-        
-        // Clear previous calls
-        apiClient.get.mockClear();
-        
-        // Click next page
-        fireEvent.click(nextButton);
+        expect(nextButton).not.toBeDisabled();
       });
+      
+      const nextButton = screen.getByTitle('下一頁');
+      
+      // Clear previous calls after initial load
+      apiClient.get.mockClear();
+      
+      // Click next page
+      fireEvent.click(nextButton);
       
       await waitFor(() => {
         expect(apiClient.get).toHaveBeenCalledWith(
           expect.stringContaining('page=2')
         );
-      });
+      }, { timeout: 3000 });
     });
 
     test('navigates to specific page', async () => {
@@ -1839,22 +1962,25 @@ describe('UserManagement Component', () => {
       
       renderWithRouter(<UserManagement />);
       
+      // Wait for pagination to render and page buttons to be available
       await waitFor(() => {
-        // Find page 3 button (should be clickable)
-        const page3Button = screen.getByText('3');
-        
-        // Clear previous calls
-        apiClient.get.mockClear();
-        
-        // Click page 3
-        fireEvent.click(page3Button);
+        expect(screen.getByText('3')).toBeInTheDocument();
       });
+      
+      // Find page 3 button (should be clickable)
+      const page3Button = screen.getByText('3');
+      
+      // Clear previous calls after initial load
+      apiClient.get.mockClear();
+      
+      // Click page 3
+      fireEvent.click(page3Button);
       
       await waitFor(() => {
         expect(apiClient.get).toHaveBeenCalledWith(
           expect.stringContaining('page=3')
         );
-      });
+      }, { timeout: 3000 });
     });
 
     test('disables navigation buttons appropriately', async () => {
@@ -1939,6 +2065,12 @@ describe('UserManagement Component', () => {
         const addButton = screen.getByRole('button', { name: '新增用戶' });
         expect(addButton).toBeInTheDocument();
         
+        // Expand actions section to access download/upload buttons
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+      
+      await waitFor(() => {
         const downloadButton = screen.getByRole('button', { name: /下載範例/i });
         expect(downloadButton).toBeInTheDocument();
         expect(downloadButton).toHaveAttribute('title', '下載Excel範例文件');
@@ -1998,6 +2130,12 @@ describe('UserManagement Component', () => {
 
     test('file input has proper accessibility', async () => {
       renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        // Expand actions section to access file input
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
       
       await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
@@ -2079,6 +2217,12 @@ describe('UserManagement Component', () => {
       renderWithRouter(<UserManagement />);
       
       await waitFor(() => {
+        // Expand actions section to access file input
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
+      
+      await waitFor(() => {
         const fileInput = document.querySelector('input[type="file"]');
         const file = new File(['test,data'], 'test.csv', { type: 'text/csv' });
         
@@ -2114,6 +2258,12 @@ describe('UserManagement Component', () => {
 
     test('keyboard navigation between focusable elements', async () => {
       renderWithRouter(<UserManagement />);
+      
+      await waitFor(() => {
+        // First expand actions section
+        const toggleButton = screen.getByTitle('展開操作選項');
+        fireEvent.click(toggleButton);
+      });
       
       await waitFor(() => {
         // Test tabbing through main buttons

@@ -57,9 +57,11 @@ function UserManagement() {
       
       const response = await apiClient.get(`/users?${params.toString()}`);
       if (response.data.success) {
-        setUsers(response.data.users);
-        setPagination(response.data.pagination);
-        setCurrentPage(response.data.pagination.current_page);
+        setUsers(response.data.users || []);
+        if (response.data.pagination) {
+          setPagination(response.data.pagination);
+          setCurrentPage(response.data.pagination.current_page);
+        }
       } else {
         setError(response.data.message || '獲取用戶列表失敗');
       }
@@ -122,7 +124,7 @@ function UserManagement() {
       userID: user.UserID,
       engName: user.EngName,
       email: user.Email,
-      priorityLevel: user.PriorityLevel,
+      priorityLevel: user.PriorityLevel || 1, // 保留，若無則預設為1
       position: user.Position,
       remark: user.Remark,
       department: user.Department,
@@ -160,7 +162,7 @@ function UserManagement() {
       userID: '', // 複製時清空使用者ID
       engName: user.EngName,
       email: user.Email,
-      priorityLevel: user.PriorityLevel,
+      priorityLevel: user.PriorityLevel || 1, // 複製時保留，若無則預設為1
       position: user.Position,
       remark: user.Remark,
       department: user.Department,
@@ -337,7 +339,7 @@ function UserManagement() {
     // 後端API會根據權限級別和部門限制可見的用戶
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn, navigate]); // 移除 isAdmin 依賴
+  }, [isLoggedIn, navigate]);
 
   // 優先級別轉換為文字
   const getPriorityLevelText = (level) => {
@@ -358,7 +360,7 @@ function UserManagement() {
   // New layout structure starts here
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar isAdmin={isAdmin} /> {/* Pass isAdmin prop */}
+      <Sidebar /> {/* Pass isAdmin prop */}
       <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
         <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">用戶管理</h1>
@@ -403,7 +405,7 @@ function UserManagement() {
               {/* 可折疊操作按鈕區 */}
               <div className="flex items-center gap-2">
                 {/* 所有已登入用戶都可以新增用戶 */}
-                {user && user.priorityLevel >= 1 && (
+                {user && (
                   <button
                     onClick={handleAddUser}
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -413,7 +415,7 @@ function UserManagement() {
                 )}
                 
                 {/* 優先級別1和2可以使用批次匯入功能，級別3+可以使用所有操作選項 */}
-                {user && user.priorityLevel >= 1 && (
+                {user && (
                   <button
                     onClick={() => setIsActionsExpanded(!isActionsExpanded)}
                     className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
