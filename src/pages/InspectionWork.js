@@ -36,7 +36,7 @@ function InspectionWork() {
               <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
                 📊 巡檢統計
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">0</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">今日巡檢</div>
@@ -48,10 +48,6 @@ function InspectionWork() {
                 <div className="text-center">
                   <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">0</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">待處理</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-red-600 dark:text-red-400">0</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">異常項目</div>
                 </div>
               </div>
             </div>
