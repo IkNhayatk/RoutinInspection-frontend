@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router'; // Import useLocation
 import { useTheme } from '../../context/ThemeContext.js';
+import { useAuth } from '../../context/AuthContext.js';
 
-function Sidebar({ isAdmin }) {
+function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation(); // Get current location
   const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
   // 新增收合狀態
   const [collapsed, setCollapsed] = useState(false);
   
@@ -62,23 +64,25 @@ function Sidebar({ isAdmin }) {
         
         <nav className="p-4 flex-grow">
           <ul className="space-y-2">
-            {/* 新增：表單核簽按鈕 */}
-            <li>
-              <button
-                onClick={() => navigate('/dashboard')} // 連結到 dashboard
-                className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
-                  location.pathname === '/dashboard'
-                    ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
-                    : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
-                }`}
-              >
-                {/* 表單核簽圖示 (打勾) */}
-                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                {!collapsed && <span className="ml-2">表單核簽</span>}
-              </button>
-            </li>
+            {/* 表單核簽按鈕 - 只有優先級別2以上的用戶才能看到 */}
+            {user && user.priorityLevel >= 2 && (
+              <li>
+                <button
+                  onClick={() => navigate('/dashboard')} // 連結到 dashboard
+                  className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
+                    location.pathname === '/dashboard'
+                      ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
+                      : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
+                  }`}
+                >
+                  {/* 表單核簽圖示 (打勾) */}
+                  <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {!collapsed && <span className="ml-2">表單核簽</span>}
+                </button>
+              </li>
+            )}
             {/* 表單設定按鈕 */}
             <li>
               <button
@@ -116,24 +120,22 @@ function Sidebar({ isAdmin }) {
               </button>
             </li>
             {/* 使用者管理按鈕 (移至第三位) */}
-            {isAdmin && (
-              <li>
-                <button
-                  onClick={() => navigate('/user_management')}
-                  className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
-                    location.pathname === '/user_management'
-                      ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
-                      : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
-                  }`}
-                >
-                  {/* 使用者管理圖示 */}
-                  <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                  {!collapsed && <span className="ml-2">使用者管理</span>}
-                </button>
-              </li>
-            )}
+            <li>
+              <button
+                onClick={() => navigate('/user_management')}
+                className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
+                  location.pathname === '/user_management'
+                    ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
+                    : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
+                }`}
+              >
+                {/* 使用者管理圖示 */}
+                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                {!collapsed && <span className="ml-2">使用者管理</span>}
+              </button>
+            </li>
           </ul>
         </nav>
 

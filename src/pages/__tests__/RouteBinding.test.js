@@ -12,8 +12,8 @@ jest.mock('../../context/AuthContext');
 jest.mock('../../services/authService');
 jest.mock('../../context/ThemeContext', () => require('../../__mocks__/ThemeContext'));
 jest.mock('../../components/Layout/Sidebar', () => {
-  return function MockSidebar({ isAdmin }) {
-    return <div data-testid="sidebar">Sidebar - Admin: {isAdmin.toString()}</div>;
+  return function MockSidebar() {
+    return <div data-testid="sidebar">Sidebar</div>;
   };
 });
 jest.mock('../../components/LogoutButton', () => {
@@ -146,12 +146,6 @@ describe('RouteBinding Component', () => {
       expect(screen.getByText('操作')).toBeInTheDocument();
     });
 
-    test('應該將isAdmin狀態傳遞給Sidebar', () => {
-      mockUseAuth.mockReturnValue({ isAdmin: true });
-      renderWithRouter(<RouteBinding />);
-
-      expect(screen.getByText('Sidebar - Admin: true')).toBeInTheDocument();
-    });
   });
 
   describe('數據載入', () => {

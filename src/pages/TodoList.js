@@ -5,11 +5,9 @@ import TodoItem from '../components/TodoItem.js';
 import TodoForm from '../components/TodoForm.js';
 import LogoutButton from '../components/LogoutButton.js';
 import { getTodos, addTodo, updateTodoStatus, updateTodo, deleteTodo, getTodoStats } from '../services/todoService.js';
-import { useAuth } from '../context/AuthContext.js';
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
-  const { isAdmin } = useAuth();
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -181,7 +179,7 @@ function TodoList() {
   return (
     // Add dark mode background
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar isAdmin={isAdmin} />
+      <Sidebar />
       
       {/* Add dark mode text color */}
       <div className="flex-1 overflow-auto text-gray-900 dark:text-gray-100">

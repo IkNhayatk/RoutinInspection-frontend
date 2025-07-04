@@ -100,11 +100,11 @@ function AppRoutes() {
         }
       />
 
-      {/* Protected Route (require login AND admin) */}
+      {/* Protected Route (require login only) */}
       <Route
         path="/user_management"
         element={
-          <ProtectedRoute requireAdmin={true}>
+          <ProtectedRoute>
             <UserManagement />
           </ProtectedRoute>
         }

@@ -4,13 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
 import { apiClient } from '../services/authService.js';
-import { useAuth } from '../context/AuthContext.js';
 import { FaSearch, FaRegFolderOpen, FaPencilAlt, FaTrashAlt, FaRegCopy } from 'react-icons/fa';
 import CreateFormModal from '../components/CreateFormModal.js'; // Import the modal
 import ConfirmModal from '../components/ConfirmModal.js'; // 導入自定義確認對話框
 
 function FormSettings() {
-  const { isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState([]); // State for the *list* of forms from DB
   const [loading, setLoading] = useState(false);
@@ -286,7 +284,7 @@ function FormSettings() {
 
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar isAdmin={isAdmin} />
+      <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">表單設定</h1>

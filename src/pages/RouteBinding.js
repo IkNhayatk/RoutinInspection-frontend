@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
-import { useAuth } from '../context/AuthContext.js'; // Import useAuth
+ // Import useAuth
 import { apiClient } from '../services/authService.js';
 import { FaRegFolderOpen, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import CreateRouteModal from '../components/CreateRouteModal.js';
 import ConfirmModal from '../components/ConfirmModal.js';
 
 function RouteBinding() {
-  const { isAdmin } = useAuth(); // Get isAdmin status
+ // Get isAdmin status
   
   // 狀態管理
   const [searchTerm, setSearchTerm] = useState('');
@@ -172,7 +172,7 @@ function RouteBinding() {
 
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar isAdmin={isAdmin} /> {/* Pass isAdmin prop */}
+      <Sidebar /> {/* Pass isAdmin prop */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">路線綁定</h1>

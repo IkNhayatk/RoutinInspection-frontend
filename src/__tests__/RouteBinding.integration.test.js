@@ -11,8 +11,8 @@ jest.mock('../context/AuthContext');
 jest.mock('../services/authService');
 
 jest.mock('../components/Layout/Sidebar', () => {
-  return function MockSidebar({ isAdmin }) {
-    return <div data-testid="sidebar">Sidebar - Admin: {isAdmin.toString()}</div>;
+  return function MockSidebar() {
+    return <div data-testid="sidebar">Sidebar</div>;
   };
 });
 

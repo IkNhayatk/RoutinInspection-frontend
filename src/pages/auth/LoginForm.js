@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { login } from '../../services/authService.js';
 import { useAuth } from '../../context/AuthContext.js';
@@ -25,13 +25,13 @@ function LoginForm() {
       // 使用 authService 的 login 函數
       const result = await login(userId, password);
       
-      if (result.success) {
+      if (result && result.success) {
         // 更新認證狀態
         await refreshAuth();
         // 導航到 dashboard
         navigate('/dashboard');
       } else {
-        setError(result.message || '登入失敗');
+        setError((result && result.message) || '登入失敗');
       }
     } catch (err) {
       console.error('登入出錯:', err);

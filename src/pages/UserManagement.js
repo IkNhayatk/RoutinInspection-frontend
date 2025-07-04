@@ -35,12 +35,12 @@ function UserManagement() {
   // 可折疊區塊狀態
   const [isActionsExpanded, setIsActionsExpanded] = useState(false);
   
-  const { isAdmin, isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
   // 獲取用戶列表
-  const fetchUsers = async (page = currentPage, keyword = searchKeyword) => {
+  const fetchUsers = async (page = currentPage, keyword = searchKeyword, pageSizeParam = pageSize) => {
     try {
       setLoading(true);
       setError(''); // Clear previous errors
@@ -48,7 +48,7 @@ function UserManagement() {
       // 構建查詢參數
       const params = new URLSearchParams({
         page: page.toString(),
-        page_size: pageSize.toString()
+        page_size: pageSizeParam.toString()
       });
       
       if (keyword.trim()) {
@@ -227,9 +227,9 @@ function UserManagement() {
   const handlePageSizeChange = (newPageSize) => {
     setPageSize(newPageSize);
     setCurrentPage(1);
-    // 重新獲取數據
+    // 重新獲取數據，傳入新的頁面大小
     setTimeout(() => {
-      fetchUsers(1, searchKeyword);
+      fetchUsers(1, searchKeyword, newPageSize);
     }, 0);
   };
 
@@ -308,7 +308,9 @@ function UserManagement() {
       });
 
       if (response.data.success) {
-        setUploadStatus(`成功匯入 ${response.data.imported_count} 位用戶`);
+        // Use the message from API response if available, otherwise fall back to default format
+        const successMessage = response.data.message || `成功匯入 ${response.data.imported_count} 位用戶`;
+        setUploadStatus(successMessage);
         await fetchUsers(currentPage, searchKeyword); // 重新載入用戶列表
       } else {
         setUploadStatus(`匯入失敗: ${response.data.message}`);
@@ -360,7 +362,7 @@ function UserManagement() {
   // New layout structure starts here
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar /> {/* Pass isAdmin prop */}
+      <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
         <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
           <h1 className="text-xl font-semibold text-gray-900 dark:text-white">用戶管理</h1>
