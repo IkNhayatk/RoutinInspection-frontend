@@ -8,6 +8,7 @@ import TodoList from '../pages/TodoList.js';
 import UserManagement from '../pages/UserManagement.js';
 import FormSettings from '../pages/FormSettings.js';
 import RouteBinding from '../pages/RouteBinding.js';
+import InspectionWork from '../pages/InspectionWork.js';
 
 // 這些頁面尚未實現，所以使用佔位符
 const LikeTrello = () => <div>LikeTrello Page Placeholder</div>; // Added Placeholder text for clarity
@@ -59,6 +60,14 @@ function AppRoutes() {
       <Route path="/add_user" element={<AddUser />} />
 
       {/* Protected Routes (require login) */}
+      <Route
+        path="/inspection_work"
+        element={
+          <ProtectedRoute>
+            <InspectionWork />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/dashboard"
         element={

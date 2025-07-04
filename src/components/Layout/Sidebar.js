@@ -64,7 +64,24 @@ function Sidebar() {
         
         <nav className="p-4 flex-grow">
           <ul className="space-y-2">
-            {/* 表單核簽按鈕 - 只有優先級別2的用戶才能看到 */}
+            {/* 巡檢作業按鈕 */}
+            <li>
+              <button
+                onClick={() => navigate('/inspection_work')}
+                className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
+                  location.pathname === '/inspection_work'
+                    ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
+                    : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
+                }`}
+              >
+                {/* 巡檢作業圖示 (搜索/檢查) */}
+                <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                {!collapsed && <span className="ml-2">巡檢作業</span>}
+              </button>
+            </li>
+            {/* 巡檢作業核簽與紀錄按鈕 - 只有優先級別2的用戶才能看到 */}
             {user && user.priorityLevel === 2 && (
               <li>
                 <button
@@ -75,11 +92,11 @@ function Sidebar() {
                       : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
                   }`}
                 >
-                  {/* 表單核簽圖示 (打勾) */}
+                  {/* 巡檢作業核簽與紀錄圖示 (打勾) */}
                   <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  {!collapsed && <span className="ml-2">表單核簽</span>}
+                  {!collapsed && <span className="ml-2">巡檢結果核簽與紀錄</span>}
                 </button>
               </li>
             )}
