@@ -32,7 +32,7 @@ function Sidebar() {
       <div className={`${collapsed ? 'w-16' : 'w-64'} bg-white dark:bg-gray-800 shadow-md h-full flex flex-col transition-all duration-300`}>
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           {/* 只在展開狀態顯示 LOGO 文字 */}
-          {!collapsed && <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">LOGO</div>}
+          {!collapsed && <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">聚酯膜部巡檢系統</div>}
           
           {/* 只在展開狀態顯示收合按鈕 */}
           {!collapsed && (
@@ -64,8 +64,8 @@ function Sidebar() {
         
         <nav className="p-4 flex-grow">
           <ul className="space-y-2">
-            {/* 表單核簽按鈕 - 只有優先級別2以上的用戶才能看到 */}
-            {user && user.priorityLevel >= 2 && (
+            {/* 表單核簽按鈕 - 只有優先級別2的用戶才能看到 */}
+            {user && user.priorityLevel === 2 && (
               <li>
                 <button
                   onClick={() => navigate('/dashboard')} // 連結到 dashboard

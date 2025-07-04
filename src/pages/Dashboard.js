@@ -17,9 +17,9 @@ function Dashboard() {
       return;
     }
     
-    // 检查用户权限：只有优先级别2以上的用户才能访问dashboard
-    if (user && user.priorityLevel < 2) {
-      // 优先级别1的用户重定向到用户管理页面
+    // 检查用户权限：只有优先级别2的用户才能访问dashboard
+    if (user && user.priorityLevel !== 2) {
+      // 非优先级别2的用户重定向到用户管理页面
       navigate('/user_management');
       return;
     }
