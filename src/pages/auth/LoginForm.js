@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService.js';
 import { useAuth } from '../../context/AuthContext.js';
 
@@ -8,16 +8,11 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isNavigating, setIsNavigating] = useState(false);
   const navigate = useNavigate();
   const { refreshAuth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isNavigating) {
-      console.log('正在導航到其他頁面，阻止登入動作');
-      return;
-    }
     setLoading(true);
     setError('');
     

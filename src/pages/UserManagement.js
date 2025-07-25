@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../services/authService.js';
 import { useAuth } from '../context/AuthContext.js';
 import Sidebar from '../components/Layout/Sidebar.js';
@@ -361,7 +361,7 @@ function UserManagement() {
 
   // New layout structure starts here
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
         <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">

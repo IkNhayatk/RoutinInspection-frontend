@@ -205,5 +205,51 @@ export const setupActivityListeners = () => {
   updateLastActivity();
 };
 
+// 獲取自動派工資料
+export const getAutoDispatchData = async (deptCode) => {
+  try {
+    const response = await apiClient.get(`/auto-dispatch/${deptCode}`);
+    return response.data;
+  } catch (error) {
+    console.error('獲取自動派工資料失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取自動派工資料失敗');
+  }
+};
+
+// 提交巡檢資料
+export const submitInspectionData = async (formData) => {
+  try {
+    console.log('提交巡檢資料:', formData);
+    const response = await apiClient.post('/submit-inspection', formData);
+    console.log('提交巡檢資料響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('提交巡檢資料失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('提交巡檢資料失敗');
+  }
+};
+
+// 獲取巡檢歷史記錄
+export const getInspectionHistory = async (routeId, page = 1, limit = 10) => {
+  try {
+    const response = await apiClient.get(`/inspection-history/${routeId}?page=${page}&limit=${limit}`);
+    return response.data;
+  } catch (error) {
+    console.error('獲取巡檢歷史失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取巡檢歷史失敗');
+  }
+};
+
+// 獲取自動派工檔統計資料
+export const getAutoDispatchStats = async (deptCode) => {
+  try {
+    const response = await apiClient.get(`/auto-dispatch-stats/${deptCode}`);
+    return response.data;
+  } catch (error) {
+    console.error('獲取自動派工檔統計資料失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取自動派工檔統計資料失敗');
+  }
+};
+
 // 導出 apiClient 供其他 service 使用
 export { apiClient };

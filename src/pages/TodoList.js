@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Layout/Sidebar.js';
 import TodoItem from '../components/TodoItem.js';
 import TodoForm from '../components/TodoForm.js';
@@ -178,7 +178,7 @@ function TodoList() {
   
   return (
     // Add dark mode background
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
       <Sidebar />
       
       {/* Add dark mode text color */}

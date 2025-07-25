@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import LoginForm from '../pages/auth/LoginForm.js';
 import AddUser from '../pages/auth/AddUser.js';
@@ -9,6 +9,7 @@ import UserManagement from '../pages/UserManagement.js';
 import FormSettings from '../pages/FormSettings.js';
 import RouteBinding from '../pages/RouteBinding.js';
 import InspectionWork from '../pages/InspectionWork.js';
+import InspectionTablet from '../pages/InspectionTablet.js';
 
 // 這些頁面尚未實現，所以使用佔位符
 const LikeTrello = () => <div>LikeTrello Page Placeholder</div>; // Added Placeholder text for clarity
@@ -65,6 +66,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <InspectionWork />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inspection-tablet"
+        element={
+          <ProtectedRoute>
+            <InspectionTablet />
           </ProtectedRoute>
         }
       />

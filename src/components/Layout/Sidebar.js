@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router'; // Import useLocation
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { useTheme } from '../../context/ThemeContext.js';
 import { useAuth } from '../../context/AuthContext.js';
 
@@ -29,7 +29,7 @@ function Sidebar() {
   return (
     <>
       {/* 側邊欄主體 */}
-      <div className={`${collapsed ? 'w-16' : 'w-64'} bg-white dark:bg-gray-800 shadow-md h-full flex flex-col transition-all duration-300`}>
+      <div className={`${collapsed ? 'w-16' : 'w-64'} bg-white dark:bg-gray-800 shadow-md h-screen sticky top-0 flex flex-col transition-all duration-300`}>
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           {/* 只在展開狀態顯示 LOGO 文字 */}
           {!collapsed && <div className="text-xl font-bold text-indigo-600 dark:text-indigo-400">聚酯膜部巡檢系統</div>}

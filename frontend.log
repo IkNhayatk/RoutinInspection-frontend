@@ -1,0 +1,1428 @@
+
+> my-app@0.1.0 start
+> NODE_OPTIONS='--no-deprecation' react-app-rewired start
+
+Starting the development server...
+
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionWork.js
+  Line 13:10:  'autoDispatchData' is assigned a value but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionWork.js
+  Line 13:10:  'autoDispatchData' is assigned a value but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionWork.js
+  Line 13:10:  'autoDispatchData' is assigned a value but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionWork.js
+  Line 13:10:  'autoDispatchData' is assigned a value but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 4:10:  'submitInspectionData' is defined but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 4:10:  'submitInspectionData' is defined but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 4:10:  'submitInspectionData' is defined but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 4:10:  'submitInspectionData' is defined but never used  no-unused-vars
+
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+src/routes/AppRoutes.js
+  Line 12:8:  'InspectionTablet' is defined but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/RouteBinding.js
+  Line 4:10:  'useAuth' is defined but never used  no-unused-vars
+
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/auth/LoginForm.js
+  Line 11:24:  'setIsNavigating' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/auth/LoginForm.js
+  Line 16:9:  'isNavigating' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+ERROR in [eslint] 
+src/pages/auth/LoginForm.js
+  Line 16:9:  'isNavigating' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/auth/LoginForm.js
+  Line 16:9:  'isNavigating' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+ERROR in [eslint] 
+src/pages/auth/LoginForm.js
+  Line 16:9:  'isNavigating' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 395:10:  'selectedForms' is assigned a value but never used  no-unused-vars
+  Line 396:10:  'allSelected' is assigned a value but never used    no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 395:10:  'selectedForms' is assigned a value but never used  no-unused-vars
+  Line 396:10:  'allSelected' is assigned a value but never used    no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 423:9:  'handleFormSelection' is assigned a value but never used   no-unused-vars
+  Line 435:9:  'handleSelectAll' is assigned a value but never used       no-unused-vars
+  Line 447:9:  'handleAutoFillNormal' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 423:9:  'handleFormSelection' is assigned a value but never used   no-unused-vars
+  Line 435:9:  'handleSelectAll' is assigned a value but never used       no-unused-vars
+  Line 447:9:  'handleAutoFillNormal' is assigned a value but never used  no-unused-vars
+
+webpack compiled with 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 352:7:   'isCompleted' is not defined       no-undef
+  Line 359:15:  'isCompleted' is not defined       no-undef
+  Line 368:16:  'isCompleted' is not defined       no-undef
+  Line 384:16:  'isCompleted' is not defined       no-undef
+  Line 432:29:  'handleFormSubmit' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 288:9:  'handleAutoFill' is assigned a value but never used                                                                                             no-unused-vars
+  Line 348:6:  React Hook React.useEffect has missing dependencies: 'getCurrentFormData' and 'inspection'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 477:9:  'handleFormSelection' is assigned a value but never used                                                                                        no-unused-vars
+  Line 489:9:  'handleSelectAll' is assigned a value but never used                                                                                            no-unused-vars
+  Line 501:9:  'handleAutoFillNormal' is assigned a value but never used                                                                                       no-unused-vars
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:7:   'isCompleted' is not defined       no-undef
+  Line 359:15:  'isCompleted' is not defined       no-undef
+  Line 368:16:  'isCompleted' is not defined       no-undef
+  Line 384:16:  'isCompleted' is not defined       no-undef
+  Line 432:29:  'handleFormSubmit' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error and 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+  Line 352:7:   'isCompleted' is not defined       no-undef
+  Line 359:15:  'isCompleted' is not defined       no-undef
+  Line 368:16:  'isCompleted' is not defined       no-undef
+  Line 384:16:  'isCompleted' is not defined       no-undef
+  Line 432:29:  'handleFormSubmit' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+WARNING in [eslint] 
+src/pages/InspectionTablet.js
+  Line 288:9:  'handleAutoFill' is assigned a value but never used                                                                                             no-unused-vars
+  Line 348:6:  React Hook React.useEffect has missing dependencies: 'getCurrentFormData' and 'inspection'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 477:9:  'handleFormSelection' is assigned a value but never used                                                                                        no-unused-vars
+  Line 489:9:  'handleSelectAll' is assigned a value but never used                                                                                            no-unused-vars
+  Line 501:9:  'handleAutoFillNormal' is assigned a value but never used                                                                                       no-unused-vars
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:7:   'isCompleted' is not defined       no-undef
+  Line 359:15:  'isCompleted' is not defined       no-undef
+  Line 368:16:  'isCompleted' is not defined       no-undef
+  Line 384:16:  'isCompleted' is not defined       no-undef
+  Line 432:29:  'handleFormSubmit' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+webpack compiled with 1 error and 1 warning
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (466:2) (466:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (466:2)
+
+  464 |
+  465 | function InspectionTablet() {
+> 466 |   const location = useLocation();
+      |   ^
+  467 |   const navigate = useNavigate();
+  468 |   const { user, isLoggedIn } = useAuth();
+  469 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 466:2:  Parsing error: Unexpected token (466:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (467:2) (467:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (467:2)
+
+  465 |
+  466 | function InspectionTablet() {
+> 467 |   const location = useLocation();
+      |   ^
+  468 |   const navigate = useNavigate();
+  469 |   const { user, isLoggedIn } = useAuth();
+  470 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 467:2:  Parsing error: Unexpected token (467:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (467:2) (467:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (467:2)
+
+  465 |
+  466 | function InspectionTablet() {
+> 467 |   const location = useLocation();
+      |   ^
+  468 |   const navigate = useNavigate();
+  469 |   const { user, isLoggedIn } = useAuth();
+  470 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 467:2:  Parsing error: Unexpected token (467:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (352:2) (352:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (352:2)
+
+  350 |
+  351 | function InspectionTablet() {
+> 352 |   const location = useLocation();
+      |   ^
+  353 |   const navigate = useNavigate();
+  354 |   const { user, isLoggedIn } = useAuth();
+  355 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:2:  Parsing error: Unexpected token (352:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (352:2) (352:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (352:2)
+
+  350 |
+  351 | function InspectionTablet() {
+> 352 |   const location = useLocation();
+      |   ^
+  353 |   const navigate = useNavigate();
+  354 |   const { user, isLoggedIn } = useAuth();
+  355 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:2:  Parsing error: Unexpected token (352:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (352:2) (352:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (352:2)
+
+  350 |
+  351 | function InspectionTablet() {
+> 352 |   const location = useLocation();
+      |   ^
+  353 |   const navigate = useNavigate();
+  354 |   const { user, isLoggedIn } = useAuth();
+  355 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:2:  Parsing error: Unexpected token (352:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (352:2) (352:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (352:2)
+
+  350 |
+  351 | function InspectionTablet() {
+> 352 |   const location = useLocation();
+      |   ^
+  353 |   const navigate = useNavigate();
+  354 |   const { user, isLoggedIn } = useAuth();
+  355 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:2:  Parsing error: Unexpected token (352:2)
+
+webpack compiled with 2 errors
+Compiling...
+Failed to compile.
+
+[eslint] 
+src/pages/InspectionTablet.js
+Syntax error: Unexpected token (352:2) (352:2)
+ERROR in ./src/pages/InspectionTablet.js
+Module build failed (from ./node_modules/babel-loader/lib/index.js):
+SyntaxError: /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/src/pages/InspectionTablet.js: Unexpected token (352:2)
+
+  350 |
+  351 | function InspectionTablet() {
+> 352 |   const location = useLocation();
+      |   ^
+  353 |   const navigate = useNavigate();
+  354 |   const { user, isLoggedIn } = useAuth();
+  355 |   const [inspectionData, setInspectionData] = useState([]);
+    at constructor (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:363:19)
+    at FlowParserMixin.raise (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6612:19)
+    at FlowParserMixin.unexpected (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6632:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11392:16)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+    at FlowParserMixin.jsxParseExpressionContainer (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4647:31)
+    at FlowParserMixin.jsxParseElementAt (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4726:36)
+    at FlowParserMixin.jsxParseElement (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4764:17)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4774:19)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:39
+    at FlowParserMixin.tryParse (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:6920:20)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3513:18)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12375:12)
+    at FlowParserMixin.parseMaybeAssignAllowIn (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10748:17)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11622:28)
+    at FlowParserMixin.parseParenAndDistinguishExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3606:18)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11276:23)
+    at FlowParserMixin.parseExprAtom (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:4779:20)
+    at FlowParserMixin.parseExprSubscripts (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11026:23)
+    at FlowParserMixin.parseUpdate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:11011:21)
+    at FlowParserMixin.parseMaybeUnary (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10991:23)
+    at FlowParserMixin.parseMaybeUnaryOrPrivate (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10844:61)
+    at FlowParserMixin.parseExprOps (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10849:23)
+    at FlowParserMixin.parseMaybeConditional (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10826:23)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10779:21)
+    at FlowParserMixin.parseMaybeAssign (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:3564:18)
+    at FlowParserMixin.parseExpressionBase (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10732:23)
+    at /home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:39
+    at FlowParserMixin.allowInAnd (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:12370:16)
+    at FlowParserMixin.parseExpression (/home/bm/dev/projects/RoutinInspection-Project/RoutinInspection-frontend/node_modules/@babel/parser/lib/index.js:10728:17)
+
+ERROR in [eslint] 
+src/pages/InspectionTablet.js
+  Line 352:2:  Parsing error: Unexpected token (352:2)
+
+webpack compiled with 2 errors

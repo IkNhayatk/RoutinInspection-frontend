@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
@@ -26,7 +26,7 @@ function Dashboard() {
   }, [navigate, user, isLoggedIn]);
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900" onLoad={() => console.log('進入dashboard頁面')}>
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900" onLoad={() => console.log('進入dashboard頁面')}>
       <Sidebar />
 
       <div className="flex-1 p-8 text-gray-900 dark:text-gray-100">
