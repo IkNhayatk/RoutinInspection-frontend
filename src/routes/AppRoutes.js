@@ -3,20 +3,39 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import LoginForm from '../pages/auth/LoginForm.js';
 import AddUser from '../pages/auth/AddUser.js';
-import Dashboard from '../pages/Dashboard.js';
-import TodoList from '../pages/TodoList.js';
+import ApprovalPage from '../pages/ApprovalPage.js';
+import RecordsPage from '../pages/RecordsPage.js';
+import InspectionWork from '../pages/InspectionWork.js';
+import InspectionTablet from '../pages/InspectionTablet.js';
 import UserManagement from '../pages/UserManagement.js';
 import FormSettings from '../pages/FormSettings.js';
 import RouteBinding from '../pages/RouteBinding.js';
-import InspectionWork from '../pages/InspectionWork.js';
-import InspectionTablet from '../pages/InspectionTablet.js';
 
 // 這些頁面尚未實現，所以使用佔位符
 const LikeTrello = () => <div>LikeTrello Page Placeholder</div>; // Added Placeholder text for clarity
 
+// 獲取預設首頁根據用戶優先級
+function getDefaultHomePage(user) {
+  if (!user || !user.priorityLevel) {
+    return '/inspection_work'; // 預設路由
+  }
+  
+  switch (user.priorityLevel) {
+    case 1:
+      return '/inspection_work';
+    case 2:
+      return '/approval';
+    case 3:
+    case 4:
+      return '/records';
+    default:
+      return '/inspection_work';
+  }
+}
+
 // 受保護路由組件
-function ProtectedRoute({ children, requireAdmin = false }) {
-  const { isLoggedIn, isAdmin, loading } = useAuth();
+function ProtectedRoute({ children, requireAdmin = false, requireMinPriority = 1 }) {
+  const { isLoggedIn, isAdmin, user, loading } = useAuth();
 
   // 如果正在加載，顯示載入中
   if (loading) {
@@ -35,30 +54,50 @@ function ProtectedRoute({ children, requireAdmin = false }) {
     console.log('ProtectedRoute: Not logged in, redirecting to /');
     return <Navigate to="/" replace />;
   }
+  
   // 如果當前路徑是 /add_user，允許訪問，無論是否已登入，並且不進行任何其他檢查
   if (window.location.pathname === '/add_user') {
     console.log('ProtectedRoute: Allowing access to /add_user regardless of login status');
     return children;
   }
 
-  // 如果需要管理員權限但用戶不是管理員，重定向到 Dashboard
+  // 檢查優先級權限
+  if (user && user.priorityLevel < requireMinPriority) {
+    const defaultPage = getDefaultHomePage(user);
+    console.log(`ProtectedRoute: Insufficient priority level (${user.priorityLevel} < ${requireMinPriority}), redirecting to ${defaultPage}`);
+    return <Navigate to={defaultPage} replace />;
+  }
+
+  // 如果需要管理員權限但用戶不是管理員，重定向到預設首頁
   if (requireAdmin && !isAdmin) {
-    console.log('ProtectedRoute: Admin required but user is not admin, redirecting to /dashboard');
-    return <Navigate to="/dashboard" replace />;
+    const defaultPage = getDefaultHomePage(user);
+    console.log(`ProtectedRoute: Admin required but user is not admin, redirecting to ${defaultPage}`);
+    return <Navigate to={defaultPage} replace />;
   }
 
   // 通過所有檢查，渲染子組件
-  console.log(`ProtectedRoute: Access granted for requireAdmin=${requireAdmin}`);
+  console.log(`ProtectedRoute: Access granted for requireAdmin=${requireAdmin}, requireMinPriority=${requireMinPriority}`);
   return children;
 }
 
+// 首頁重定向組件
+function HomeRedirect() {
+  const { user } = useAuth();
+  const defaultPage = getDefaultHomePage(user);
+  return <Navigate to={defaultPage} replace />;
+}
+
 function AppRoutes() {
+  const { isLoggedIn } = useAuth();
+  
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<LoginForm />} />
-      {/* Note: AddUser might need protection depending on requirements */}
+      <Route path="/login" element={<LoginForm />} />
       <Route path="/add_user" element={<AddUser />} />
+      
+      {/* Home route - redirect to login if not logged in, otherwise to priority-based default page */}
+      <Route path="/" element={isLoggedIn ? <HomeRedirect /> : <LoginForm />} />
 
       {/* Protected Routes (require login) */}
       <Route
@@ -78,18 +117,18 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/dashboard"
+        path="/approval"
         element={
-          <ProtectedRoute>
-            <Dashboard />
+          <ProtectedRoute requireMinPriority={2}>
+            <ApprovalPage />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/todolist"
+        path="/records"
         element={
           <ProtectedRoute>
-            <TodoList />
+            <RecordsPage />
           </ProtectedRoute>
         }
       />
@@ -101,24 +140,8 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/form_settings"
-        element={
-          <ProtectedRoute> {/* No admin required */}
-            <FormSettings />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/route_binding"
-        element={
-          <ProtectedRoute> {/* No admin required */}
-            <RouteBinding />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Protected Route (require login only) */}
+      
+      {/* Management Pages (accessible to all logged-in users) */}
       <Route
         path="/user_management"
         element={
@@ -127,8 +150,24 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/form_settings"
+        element={
+          <ProtectedRoute>
+            <FormSettings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/route_binding"
+        element={
+          <ProtectedRoute>
+            <RouteBinding />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Fallback for unknown paths */}
+      {/* Fallback for unknown paths - redirect to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

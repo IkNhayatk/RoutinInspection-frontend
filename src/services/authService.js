@@ -240,6 +240,35 @@ export const getInspectionHistory = async (routeId, page = 1, limit = 10) => {
   }
 };
 
+// 根據篩選條件獲取巡檢記錄
+export const getInspectionRecordsByFilters = async (filters) => {
+  try {
+    const params = new URLSearchParams();
+    if (filters.year) params.append('year', filters.year);
+    if (filters.equipment) params.append('equipment', filters.equipment);
+    if (filters.cycle) params.append('cycle', filters.cycle);
+    if (filters.page) params.append('page', filters.page);
+    if (filters.limit) params.append('limit', filters.limit);
+    
+    const response = await apiClient.get(`/inspection-records-by-filters?${params.toString()}`);
+    return response.data;
+  } catch (error) {
+    console.error('根據篩選條件獲取巡檢記錄失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('根據篩選條件獲取巡檢記錄失敗');
+  }
+};
+
+// 獲取設備名稱選項
+export const getEquipmentOptions = async () => {
+  try {
+    const response = await apiClient.get('/equipment-options');
+    return response.data;
+  } catch (error) {
+    console.error('獲取設備選項失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取設備選項失敗');
+  }
+};
+
 // 獲取自動派工檔統計資料
 export const getAutoDispatchStats = async (deptCode) => {
   try {
@@ -248,6 +277,61 @@ export const getAutoDispatchStats = async (deptCode) => {
   } catch (error) {
     console.error('獲取自動派工檔統計資料失敗:', error.response ? error.response.data : error.message);
     throw error.response ? error.response.data : new Error('獲取自動派工檔統計資料失敗');
+  }
+};
+
+// 獲取部門待核簽記錄
+export const getPendingApprovalRecords = async (departmentCode) => {
+  try {
+    console.log('獲取部門待核簽記錄:', departmentCode);
+    const response = await apiClient.get(`/pending-approval/${departmentCode}`);
+    console.log('待核簽記錄響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('獲取待核簽記錄失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取待核簽記錄失敗');
+  }
+};
+
+// 核簽單筆巡檢記錄
+export const approveInspectionRecord = async (approvalData) => {
+  try {
+    console.log('核簽巡檢記錄:', approvalData);
+    const response = await apiClient.post('/approve-inspection', approvalData);
+    console.log('核簽響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('核簽失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('核簽失敗');
+  }
+};
+
+// 批量核簽正常表單
+export const bulkApproveNormalRecords = async (departmentCode, reviewerComment = '') => {
+  try {
+    console.log('批量核簽正常表單:', departmentCode);
+    const response = await apiClient.post('/bulk-approve-normal', {
+      department_code: departmentCode,
+      reviewer_comment: reviewerComment
+    });
+    console.log('批量核簽響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('批量核簽失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('批量核簽失敗');
+  }
+};
+
+// 批量核簽指定記錄列表
+export const bulkApproveRecordsByIds = async (bulkApprovalData) => {
+  try {
+    console.log('批量核簽指定記錄:', bulkApprovalData);
+    const response = await apiClient.post('/bulk-approve-by-ids', bulkApprovalData);
+    console.log('批量核簽響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('批量核簽失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('批量核簽失敗');
   }
 };
 

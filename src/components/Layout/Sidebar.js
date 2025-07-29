@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { useTheme } from '../../context/ThemeContext.js';
 import { useAuth } from '../../context/AuthContext.js';
@@ -81,22 +81,41 @@ function Sidebar() {
                 {!collapsed && <span className="ml-2">巡檢作業</span>}
               </button>
             </li>
-            {/* 巡檢作業核簽與紀錄按鈕 - 只有優先級別2的用戶才能看到 */}
-            {user && user.priorityLevel === 2 && (
+            {/* 巡檢結果核簽按鈕 - 只有優先級別2的用戶才能看到 */}
+            {user && (user.priorityLevel === 2 || user.priorityLevel === 3 || user.priorityLevel === 4) && (
               <li>
                 <button
-                  onClick={() => navigate('/dashboard')} // 連結到 dashboard
+                  onClick={() => navigate('/approval')} // 連結到核簽頁面
                   className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
-                    location.pathname === '/dashboard'
+                    location.pathname === '/approval'
                       ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
                       : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
                   }`}
                 >
-                  {/* 巡檢作業核簽與紀錄圖示 (打勾) */}
+                  {/* 巡檢結果核簽圖示 (打勾) */}
                   <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  {!collapsed && <span className="ml-2">巡檢結果核簽與紀錄</span>}
+                  {!collapsed && <span className="ml-2">巡檢結果核簽</span>}
+                </button>
+              </li>
+            )}
+            {/* 巡檢記錄查詢按鈕 - 只有優先級別2的用戶才能看到 */}
+            {user && (user.priorityLevel === 2 || user.priorityLevel === 3 || user.priorityLevel === 4) && (
+              <li>
+                <button
+                  onClick={() => navigate('/records')} // 連結到記錄頁面
+                  className={`w-full text-left ${collapsed ? 'px-2 justify-center' : 'px-4'} py-2 rounded-md transition flex items-center ${
+                    location.pathname === '/records'
+                      ? 'bg-indigo-100 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 font-semibold' // Active style
+                      : 'text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400' // Default style
+                  }`}
+                >
+                  {/* 巡檢記錄查詢圖示 (文檔圖標) */}
+                  <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  {!collapsed && <span className="ml-2">巡檢記錄查詢</span>}
                 </button>
               </li>
             )}

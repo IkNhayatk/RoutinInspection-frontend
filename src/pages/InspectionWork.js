@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { getAutoDispatchData, getAutoDispatchStats } from '../services/authService.js';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
+import DailyInspectionModal from '../components/DailyInspectionModal.js';
 
 function InspectionWork() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function InspectionWork() {
   const [statsData, setStatsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDailyModalOpen, setIsDailyModalOpen] = useState(false);
 
   useEffect(() => {
     console.log('進入巡檢作業頁面');
@@ -78,6 +80,47 @@ function InspectionWork() {
 
     fetchAutoDispatchData();
   }, [navigate, user, isLoggedIn]);
+
+  // 處理日檢 Modal
+  const handleDailyInspectionSuccess = (result) => {
+    console.log('日檢處理成功:', result);
+    
+    // 顯示成功消息
+    if (result.success_count > 0) {
+      alert(`成功處理 ${result.success_count} 個日檢項目`);
+      
+      // 重新載入派工資料以更新統計
+      const fetchAutoDispatchData = async () => {
+        try {
+          const userInfoString = localStorage.getItem('userInfo');
+          if (!userInfoString) return;
+          
+          const userInfo = JSON.parse(userInfoString);
+          const department = userInfo.department;
+          
+          if (!department) return;
+          
+          const [dispatchResponse, statsResponse] = await Promise.all([
+            getAutoDispatchData(department),
+            getAutoDispatchStats(department)
+          ]);
+          
+          if (dispatchResponse.success) {
+            setAutoDispatchData(dispatchResponse.data);
+            setInspectionCount(dispatchResponse.count);
+          }
+          
+          if (statsResponse.success) {
+            setStatsData(statsResponse.data);
+          }
+        } catch (err) {
+          console.error('重新載入資料錯誤:', err);
+        }
+      };
+      
+      fetchAutoDispatchData();
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -144,7 +187,11 @@ function InspectionWork() {
                     const percentage = categoryData ? categoryData.percentage : 0;
                     
                     return (
-                      <div key={category} className={`${bgColors[index]} border rounded-lg p-4 text-center transition-all hover:shadow-md`}>
+                      <div 
+                        key={category} 
+                        className={`${bgColors[index]} border rounded-lg p-4 text-center transition-all hover:shadow-md ${category === '日' ? 'cursor-pointer hover:shadow-lg' : ''}`}
+                        onClick={category === '日' ? () => setIsDailyModalOpen(true) : undefined}
+                      >
                         <div className={`text-2xl font-bold ${colors[index]} mb-1`}>
                           {count}
                         </div>
@@ -180,6 +227,9 @@ function InspectionWork() {
                   </div>
                 </div>
               )}
+              
+            
+              
             </div>
 
             {/* 開始巡檢區域 - 放在中間 */}
@@ -221,6 +271,13 @@ function InspectionWork() {
           </div>
         </div>
       </div>
+      
+      {/* 日檢 Modal */}
+      <DailyInspectionModal
+        isOpen={isDailyModalOpen}
+        onClose={() => setIsDailyModalOpen(false)}
+        onSuccess={handleDailyInspectionSuccess}
+      />
     </div>
   );
 }

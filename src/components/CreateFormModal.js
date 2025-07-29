@@ -2,36 +2,40 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Modal from 'react-modal';
 import { produce } from "immer";
 // Import chevron icons
-import { FaPlusCircle, FaQuestionCircle, FaTrashAlt, FaSlidersH, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaPlusCircle, FaTrashAlt, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ValidationRuleModal from './ValidationRuleModal.js';
 import ConfirmModal from './ConfirmModal.js';
 
 
-// --- Styles ---
+// --- Enhanced Responsive Modal Styles with Custom Scrollbar ---
 const customStyles = {
   content: {
-    top: '50%', left: '50%', right: 'auto', bottom: 'auto',
-    marginRight: '-50%', transform: 'translate(-50%, -50%)',
-    width: '85%', maxWidth: '800px',
-    maxHeight: '85vh',
-     overflowY: 'auto', border: '1px solid #ccc',
-    borderRadius: '8px', padding: '20px', backgroundColor: '#fff',
+    top: '50%', 
+    left: '50%', 
+    right: 'auto', 
+    bottom: 'auto',
+    marginRight: '-50%', 
+    transform: 'translate(-50%, -50%)',
+    width: '95%', 
+    maxWidth: '1000px',
+    maxHeight: '95vh',
+    overflowY: 'auto',
+    border: 'none',
+    borderRadius: '20px',
+    padding: '0',
+    backgroundColor: '#ffffff',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)',
   },
-  overlay: { backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 1000 },
+  overlay: { 
+    backgroundColor: 'rgba(0, 0, 0, 0.75)', 
+    zIndex: 1000,
+    backdropFilter: 'blur(4px)',
+  },
 };
 
-// --- Type options and descriptions ---
-const typeOptions = [
-    { value: 'int', label: 'int' }, { value: 'float(1)', label: 'float(1)' },
-    { value: 'float(2)', label: 'float(2)' }, { value: 'float(3)', label: 'float(3)' },
-    { value: 'nchar(32)', label: 'nchar(32)' }, { value: 'date', label: 'date' },
-    { value: 'time', label: 'time' }, { value: 'select', label: 'select' },
-];
-const typeDescriptions = `型態說明：\n• int: 範圍 -2147483648 至 2147483647\n• float(1): 小數點 1 位\n• float(2): 小數點 2 位\n• float(3): 小數點 3 位\n• nchar(32): 字串，長度為 32 個字\n• date: 日期\n• time: 時間\n• select: 下拉選單，請於選項輸入欄位填入多個選項，以逗號分隔`;
-const validationRuleDescriptions = `檢核條件說明：\n• 檢核條件只有 int, float 才能起作用\n• 檢查規則中的數值請用 "value" 敘述\n• 數值介於 5~15 之間： value >= 5 && value <= 15\n• 數值等於 1 或 2： value == 1 || value == 2`;
 
 // --- Helper Functions ---
-const generateId = () => `id_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () => `id_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
 
 const createNewField = (data = {}) => ({ // Allow passing initial data
     id: generateId(),
@@ -40,14 +44,15 @@ const createNewField = (data = {}) => ({ // Allow passing initial data
     validationRule: data.CheckCond || '',
     description: data.Description || '',
     physicalUnit: data.Unit || '',
-    fieldType: data.Type || '',
-    selectOptions: data.SelectOptions || '', // Ensure this is empty string by default
+    fieldType: data.Type || 'select', // Default to select
+    selectOptions: data.SelectOptions || '正常,異常', // Default to 正常,異常
 });
 
 const createNewGroup = (data = {}, includeInitialField = true) => ({ 
     id: generateId(),
     type: 'group',
     groupName: data.Name || '',
+    description: data.Description || '', // Add description field
     // Parse nested elements recursively if they exist, or create a new field with empty values
     items: data.Elements ? parseJsonToFormItems(data.Elements) : (includeInitialField ? [createNewField()] : []),
 });
@@ -58,7 +63,7 @@ const parseJsonToFormItems = (elements) => {
         console.error("[parseJsonToFormItems] Invalid elements structure for parsing:", elements);
         return []; // Return empty array or default structure
     }
-    return elements.map((element, idx) => {
+    return elements.map((element) => {
         if (element.ElmentType === "Item") {
             // Parse select type and options if the format is [s]option1,option2,...
             let fieldType = element.Type || '';
@@ -68,6 +73,11 @@ const parseJsonToFormItems = (elements) => {
             if (fieldType && fieldType.startsWith('[s]')) {
                 selectOptions = fieldType.substring(3); // Remove the [s] prefix
                 fieldType = 'select'; // Set the fieldType to select
+            }
+            
+            // If no selectOptions specified, default to 正常,異常
+            if (fieldType === 'select' && !selectOptions) {
+                selectOptions = '正常,異常';
             }
             
             // Map backend Item properties to frontend field structure
@@ -83,9 +93,19 @@ const parseJsonToFormItems = (elements) => {
             return field;
         } else if (element.ElmentType === "Div") {
             // Map backend Div properties to frontend group structure
+            // Extract Description from first Item child if available
+            let groupDescription = element.Description || '';
+            if (!groupDescription && element.Elements && element.Elements.length > 0) {
+                const firstItem = element.Elements.find(el => el.ElmentType === "Item");
+                if (firstItem && firstItem.Description) {
+                    groupDescription = firstItem.Description;
+                }
+            }
+            
             // Recursively parse nested Elements
             const group = createNewGroup({
                 Name: element.Name,
+                Description: groupDescription, // Use extracted description
                 Elements: element.Elements, // Pass nested elements for recursive call
             }, false); // Don't add an initial field when parsing
             return group;
@@ -271,12 +291,10 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
                 const currentItemId = counterRef.current;
                 counterRef.current += 1;
                 
-                // Format select options if the field type is 'select'
-                let fieldType = item.fieldType || null;
-                if (fieldType === 'select' && item.selectOptions) {
-                    // Format as "[s]option1,option2,..."
-                    fieldType = `[s]${item.selectOptions}`;
-                }
+                // Format select options - always use select type with 正常,異常
+                let fieldType = 'select';
+                const selectOptions = item.selectOptions || '正常,異常';
+                fieldType = `[s]${selectOptions}`;
                 
                 return {
                     ItemId: currentItemId, // Use the counter
@@ -298,6 +316,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
                     DisplayName: null,
                     ElmentType: "Div",
                     DisplayOrder: index,
+                    Description: item.description || null,
                     Name: item.groupName || null
                 };
             }
@@ -407,24 +426,12 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
     const FormItem = ({ item, path, onUpdateItemValue, onAddItem, onDeleteItem, onOpenValidationModal }) => {
         const currentDepth = path.length - 1;
         const [localGroupName, setLocalGroupName] = useState(item.groupName || '');
-        const [localFieldName, setLocalFieldName] = useState(item.fieldName || '');
         const [localDescription, setLocalDescription] = useState(item.description || '');
-        const [localPhysicalUnit, setLocalPhysicalUnit] = useState(item.physicalUnit || '');
-        const [localFieldType, setLocalFieldType] = useState(item.fieldType || '');
-        const [localSelectOptions, setLocalSelectOptions] = useState(''); // Initialize as empty string always
         const groupPath = path.slice(0, -1).join('-') || 'root-' + path[0];
         const [isExpanded, setIsExpanded] = useState(expandedGroups[groupPath] !== undefined ? expandedGroups[groupPath] : false); // State for group expansion, based on stored state
 
         useEffect(() => { setLocalGroupName(item.groupName || ''); }, [item.groupName]);
-        useEffect(() => { setLocalFieldName(item.fieldName || ''); }, [item.fieldName]);
         useEffect(() => { setLocalDescription(item.description || ''); }, [item.description]);
-        useEffect(() => { setLocalPhysicalUnit(item.physicalUnit || ''); }, [item.physicalUnit]);
-        useEffect(() => { 
-            // Only update if the item actually has select options defined
-            if (item.selectOptions !== undefined) {
-                setLocalSelectOptions(item.selectOptions || '');
-            }
-        }, [item.selectOptions]);
 
         const handleLocalChange = (setter, event) => { setter(event.target.value); };
         const handleBlur = (name, value) => { if (value !== item[name]) { onUpdateItemValue(path, name, value); } };
@@ -437,171 +444,285 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
         }; // Function to toggle expansion and update global state
 
         if (item.type === 'group') {
-             const borderColorClass = currentDepth === 0 ? 'border-gray-400' : `border-green-${Math.max(200, 500 - currentDepth * 100)}`;
-             const marginLeftClass = `ml-${currentDepth * 4}`;
+            const depthColors = {
+                0: 'from-blue-50 to-indigo-50 border-blue-200',
+                1: 'from-green-50 to-emerald-50 border-green-200',
+                2: 'from-purple-50 to-violet-50 border-purple-200',
+                3: 'from-orange-50 to-amber-50 border-orange-200'
+            };
+            const colorClass = depthColors[Math.min(currentDepth, 3)] || depthColors[3];
+            const marginLeftClass = `ml-${currentDepth * 2} sm:ml-${currentDepth * 4} lg:ml-${currentDepth * 6}`;
+            
             return (
-                <div key={item.id} className={`border-2 border-solid ${borderColorClass} rounded p-4 space-y-3 relative mt-2 ${marginLeftClass} bg-gray-50`}>
-                    {/* Group Header */}
-                    <div className="flex justify-between items-start mb-2">
-                        {/* Left side: Title/Input */}
-                        <div className="flex-grow mr-4"> {/* Added margin-right */}
-                            <h3 className={`font-medium mb-1 ${currentDepth > 0 ? 'text-sm' : 'text-base'} text-gray-700`}>
-                                {currentDepth > 0 ? '巢狀' : ''}欄位群組 ({item.items?.length ?? 0} 個項目)
-                            </h3>
-                            <input type="text" placeholder="群組名稱" name="groupName" value={localGroupName} onChange={(e) => handleLocalChange(setLocalGroupName, e)} onBlur={() => handleBlur('groupName', localGroupName)} className={`w-full p-1 border border-gray-300 rounded ${currentDepth > 0 ? 'text-xs' : 'text-sm'} focus:outline-none focus:ring-1 focus:ring-indigo-500`} />
+                <div key={item.id} className={`bg-gradient-to-r ${colorClass} border-2 rounded-xl p-5 space-y-4 relative mt-3 ${marginLeftClass} shadow-sm hover:shadow-md transition-all duration-200`}>
+                    {/* Enhanced Group Header */}
+                    <div className="flex justify-between items-start">
+                        <div className="flex-grow mr-4">
+                            <div className="flex items-center mb-3">
+                                <div className={`w-8 h-8 ${currentDepth === 0 ? 'bg-blue-500' : currentDepth === 1 ? 'bg-green-500' : 'bg-purple-500'} rounded-full flex items-center justify-center mr-3`}>
+                                    <span className="text-white text-xs font-bold">{item.items?.length ?? 0}</span>
+                                </div>
+                                <div>
+                                    <h3 className={`font-semibold ${currentDepth > 0 ? 'text-sm' : 'text-base'} text-gray-800`}>
+                                        {currentDepth > 0 ? '子' : ''}群組
+                                    </h3>
+                                    <p className="text-xs text-gray-500">{item.items?.length ?? 0} 個檢查項目</p>
+                                </div>
+                            </div>
+                            <input 
+                                type="text" 
+                                placeholder="請輸入群組名稱..." 
+                                name="groupName" 
+                                value={localGroupName} 
+                                onChange={(e) => handleLocalChange(setLocalGroupName, e)} 
+                                onBlur={() => handleBlur('groupName', localGroupName)} 
+                                className={`w-full p-3 border-2 border-gray-200 rounded-lg ${currentDepth > 0 ? 'text-sm' : 'text-base'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white`} 
+                            />                     
+                            {currentDepth > 0 && (
+                                <input
+                                    placeholder="請輸入檢查方法(檢點、操作、檢視、量測)"
+                                    name="groupDescription"
+                                    value={localDescription}
+                                    onChange={(e) => handleLocalChange(setLocalDescription, e)}
+                                    onBlur={() => handleBlur('description', localDescription)}
+                                    className={`w-full p-3 border-2 border-gray-200 rounded-lg ${currentDepth > 0 ? 'text-sm' : 'text-base'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white mt-3`}
+                                />
+                            )}
                         </div>
-                        {/* Right side: Expand and Delete Buttons */}
-                        <div className="flex items-center flex-shrink-0 space-x-2"> {/* Use space-x for spacing */}
-                            {/* Expand/Collapse Button */}
+                        
+                        {/* Enhanced Action Buttons */}
+                        <div className="flex items-center space-x-2">
                             <button
                                 onClick={toggleExpand}
-                                className="text-gray-500 hover:text-gray-700 focus:outline-none p-1"
-                                title={isExpanded ? "收起" : "展開"}
+                                className={`p-2 rounded-lg transition-all duration-200 ${isExpanded ? 'bg-gray-200 text-gray-700' : 'bg-white text-gray-500 hover:bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-blue-400`}
+                                title={isExpanded ? "收起群組" : "展開群組"}
                             >
-                                {isExpanded ? <FaChevronUp className="text-base align-middle" /> : <FaChevronDown className="text-base align-middle" />}
+                                {isExpanded ? <FaChevronUp className="text-sm" /> : <FaChevronDown className="text-sm" />}
                             </button>
-                            {/* Delete Button */}
-                            <button onClick={() => onDeleteItem(path)} className="text-red-500 hover:text-red-700 p-1" title="刪除此群組及其所有內容">
-                                <FaTrashAlt className="text-base align-middle" />
+                            <button 
+                                onClick={() => onDeleteItem(path)} 
+                                className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 hover:text-red-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400" 
+                                title="刪除此群組及其所有內容"
+                            >
+                                <FaTrashAlt className="text-sm" />
                             </button>
                         </div>
                     </div>
-                    {/* Group Content (Conditional Rendering) */}
+                    
+                    {/* Enhanced Group Content */}
                     {isExpanded && (
-                        <div className={`space-y-3 ${currentDepth === 0 ? 'pl-4 border-l-2 border-gray-200 ml-2' : 'pl-2 border-l-2 border-green-200 ml-1'}`}>
+                        <div className="space-y-3 pl-2">
                             {Array.isArray(item.items) && item.items.map((nestedItem, index) => (
-                                <FormItem key={nestedItem.id} item={nestedItem} path={[...path, index]} onUpdateItemValue={onUpdateItemValue} onAddItem={onAddItem} onDeleteItem={onDeleteItem} onOpenValidationModal={onOpenValidationModal} />
+                                <FormItem 
+                                    key={nestedItem.id} 
+                                    item={nestedItem} 
+                                    path={[...path, index]} 
+                                    onUpdateItemValue={onUpdateItemValue} 
+                                    onAddItem={onAddItem} 
+                                    onDeleteItem={onDeleteItem} 
+                                    onOpenValidationModal={onOpenValidationModal} 
+                                />
                             ))}
-                            <div className="flex gap-2 pt-2">
-                                <button onClick={() => onAddItem(path, 'field')} className="w-1/2 border border-dashed border-blue-400 rounded py-1 px-2 text-blue-600 hover:bg-blue-50 text-xs flex items-center justify-center transition-colors duration-150"><FaPlusCircle className="mr-1"/> 新增欄位</button>
-                                <button onClick={() => onAddItem(path, 'group')} className="w-1/2 border border-dashed border-green-400 rounded py-1 px-2 text-green-600 hover:bg-green-50 text-xs flex items-center justify-center transition-colors duration-150"><FaPlusCircle className="mr-1"/> 新增巢狀群組</button>
+                            
+                            {/* Enhanced Add Field Button */}
+                            <div className="pt-3 mt-4 border-t border-gray-200">
+                                <button 
+                                    onClick={() => onAddItem(path, 'field')} 
+                                    className="w-full bg-white border-2 border-dashed border-blue-300 rounded-lg py-3 px-4 text-blue-600 hover:bg-blue-50 hover:border-blue-400 text-sm font-medium flex items-center justify-center transition-all duration-200 group"
+                                >
+                                    <FaPlusCircle className="mr-2 group-hover:scale-110 transition-transform duration-200"/> 
+                                    新增檢查項目
+                                </button>
                             </div>
                         </div>
                     )}
                 </div>
             );
         }
-        else if (item.type === 'field') {
-            const borderColorClass = path.length === 1 ? 'border-blue-300' : 'border-gray-300';
-            const marginLeftClass = `ml-${currentDepth * 4}`;
-            return (
-                <div key={item.id} className={`border border-solid ${borderColorClass} rounded p-3 space-y-2 relative bg-white shadow-sm mt-2 ${marginLeftClass}`}>
-                    <div className="grid grid-cols-1 gap-2">
-                         <div>
-                             <label htmlFor={`${item.id}-fieldName`} className="text-xs font-medium text-gray-600 block mb-0.5">欄位名稱</label>
-                             <input id={`${item.id}-fieldName`} type="text" placeholder="必填" name="fieldName" value={localFieldName} onChange={(e) => handleLocalChange(setLocalFieldName, e)} onBlur={() => handleBlur('fieldName', localFieldName)} className="w-full p-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
-                         </div>
-                         <div>
-                             <label htmlFor={`${item.id}-validationRule`} className="text-xs font-medium text-gray-600 block mb-0.5">檢核條件</label>
-                             <div className="flex items-center space-x-1">
-                                 <input id={`${item.id}-validationRule`} type="text" placeholder="點擊右側設定" name="validationRule" value={item.validationRule} readOnly className="flex-grow p-1 border border-gray-300 rounded text-sm bg-gray-100 cursor-not-allowed"/>
-                                 <FaQuestionCircle className="text-gray-400 cursor-help flex-shrink-0" title={validationRuleDescriptions}/>
-                                 <button type="button" onClick={() => onOpenValidationModal(path)} className="text-gray-500 hover:text-blue-600 p-1 flex-shrink-0" title="設定檢核條件"><FaSlidersH /></button>
-                             </div>
-                         </div>
-                         <div>
-                              <label htmlFor={`${item.id}-description`} className="text-xs font-medium text-gray-600 block mb-0.5">描述 (Help)</label>
-                             <input id={`${item.id}-description`} type="text" placeholder="選填" name="description" value={localDescription} onChange={(e) => handleLocalChange(setLocalDescription, e)} onBlur={() => handleBlur('description', localDescription)} className="w-full p-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
-                         </div>
-                         <div>
-                             <label htmlFor={`${item.id}-physicalUnit`} className="text-xs font-medium text-gray-600 block mb-0.5">物理單位</label>
-                             <input id={`${item.id}-physicalUnit`} type="text" placeholder="選填, e.g., mm, kg" name="physicalUnit" value={localPhysicalUnit} onChange={(e) => handleLocalChange(setLocalPhysicalUnit, e)} onBlur={() => handleBlur('physicalUnit', localPhysicalUnit)} className="w-full p-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
-                         </div>
-                         <div>
-                             <label htmlFor={`${item.id}-fieldType`} className="text-xs font-medium text-gray-600 block mb-0.5">型態 (Type)</label>
-                             <div className="flex items-center space-x-1">
-                                 <select id={`${item.id}-fieldType`} name="fieldType" value={localFieldType} onChange={(e) => {
-                                     setLocalFieldType(e.target.value);
-                                     onUpdateItemValue(path, 'fieldType', e.target.value);
-                                     if (e.target.value === 'select') {
-                                         setLocalSelectOptions('');
-                                         onUpdateItemValue(path, 'selectOptions', '');
-                                     }
-                                     // Ensure the parent group remains expanded
-                                     const parentGroupPath = path.slice(0, -1).join('-') || 'root-' + path[0];
-                                     setExpandedGroups(prevGroups => ({ ...prevGroups, [parentGroupPath]: true }));
-                                 }} className="flex-grow p-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 bg-white">
-                                     <option value="" disabled>--選擇型態--</option>
-                                     {typeOptions.map(option => ( <option key={option.value} value={option.value}>{option.label}</option> ))}
-                                 </select>
-                                 <FaQuestionCircle className="text-gray-400 cursor-help flex-shrink-0" title={typeDescriptions}/>
-                             </div>
-                         </div>
-                         {localFieldType === 'select' && ( // Conditionally render selectOptions input
-                             <div>
-                                 <label htmlFor={`${item.id}-selectOptions`} className="text-xs font-medium text-gray-600 block mb-0.5">選項 (Options)</label>
-                                 <input id={`${item.id}-selectOptions`} type="text" placeholder="請輸入下拉選項，如: 正常,異常 或 選項1,選項2,選項3" name="selectOptions" value={localSelectOptions} onChange={(e) => handleLocalChange(setLocalSelectOptions, e)} onBlur={() => handleBlur('selectOptions', localSelectOptions)} className="w-full p-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"/>
-                             </div>
-                         )}
-                    </div>
-                    {/* Keep position top-0 */}
-                    <button onClick={() => onDeleteItem(path)} className="absolute top-0 right-1 text-red-400 hover:text-red-600 p-1" title="刪除此欄位">
-                        <FaTrashAlt className="text-sm align-middle" />
-                    </button>
-                </div>
-            );
-        }
-        return <div className="text-red-500">Unknown item type: {item?.type}</div>;
+
     };
 
 
     // --- Main Return JSX ---
     return (
-        <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles} contentLabel={editingForm ? "編輯表單" : "建立新表單"}> {/* <-- Dynamic Title */}
-            {/* Header */}
-            <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-300">
-                <h2 className="text-xl font-semibold text-gray-800">{editingForm ? "編輯表單" : "建立新表單"}</h2> {/* <-- Dynamic Title */}
-                <button onClick={handleShowJson} className="text-sm text-blue-600 hover:text-blue-800 hover:underline focus:outline-none">
-                    顯示預覽 JSON (Console)
-                </button>
+        <>
+            {/* Hide All Scrollbars */}
+            <style>{`
+                /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+                .ReactModal__Content::-webkit-scrollbar {
+                    width: 0px;
+                    background: transparent;
+                    display: none;
+                }
+                
+                /* Hide scrollbar for Firefox */
+                .ReactModal__Content {
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+                }
+                
+                /* Smooth scrolling behavior */
+                .ReactModal__Content {
+                    scroll-behavior: smooth;
+                }
+                
+                /* Ensure proper positioning */
+                .ReactModal__Content {
+                    position: relative;
+                }
+                
+                /* Sticky header context */
+                .sticky {
+                    position: sticky;
+                    z-index: 20;
+                }
+            `}</style>
+            
+            <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles} contentLabel={editingForm ? "編輯表單" : "建立新表單"}>
+            {/* Enhanced Responsive Header */}
+            <div className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 sm:px-8 py-4 sm:py-6 rounded-t-2xl">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
+                    <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <FaPlusCircle className="text-lg sm:text-xl" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl sm:text-2xl font-bold">{editingForm ? "編輯表單" : "建立新表單"}</h2>
+                            <p className="text-blue-100 text-xs sm:text-sm">設計您的巡檢表單結構</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto justify-end">
+                        <button 
+                            onClick={handleShowJson} 
+                            className="text-blue-100 hover:text-white hover:bg-white hover:bg-opacity-10 px-2 sm:px-3 py-2 rounded-lg transition-all duration-200 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                        >
+                            <span className="hidden sm:inline">預覽 JSON</span>
+                            <span className="sm:hidden">JSON</span>
+                        </button>
+                        <button 
+                            onClick={onClose} 
+                            className="text-blue-100 hover:text-white hover:bg-red-500 hover:bg-opacity-80 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-lg font-bold"
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
             </div>
+            
+            {/* Responsive Modal Body */}
+            <div className="px-4 sm:px-8 py-6">
 
-            {/* Form Meta Inputs */}
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                 <div>
-                     <label htmlFor="formIdentifier" className="block text-sm font-medium text-gray-700 mb-1">資料庫表名</label>
-                     {/* Trim the value on change */}
-                     <input type="text" id="formIdentifier" placeholder="必填" value={formIdentifier} onChange={(e) => setFormIdentifier(e.target.value.trim())} className="w-full p-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"/>
-                 </div>
-                 <div>
-                     <label htmlFor="formDisplayName" className="block text-sm font-medium text-gray-700 mb-1">表單名稱(顯示用)</label>
-                     <input type="text" id="formDisplayName" placeholder="必填" value={formDisplayName} onChange={(e) => setFormDisplayName(e.target.value)} className="w-full p-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"/>
-                 </div>
-             </div>
-
-            {/* Dynamic Content Area */}
-            <div className="space-y-4 mb-6">
-                 <h3 className="text-lg font-medium text-gray-700 border-b pb-1">表單結構</h3>
-                {formItems.length > 0 ? (
-                     formItems.map((item, index) => (
-                        <FormItem key={item.id} item={item} path={[index]} onUpdateItemValue={updateItemValue} onAddItem={handleAddItem} onDeleteItem={handleDeleteItem} onOpenValidationModal={openValidationModal} />
-                    ))
-                ) : (
-                    <p className="text-center text-gray-500 py-4">表單目前是空的。請新增欄位或群組。</p>
-                )}
-                {/* Add Top-Level Item Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-gray-200">
-                    <button onClick={() => handleAddItem([], 'group')} className="w-full sm:w-1/2 border-2 border-dashed border-gray-400 rounded py-2 px-3 text-gray-600 hover:bg-gray-100 hover:border-gray-500 flex items-center justify-center transition-colors duration-150">
-                        <FaPlusCircle className="mr-2"/> 新增頂層群組
-                    </button>
-                    <button onClick={() => handleAddItem([], 'field')} className="w-full sm:w-1/2 border-2 border-dashed border-blue-400 rounded py-2 px-3 text-blue-600 hover:bg-blue-50 hover:border-blue-500 flex items-center justify-center transition-colors duration-150">
-                        <FaPlusCircle className="mr-2"/> 新增頂層欄位
-                    </button>
+            {/* Enhanced Form Meta Inputs */}
+            <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 border border-gray-200">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xs font-bold">1</span>
+                    </div>
+                    基本信息
+                </h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="space-y-2">
+                        <label htmlFor="formIdentifier" className="block text-sm font-semibold text-gray-700">
+                            資料庫表名 <span className="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="formIdentifier" 
+                            placeholder="請輸入表名..." 
+                            value={formIdentifier} 
+                            onChange={(e) => setFormIdentifier(e.target.value.trim())} 
+                            className="w-full p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300"
+                        />
+                        <p className="text-xs text-gray-500">用於資料庫中的表格名稱</p>
+                    </div>
+                    <div className="space-y-2">
+                        <label htmlFor="formDisplayName" className="block text-sm font-semibold text-gray-700">
+                            表單顯示名稱 <span className="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="formDisplayName" 
+                            placeholder="請輸入顯示名稱..." 
+                            value={formDisplayName} 
+                            onChange={(e) => setFormDisplayName(e.target.value)} 
+                            className="w-full p-3 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300"
+                        />
+                        <p className="text-xs text-gray-500">用戶在介面上看到的表單名稱</p>
+                    </div>
                 </div>
             </div>
 
-            {/* Footer */}
-            <div className="flex justify-end items-center pt-4 border-t border-gray-300 mt-6">
-                <div className="flex space-x-3">
-                    <button onClick={onClose} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors duration-150">
+            {/* Enhanced Form Structure Area */}
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+                        <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                            <span className="text-white text-xs font-bold">2</span>
+                        </div>
+                        表單結構設計
+                    </h3>
+                    <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                        {formItems.length} 個群組
+                    </div>
+                </div>
+                
+                <div className="bg-white border-2 border-dashed border-gray-200 rounded-xl p-6 min-h-[200px]">
+                    {formItems.length > 0 ? (
+                        <div className="space-y-4">
+                            {formItems.map((item, index) => (
+                                <FormItem 
+                                    key={item.id} 
+                                    item={item} 
+                                    path={[index]} 
+                                    onUpdateItemValue={updateItemValue} 
+                                    onAddItem={handleAddItem} 
+                                    onDeleteItem={handleDeleteItem} 
+                                    onOpenValidationModal={openValidationModal} 
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12">
+                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <FaPlusCircle className="text-2xl text-gray-400" />
+                            </div>
+                            <p className="text-gray-500 mb-2">表單結構尚未建立</p>
+                            <p className="text-sm text-gray-400">請點擊下方按鈕開始建立您的表單結構</p>
+                        </div>
+                    )}
+                    
+                    {/* Enhanced Add Button */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                        <button 
+                            onClick={() => handleAddItem([], 'group')} 
+                            className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-xl py-4 px-6 text-blue-600 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-400 flex items-center justify-center transition-all duration-200 group"
+                        >
+                            <FaPlusCircle className="mr-3 text-lg group-hover:scale-110 transition-transform duration-200"/> 
+                            <span className="font-semibold">新增表單群組</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Enhanced Responsive Footer */}
+            <div className="bg-gray-50 px-4 sm:px-8 py-6 rounded-b-2xl border-t border-gray-200">
+                <div className="flex flex-col-reverse sm:flex-row justify-end items-stretch sm:items-center space-y-reverse space-y-3 sm:space-y-0 sm:space-x-4">
+                    <button 
+                        onClick={onClose} 
+                        className="px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-all duration-200 text-center"
+                    >
                         取消
                     </button>
-                    {/* Move the button text inside the button tags and remove extra closing tag */}
-                    <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-150">
-                        {editingForm && !editingForm.isCopy ? "確認修改" : "確認建立"} {/* 判斷是否為複製狀態 */}
+                    <button 
+                        onClick={handleSubmit} 
+                        className="px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 shadow-lg hover:shadow-xl text-center"
+                    >
+                        {editingForm && !editingForm.isCopy ? "✓ 確認修改" : "✓ 確認建立"}
                     </button>
                 </div>
             </div>
+            
+            </div> {/* Close Modal Body */}
 
             {/* Validation Rule Modal */}
             <ValidationRuleModal
@@ -644,6 +765,7 @@ function CreateFormModal({ isOpen, onClose, onSubmit, editingForm }) { // <-- Ad
                 showCancelButton={false} // Hide cancel button
             />
         </Modal>
+        </>
     );
 }
 

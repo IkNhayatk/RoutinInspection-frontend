@@ -56,6 +56,8 @@ RoutinInspection-Frontend 是一個現代化的企業級例行巡檢管理系統
 - **巡檢平板**: 專用的平板模式巡檢界面，支援階層式表單顯示
 - **表單驗證**: 全面的表單驗證機制，確保資料完整性
 - **自動移除**: 成功提交後自動移除已完成的巡檢項目
+- **📅 日檢管理**: 每日作業前巡檢路線管理、跳過操作介面
+- **✅ 後續追蹤**: 待核簽記錄管理、批量核簽操作界面
 
 ### 📝 表單設定
 - **表單建構器**: 視覺化表單設計工具
@@ -219,6 +221,9 @@ RoutinInspection-frontend/
 │   │   ├── ConfirmModal.js   # 確認對話框
 │   │   ├── CreateFormModal.js # 表單建立 Modal
 │   │   ├── CreateRouteModal.js # 路由建立 Modal
+│   │   ├── DailyInspectionModal.js # 日檢管理 Modal
+│   │   ├── FollowupManagement.js # 後續追蹤管理元件
+│   │   ├── InspectionModal.js # 巡檢記錄 Modal
 │   │   ├── LogoutButton.js   # 登出按鈕 (支援活動監控)
 │   │   ├── TodoForm.js       # 待辦事項表單
 │   │   ├── TodoItem.js       # 待辦事項項目
@@ -232,11 +237,13 @@ RoutinInspection-frontend/
 │   │   ├── auth/            # 認證相關頁面
 │   │   │   ├── AddUser.js   # 新增使用者頁面
 │   │   │   └── LoginForm.js # 登入表單頁面 (改進錯誤處理)
+│   │   ├── ApprovalPage.js  # 待核簽記錄頁面
 │   │   ├── Dashboard.js     # 儀表板主頁
 │   │   ├── FormSettings.js  # 表單設定頁面
 │   │   ├── InspectionTablet.js # 巡檢平板界面 (階層式表單顯示)
-│   │   ├── InspectionWork.js   # 巡檢作業頁面 (含統計分析)
+│   │   ├── InspectionWork.js   # 巡檢作業頁面 (含統計分析、日檢管理)
 │   │   ├── LikeTrello.js    # 類 Trello 看板頁面
+│   │   ├── RecordsPage.js   # 巡檢記錄查詢頁面
 │   │   ├── RouteBinding.js  # 路由綁定頁面
 │   │   ├── TodoList.js      # 待辦事項列表
 │   │   ├── UserManagement.js # 使用者管理頁面 (支援分頁和權限控制)
@@ -245,6 +252,8 @@ RoutinInspection-frontend/
 │   │   └── AppRoutes.js     # 主要路由設定
 │   ├── services/            # 🔌 API 服務層
 │   │   ├── authService.js   # 身份驗證 API 服務 (改進 token 處理、巡檢API、統計API)
+│   │   ├── dailyInspectionService.js # 日檢管理 API 服務
+│   │   ├── followupService.js # 後續追蹤 API 服務
 │   │   └── todoService.js   # 待辦事項 API 服務
 │   ├── __tests__/           # 🧪 整合測試
 │   │   └── RouteBinding.integration.test.js
@@ -880,9 +889,10 @@ export default ProtectedRoute;
 
 | 項目 | 數量 | 說明 |
 |------|------|------|
-| 元件 | 15+ | 可重用 UI 元件 |
-| 頁面 | 8+ | 應用程式頁面 |
-| 測試 | 20+ | 單元測試和整合測試 |
+| 元件 | 18+ | 可重用 UI 元件 |
+| 頁面 | 10+ | 應用程式頁面 |
+| 測試 | 25+ | 單元測試和整合測試 |
 | 依賴套件 | 16 | 核心依賴套件 |
 | 開發依賴 | 4 | 開發和測試工具 |
+| API 服務 | 4 | 模組化 API 服務層 |
 
