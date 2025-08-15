@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
-import { getPendingApprovalRecords, approveInspectionRecord, bulkApproveRecordsByIds } from '../services/authService.js';
+import { getPendingApprovalRecords, approveInspectionRecord, bulkApproveRecordsByIds, getInspectionRecordsByFilters } from '../services/authService.js';
 import Sidebar from '../components/Layout/Sidebar.js';
 import LogoutButton from '../components/LogoutButton.js';
 import InspectionModal from '../components/InspectionModal.js';
@@ -52,9 +52,122 @@ function ApprovalPage() {
   };
 
   // 打開巡檢詳情modal
-  const handleOpenModal = (record) => {
+  const handleOpenModal = async (record) => {
     setSelectedRecord(record);
     setIsModalOpen(true);
+    
+    // 嘗試從 Records API 獲取完整的記錄詳情，包含 FormJson
+    try {
+      const checkDate = new Date(record.CheckDate);
+      const year = checkDate.getFullYear();
+      const month = checkDate.getMonth() + 1;
+      
+      // 提取設備名稱用於搜索
+      const displayName = record.DisplayName || record.TableName || '';
+      let equipmentName = '';
+      
+      // 從表單名稱中提取設備標識（如：5610）
+      const equipmentMatch = displayName.match(/(\d{4})/);
+      if (equipmentMatch) {
+        equipmentName = equipmentMatch[1];
+      }
+      
+      // 使用多種策略搜索
+      const searchStrategies = [
+        // 策略1: 精確年月 + 設備
+        { year: year.toString(), month: month.toString(), equipment: equipmentName, limit: 50 },
+        // 策略2: 只用年份 + 設備
+        { year: year.toString(), equipment: equipmentName, limit: 100 },
+        // 策略3: 只用年月
+        { year: year.toString(), month: month.toString(), limit: 100 },
+        // 策略4: 只用年份，大範圍搜索
+        { year: year.toString(), limit: 200 }
+      ];
+      
+      let recordsData = null;
+      
+      for (const [index, filters] of searchStrategies.entries()) {
+        console.log(`嘗試搜索策略 ${index + 1}:`, filters);
+        try {
+          recordsData = await getInspectionRecordsByFilters(filters);
+          if (recordsData.success && recordsData.records && recordsData.records.length > 0) {
+            console.log(`策略 ${index + 1} 成功，找到 ${recordsData.records.length} 筆記錄`);
+            break;
+          }
+        } catch (err) {
+          console.log(`策略 ${index + 1} 失敗:`, err.message);
+          continue;
+        }
+      }
+      
+      if (recordsData.success && recordsData.records) {
+        console.log('Records API 返回記錄數:', recordsData.records.length);
+        console.log('尋找記錄:', {
+          TableName: record.TableName,
+          CheckDate: record.CheckDate,
+          UserName: record.UserName
+        });
+        
+        // 先檢查所有記錄的基本信息
+        console.log('目標記錄信息:', {
+          TableName: record.TableName,
+          DisplayName: record.DisplayName,
+          CheckDate: record.CheckDate,
+          UserName: record.UserName
+        });
+        
+        console.log('找到的所有記錄:', recordsData.records.map(r => ({
+          TableName: r.TableName,
+          DisplayName: r.DisplayName,
+          CheckDate: r.CheckDate,
+          UserName: r.UserName,
+          hasFormJson: !!r.FormJson
+        })));
+        
+        // 查找匹配的記錄（多重條件匹配）
+        let fullRecord = recordsData.records.find(r => {
+          const tableMatch = r.TableName === record.TableName;
+          const dateMatch = Math.abs(new Date(r.CheckDate) - new Date(record.CheckDate)) < 60000; // 1分鐘內
+          const userMatch = r.UserName === record.UserName || r.UserId === record.UserId;
+          
+          console.log('記錄比較:', {
+            record: `${r.TableName} - ${r.DisplayName}`,
+            tableMatch,
+            dateMatch,
+            userMatch,
+            hasFormJson: !!r.FormJson
+          });
+          
+          return tableMatch && dateMatch && userMatch && r.FormJson;
+        });
+        
+        // 如果沒找到，嘗試更寬鬆的匹配
+        if (!fullRecord) {
+          console.log('精確匹配失敗，嘗試表名匹配');
+          fullRecord = recordsData.records.find(r => 
+            r.TableName === record.TableName && r.FormJson
+          );
+        }
+        
+        // 如果還是沒找到，嘗試顯示名稱匹配
+        if (!fullRecord) {
+          console.log('表名匹配失敗，嘗試顯示名稱匹配');
+          fullRecord = recordsData.records.find(r => 
+            r.DisplayName === record.DisplayName && r.FormJson
+          );
+        }
+        
+        if (fullRecord && fullRecord.FormJson) {
+          console.log('✅ 成功找到完整記錄詳情:', fullRecord);
+          setSelectedRecord(fullRecord);
+        } else {
+          console.log('❌ 完全未找到匹配記錄，使用原記錄（將顯示備用格式）');
+        }
+      }
+    } catch (error) {
+      console.error('獲取完整記錄詳情失敗:', error);
+      // 失敗時繼續使用原記錄
+    }
   };
 
   // 關閉modal

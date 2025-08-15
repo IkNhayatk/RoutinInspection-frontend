@@ -245,12 +245,18 @@ export const getInspectionRecordsByFilters = async (filters) => {
   try {
     const params = new URLSearchParams();
     if (filters.year) params.append('year', filters.year);
+    if (filters.month) params.append('month', filters.month);
     if (filters.equipment) params.append('equipment', filters.equipment);
     if (filters.cycle) params.append('cycle', filters.cycle);
     if (filters.page) params.append('page', filters.page);
     if (filters.limit) params.append('limit', filters.limit);
     
-    const response = await apiClient.get(`/inspection-records-by-filters?${params.toString()}`);
+    const url = `/inspection-records-by-filters?${params.toString()}`;
+    console.log('API請求URL:', url);
+    console.log('篩選參數:', filters);
+    
+    const response = await apiClient.get(url);
+    console.log('API響應記錄數:', response.data.records?.length || 0);
     return response.data;
   } catch (error) {
     console.error('根據篩選條件獲取巡檢記錄失敗:', error.response ? error.response.data : error.message);
@@ -332,6 +338,32 @@ export const bulkApproveRecordsByIds = async (bulkApprovalData) => {
   } catch (error) {
     console.error('批量核簽失敗:', error.response ? error.response.data : error.message);
     throw error.response ? error.response.data : new Error('批量核簽失敗');
+  }
+};
+
+// 獲取月度巡檢記錄詳情（每日作業前格式）
+export const getMonthlyInspectionDetails = async (formId, year, month) => {
+  try {
+    console.log('獲取月度巡檢記錄詳情:', { formId, year, month });
+    const response = await apiClient.get(`/monthly-inspection-details/${formId}/${year}/${month}`);
+    console.log('月度巡檢記錄詳情響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('獲取月度巡檢記錄詳情失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('獲取月度巡檢記錄詳情失敗');
+  }
+};
+
+// 更新改善措施資料
+export const updateImprovementData = async (updateData) => {
+  try {
+    console.log('更新改善措施資料:', updateData);
+    const response = await apiClient.post('/update-improvement', updateData);
+    console.log('更新改善措施響應:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('更新改善措施失敗:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('更新改善措施失敗');
   }
 };
 

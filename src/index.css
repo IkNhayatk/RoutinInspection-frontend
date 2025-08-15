@@ -1,3 +1,101 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* A4橫式列印專用樣式 - 只顯示表格內容 */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0.3cm;
+  }
+  
+  /* 最暴力的方法：隱藏所有內容 */
+  body * {
+    visibility: hidden !important;
+    display: none !important;
+  }
+  
+  /* 只顯示表格容器和表格內容 */
+  .forprint,
+  .forprint *,
+  .forprint table,
+  .forprint tr,
+  .forprint td,
+  .forprint th {
+    visibility: visible !important;
+    display: block !important;
+  }
+  
+  .forprint table {
+    display: table !important;
+  }
+  
+  .forprint tr {
+    display: table-row !important;
+  }
+  
+  .forprint td,
+  .forprint th {
+    display: table-cell !important;
+  }
+  
+  /* 重置所有位置和背景 */
+  .forprint {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: white !important;
+    margin: 0 !important;
+    padding: 5px !important;
+    z-index: 9999 !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+  
+  .forprint table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 0 !important;
+    transform: scale(0.85) !important;
+    transform-origin: top left !important;
+  }
+  
+  .forprint th,
+  .forprint td {
+    padding: 1px !important;
+    font-size: 7px !important;
+    line-height: 0.9 !important;
+    border: 1px solid #000 !important;
+    word-wrap: break-word !important;
+    white-space: nowrap !important;
+  }
+  
+  .forprint .text-2xl {
+    font-size: 12px !important;
+    margin-bottom: 5px !important;
+    display: block !important;
+    text-align: center !important;
+  }
+  
+  .forprint .text-lg {
+    font-size: 9px !important;
+    display: block !important;
+  }
+  
+  .forprint .text-sm {
+    font-size: 6px !important;
+  }
+  
+  .forprint .text-xs {
+    font-size: 5px !important;
+  }
+  
+  /* 調整日期欄位寬度 */
+  .date-header {
+    width: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+  }
+}

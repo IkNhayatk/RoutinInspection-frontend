@@ -161,7 +161,7 @@ export const canManageFollowupCases = (user) => {
   return user && user.PriorityLevel >= 2;
 };
 
-export default {
+const followupService = {
   createFollowupRecord,
   getFollowupRecords,
   updateFollowupRecord,
@@ -173,3 +173,5 @@ export default {
   formatFollowupRecord,
   canManageFollowupCases
 };
+
+export default followupService;

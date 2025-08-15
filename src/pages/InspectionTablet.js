@@ -1,7 +1,117 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import { submitInspectionData } from '../services/authService.js';
+
+// Enhanced mobile and tablet optimization styles
+const injectCustomStyles = () => {
+  if (typeof document !== 'undefined' && !document.getElementById('inspection-tablet-styles')) {
+    const styleElement = document.createElement('style');
+    styleElement.id = 'inspection-tablet-styles';
+    styleElement.textContent = `
+      @keyframes slideInFromBottom {
+        0% {
+          opacity: 0;
+          transform: translateY(50px) scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      
+      @keyframes fadeInScale {
+        0% {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      
+      .animate-in {
+        animation: fadeInScale 0.4s ease-out forwards;
+      }
+      
+      .slide-in-from-bottom-4 {
+        animation: slideInFromBottom 0.6s ease-out forwards;
+        opacity: 0;
+      }
+      
+      /* Mobile optimization */
+      @media (max-width: 768px) {
+        .mobile-optimized input,
+        .mobile-optimized select,
+        .mobile-optimized textarea {
+          font-size: 16px !important; /* Prevents zoom on iOS */
+          padding: 1rem !important;
+        }
+        
+        .mobile-optimized button {
+          min-height: 48px;
+          min-width: 48px;
+          padding: 0.75rem 1.5rem;
+        }
+        
+        .mobile-card {
+          margin: 0.5rem;
+          border-radius: 1rem;
+        }
+        
+        .mobile-header {
+          padding: 1rem;
+          position: sticky;
+          top: 0;
+          z-index: 50;
+        }
+      }
+      
+      /* Touch-friendly interactions */
+      @media (hover: none) and (pointer: coarse) {
+        .hover\\:scale-105:hover {
+          transform: scale(1.02);
+        }
+        
+        .hover\\:shadow-xl:hover {
+          box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        }
+      }
+      
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      /* Enhanced focus states */
+      .focus-ring:focus-visible {
+        outline: 3px solid #3b82f6;
+        outline-offset: 2px;
+      }
+      
+      /* Custom scrollbar for webkit browsers */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    `;
+    document.head.appendChild(styleElement);
+  }
+};
 
 // Form component for rendering schema content
 const FormRenderer = ({ schemaContent, formData, onFormDataChange }) => {
@@ -112,8 +222,6 @@ const FormRenderer = ({ schemaContent, formData, onFormDataChange }) => {
 
         if (element.ElmentType === 'Div' && element.Elements) {
           const currentPath = parentPath ? `${parentPath} > ${element.Name || ''}` : element.Name || '';
-          const hasItems = element.Elements.some(el => el.ElmentType === 'Item');
-          const hasSubDivs = element.Elements.some(el => el.ElmentType === 'Div');
 
           return (
             <div key={`div-${level}-${index}`} className="mb-6">
@@ -176,9 +284,24 @@ const FormRenderer = ({ schemaContent, formData, onFormDataChange }) => {
 };
 
 // Collapsible inspection card component
-const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill }) => {
+const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill, initialFormData, onFormDataChange }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(initialFormData || {});
+
+  // Notify parent component when form data changes
+  const handleFormDataChange = useCallback((newFormData) => {
+    setFormData(newFormData);
+    if (onFormDataChange) {
+      onFormDataChange(inspection.routeId, newFormData);
+    }
+  }, [inspection.routeId, onFormDataChange]);
+
+  // Update form data when initialFormData changes
+  useEffect(() => {
+    if (initialFormData && Object.keys(initialFormData).length > 0) {
+      setFormData(initialFormData);
+    }
+  }, [initialFormData]);
   
   // Auto-fill functionality
   const handleAutoFill = () => {
@@ -220,7 +343,7 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
       newFormData[`${fieldKey}_Remark`] = ''; // Clear remarks
     });
     
-    setFormData(newFormData);
+    handleFormDataChange(newFormData);
     onAutoFill && onAutoFill(inspection.routeId, newFormData);
   };
   
@@ -301,16 +424,16 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
   }, [getCurrentFormData, validateFormData, inspection]);
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border-2 transition-all duration-300 ${
-      'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600'
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border transition-all duration-200 ${
+      isSelected 
+        ? 'border-blue-500 dark:border-blue-400' 
+        : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600'
     }`}>
-      {/* Card Header with enhanced styling */}
-      <div className={`p-6 border-b-2 transition-all duration-200 ${
-          isExpanded 
-            ? 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-700' 
-            : isSelected
-              ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-700'
-              : 'hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-200 dark:border-gray-700'
+      {/* Card Header - Material Design */}
+      <div className={`p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 transition-colors duration-200 ${
+          isSelected 
+            ? 'bg-blue-50 dark:bg-blue-900/20' 
+            : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
         }`}>
         <div className="flex justify-between items-center">
           {/* Left side: Checkbox and Form Info */}
@@ -333,11 +456,11 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {inspection.displayName}
                 </h3>
                 {isSelected && (
-                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-200 text-sm font-medium rounded-full">
+                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded">
                     已選擇
                   </span>
                 )}
@@ -345,9 +468,10 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
             <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center space-x-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-lg">{inspection.routeName}</span>
+                <span>{inspection.routeName}</span>
               </div>
             </div>
             </div>
@@ -360,27 +484,24 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
                 e.stopPropagation();
                 handleAutoFill();
               }}
-              className="flex items-center space-x-2 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg transition-all duration-200 hover:scale-105 shadow-md"
+              className="flex items-center space-x-2 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors duration-200"
               title="一鍵填入正常"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
-              <span className="text-sm font-medium">全部正常</span>
+              <span className="text-sm">全部正常</span>
             </button>
             
             {/* Expand/Collapse Button */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className={`p-3 rounded-full transition-all duration-200 ${
-                isExpanded ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-gray-100 dark:bg-gray-700'
-              }`}
+              className="p-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200"
+              title={isExpanded ? '收起表單' : '展開表單'}
             >
               <svg 
-                className={`w-6 h-6 transition-all duration-300 ${
-                  isExpanded 
-                    ? 'rotate-180 text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-500 dark:text-gray-400'
+                className={`w-5 h-5 transition-transform duration-200 text-gray-600 dark:text-gray-400 ${
+                  isExpanded ? 'rotate-180' : ''
                 }`}
                 fill="none" 
                 stroke="currentColor" 
@@ -400,7 +521,7 @@ const InspectionCard = ({ inspection, isSelected, onSelectionChange, onAutoFill 
             <FormRenderer 
               schemaContent={inspection.schemaContent}
               formData={formData}
-              onFormDataChange={setFormData}
+              onFormDataChange={handleFormDataChange}
             />
           </div>
         </div>
@@ -419,6 +540,94 @@ function InspectionTablet() {
   const [allSelected, setAllSelected] = useState(false);
   const [validationErrors, setValidationErrors] = useState([]);
   const [showValidationModal, setShowValidationModal] = useState(false);
+  const [allFormsData, setAllFormsData] = useState(new Map()); // Store all form data
+  const autoSaveTimerRef = useRef(null);
+  const AUTO_SAVE_KEY = 'inspection_tablet_autosave';
+  const AUTO_SAVE_INTERVAL = 30000; // 30 seconds
+  
+  // Inject custom styles on component mount
+  useEffect(() => {
+    injectCustomStyles();
+  }, []);
+
+  // Auto-save functions
+  const saveToLocalStorage = useCallback(() => {
+    if (allFormsData.size > 0) {
+      const saveData = {
+        timestamp: Date.now(),
+        userId: user?.id,
+        formsData: Object.fromEntries(allFormsData),
+        selectedForms: Array.from(selectedForms),
+        routeIds: inspectionData.map(item => item.routeId)
+      };
+      localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(saveData));
+      console.log('表單資料已自動暫存');
+    }
+  }, [allFormsData, selectedForms, inspectionData, user?.id]);
+
+  const loadFromLocalStorage = useCallback(() => {
+    try {
+      const savedData = localStorage.getItem(AUTO_SAVE_KEY);
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        // Check if the saved data is for the current user and has valid route data
+        if (parsedData.userId === user?.id && parsedData.formsData && parsedData.routeIds) {
+          const currentRouteIds = inspectionData.map(item => item.routeId);
+          const isMatchingRoutes = parsedData.routeIds.every(id => currentRouteIds.includes(id)) &&
+                                 currentRouteIds.every(id => parsedData.routeIds.includes(id));
+          
+          if (isMatchingRoutes) {
+            const restoredFormsData = new Map(Object.entries(parsedData.formsData));
+            setAllFormsData(restoredFormsData);
+            setSelectedForms(new Set(parsedData.selectedForms));
+            setAllSelected(parsedData.selectedForms.length === inspectionData.length);
+            
+            // Show notification to user
+            const savedTime = new Date(parsedData.timestamp).toLocaleString('zh-TW');
+            alert(`已恢復 ${savedTime} 的暫存資料\n共 ${Object.keys(parsedData.formsData).length} 個表單的填寫內容已恢復`);
+            return true;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('載入暫存資料失敗:', error);
+    }
+    return false;
+  }, [user?.id, inspectionData]);
+
+  const clearAutoSave = useCallback(() => {
+    localStorage.removeItem(AUTO_SAVE_KEY);
+    console.log('暫存資料已清空');
+  }, []);
+
+  // Handle form data changes from individual cards
+  const handleFormDataChange = useCallback((routeId, formData) => {
+    setAllFormsData(prevData => {
+      const newData = new Map(prevData);
+      newData.set(routeId.toString(), formData);
+      return newData;
+    });
+  }, []);
+
+  // Set up auto-save timer
+  useEffect(() => {
+    if (allFormsData.size > 0) {
+      // Clear existing timer
+      if (autoSaveTimerRef.current) {
+        clearInterval(autoSaveTimerRef.current);
+      }
+      
+      // Set new timer
+      autoSaveTimerRef.current = setInterval(saveToLocalStorage, AUTO_SAVE_INTERVAL);
+    }
+    
+    // Cleanup timer on unmount or when data is empty
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearInterval(autoSaveTimerRef.current);
+      }
+    };
+  }, [allFormsData, saveToLocalStorage]);
 
   useEffect(() => {
     // Check authentication
@@ -431,18 +640,23 @@ function InspectionTablet() {
     const data = location.state?.inspectionData || [];
     setInspectionData(data);
     
-    // Initialize all forms as selected
     if (data.length > 0) {
-      const allRouteIds = new Set(data.map(item => item.routeId));
-      setSelectedForms(allRouteIds);
-      setAllSelected(true);
+      // Try to load saved data first
+      const hasRestoredData = loadFromLocalStorage();
+      
+      // If no saved data, initialize all forms as selected
+      if (!hasRestoredData) {
+        const allRouteIds = new Set(data.map(item => item.routeId));
+        setSelectedForms(allRouteIds);
+        setAllSelected(true);
+      }
     }
 
     if (data.length === 0) {
       console.warn('No inspection data provided, redirecting back');
       navigate('/inspection_work');
     }
-  }, [isLoggedIn, location.state, navigate]);
+  }, [isLoggedIn, location.state, navigate, loadFromLocalStorage]);
 
   // Handle checkbox selection
   const handleFormSelection = (routeId, isSelected) => {
@@ -533,6 +747,8 @@ function InspectionTablet() {
       
       if (failCount === 0) {
         alert(`所有 ${successCount} 個巡檢表單已成功提交！`);
+        // Clear auto-save data after successful submission
+        clearAutoSave();
         // Remove successfully submitted forms from the inspection data
         setInspectionData(prevData => 
           prevData.filter(inspection => !successfulRouteIds.includes(inspection.routeId))
@@ -540,10 +756,22 @@ function InspectionTablet() {
         // Clear selected forms after successful submission
         setSelectedForms(new Set());
         setAllSelected(false);
+        // Clear form data for submitted forms
+        setAllFormsData(prevData => {
+          const newData = new Map(prevData);
+          successfulRouteIds.forEach(routeId => newData.delete(routeId.toString()));
+          return newData;
+        });
       } else {
         alert(`提交完成：${successCount} 個成功，${failCount} 個失敗。請檢查失敗項目。`);
         // Remove only the successfully submitted forms
         if (successfulRouteIds.length > 0) {
+          // Update auto-save after partial success
+          setAllFormsData(prevData => {
+            const newData = new Map(prevData);
+            successfulRouteIds.forEach(routeId => newData.delete(routeId.toString()));
+            return newData;
+          });
           setInspectionData(prevData => 
             prevData.filter(inspection => !successfulRouteIds.includes(inspection.routeId))
           );
@@ -570,42 +798,48 @@ function InspectionTablet() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-      {/* Enhanced Header - Tablet optimized */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-lg border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-10">
+    <div className="min-h-screen mobile-optimized bg-gray-50 dark:bg-gray-900">
+      {/* Header - Material Design */}
+      <div className="mobile-header bg-white dark:bg-gray-800 shadow-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-6">
+          <div className="flex justify-between items-center py-4">
+            {/* Left Section - Navigation & Title */}
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <button
                 onClick={handleGoBack}
-                className="p-3 bg-gray-100 dark:bg-gray-700 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 hover:scale-105"
+                className="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 bg-gray-100 dark:bg-gray-700 text-gray-600 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 focus-ring"
+                aria-label="返回上一頁"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
+                <span className="hidden sm:inline text-sm font-medium">返回</span>
               </button>
+              <div className="border-l border-gray-300 dark:border-gray-600 h-8 hidden sm:block"></div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  巡檢作業平台
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                  📋 巡檢作業平台
                 </h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  智能化巡檢管理系統
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 hidden sm:block">
+                    聚酯膜部平板巡檢系統
                 </p>
               </div>
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-6 py-3 rounded-xl border border-blue-200 dark:border-blue-700">
-              <div className="flex items-center space-x-4 text-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{user?.userName}</span>
-                </div>
-                <div className="h-4 w-px bg-gray-300 dark:bg-gray-600"></div>
-                <div className="flex items-center space-x-2">
-                  <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">{inspectionData.length}</span>
-                  <span className="text-gray-600 dark:text-gray-400">個巡檢項目</span>
+
+
+            {/* Right Section - User Info */}
+            <div className="flex items-center space-x-3">
+              <div className="bg-blue-50 dark:bg-blue-900/30 px-2 sm:px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700">
+                <div className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300 truncate max-w-20 sm:max-w-none">{user?.userName}</span>
+                  </div>
+                  <div className="h-4 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
+                  <div className="flex items-center space-x-1">
+                    <span className="font-bold text-blue-600 dark:text-blue-400">{inspectionData.length}</span>
+                    <span className="text-gray-600 dark:text-gray-400 hidden sm:inline">項目</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -615,41 +849,53 @@ function InspectionTablet() {
 
       {/* Enhanced Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Enhanced Loading Overlay */}
+        {/* Loading Overlay - Material Design */}
         {loading && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg max-w-md mx-4">
               <div className="flex flex-col items-center space-y-4">
-                <div className="relative">
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 dark:border-blue-800"></div>
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent absolute top-0 left-0"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 dark:border-blue-800">
+                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent absolute"></div>
                 </div>
-                <p className="text-lg font-medium text-gray-700 dark:text-gray-300">處理中...</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">請稍待，正在提交巡檢資料</p>
+                <div className="text-center">
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">處理中...</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">正在提交 {selectedForms.size} 個巡檢表單</p>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Select All Controls */}
+        {/* Control Panel - Material Design */}
         {inspectionData.length > 0 && (
-          <div className="mb-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+          <div className="mobile-card mb-4 sm:mb-6 bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-md mx-2 sm:mx-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">巡檢表單選擇</h2>
-                <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full">
-                  已選擇 {selectedForms.size} / {inspectionData.length} 個表單
-                </span>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">表單選擇</h2>
+                <div className="flex items-center space-x-3">
+                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium rounded">
+                    {selectedForms.size} / {inspectionData.length} 已選擇
+                  </span>
+                  {allFormsData.size > 0 && (
+                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium rounded flex items-center">
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      自動暫存中
+                    </span>
+                  )}
+                </div>
               </div>
+              
               <button
                 onClick={handleSelectAll}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-md ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
                   allSelected 
                     ? 'bg-red-500 hover:bg-red-600 text-white' 
-                    : 'bg-green-500 hover:bg-green-600 text-white'
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
                 }`}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   {allSelected ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   ) : (
@@ -662,54 +908,57 @@ function InspectionTablet() {
           </div>
         )}
 
-        {/* Inspection Cards */}
-        <div className="space-y-8 pb-32">
-          {inspectionData.map((inspection) => (
-            <InspectionCard 
+        {/* Enhanced Inspection Cards with Animation */}
+        <div className="grid gap-4 sm:gap-6 lg:gap-8 pb-32 px-2 sm:px-0">
+          {inspectionData.map((inspection, index) => (
+            <div 
               key={inspection.routeId}
-              inspection={inspection}
-              isSelected={selectedForms.has(inspection.routeId)}
-              onSelectionChange={handleFormSelection}
-              onAutoFill={handleAutoFillNormal}
-            />
+              className="animate-in slide-in-from-bottom-4 duration-500"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <InspectionCard 
+                inspection={inspection}
+                isSelected={selectedForms.has(inspection.routeId)}
+                onSelectionChange={handleFormSelection}
+                onAutoFill={handleAutoFillNormal}
+                initialFormData={allFormsData.get(inspection.routeId.toString()) || {}}
+                onFormDataChange={handleFormDataChange}
+              />
+            </div>
           ))}
         </div>
         
-        {/* Fixed Submit Button at Bottom */}
+        {/* Enhanced Fixed Submit Panel */}
         {selectedForms.size > 0 && (
-          <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-lg border-t-2 border-gray-200 dark:border-gray-700 p-6 shadow-2xl z-50">
-            <div className="max-w-7xl mx-auto">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">提交巡檢資料</h3>
-                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-200 text-sm font-medium rounded-full">
-                    已選擇 {selectedForms.size} 個表單
-                  </span>
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  將提交所有已選擇的巡檢表單資料
-                </div>
-              </div>
-              
+          <div className="fixed bottom-0 left-0 right-0 bg-white/98 dark:bg-gray-900/98 backdrop-blur-xl border-t border-gray-200/50 dark:border-gray-700/50 shadow-2xl z-50 safe-area-inset-bottom">
+            <div className="max-w-7xl mx-auto p-3 sm:p-4 lg:p-6 flex justify-center">
               <button
                 onClick={handleSubmitSelectedForms}
                 disabled={loading || selectedForms.size === 0}
-                className="w-full relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-8 py-5 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-green-500/25 transform hover:scale-[1.02] transition-all duration-300 disabled:transform-none disabled:shadow-lg flex items-center justify-center space-x-3"
+                className="group w-1/3 relative overflow-hidden bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 sm:px-8 py-4 sm:py-5 rounded-2xl font-bold text-base sm:text-lg lg:text-xl shadow-2xl hover:shadow-green-500/30 transform hover:scale-[1.01] transition-all duration-300 disabled:transform-none disabled:shadow-lg flex items-center justify-center space-x-2 sm:space-x-3 focus-ring min-h-[56px] active:scale-[0.98]"
+                aria-label={`提交 ${selectedForms.size} 個巡檢表單`}
               >
+                {/* Background Animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                
                 {loading ? (
                   <>
-                    <svg className="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>批量提交中...</span>
+                    <div className="relative">
+                      <svg className="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </div>
+                    <span>⚡ 批量提交中...</span>
                   </>
                 ) : (
                   <>
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
-                    <span>🚀 提交 {selectedForms.size} 個巡檢表單</span>
+                    <span className="relative z-10 text-center"> 提交 {selectedForms.size} 個表單</span>
+                    <div className="hidden lg:flex items-center space-x-1 text-green-100">
+                    </div>
                   </>
                 )}
               </button>
@@ -717,20 +966,20 @@ function InspectionTablet() {
           </div>
         )}
 
-        {/* Empty State with enhanced design */}
+        {/* Empty State - Material Design */}
         {inspectionData.length === 0 && (
           <div className="text-center py-20">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-lg rounded-3xl p-12 border border-gray-200/50 dark:border-gray-700/50 max-w-md mx-auto">
-              <div className="text-gray-400 dark:text-gray-500 mb-6">
-                <svg className="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-12 border border-gray-200 dark:border-gray-700 max-w-md mx-auto shadow-md">
+              <div className="w-16 h-16 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">無可用的巡檢項目</h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">請返回巡檢作業頁面重新載入或聯繫管理員</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">無可用的巡檢項目</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">請返回巡檢作業頁面重新載入或聯繫管理員</p>
               <button
                 onClick={handleGoBack}
-                className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:scale-105 shadow-lg"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
               >
                 返回上一頁
               </button>

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext.js';
+import DailyInspectionTable from './DailyInspectionTable.js';
+import { updateImprovementData as apiUpdateImprovementData } from '../services/authService.js';
 
-function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false }) {
+function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false, monthlyData = null, displayFormat = 'normal' }) {
   const { user } = useAuth();
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [improvementData, setImprovementData] = useState({});
 
   if (!isOpen || !record) return null;
 
@@ -29,7 +32,123 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
 
   const handleClose = () => {
     setComment('');
+    setImprovementData({});
     onClose();
+  };
+
+  // 更新改善措施資料
+  const updateImprovementData = (itemId, field, value) => {
+    setImprovementData(prev => ({
+      ...prev,
+      [itemId]: {
+        ...prev[itemId],
+        [field]: value
+      }
+    }));
+  };
+
+  // 保存改善措施資料
+  const saveImprovementData = async () => {
+    if (!record || Object.keys(improvementData).length === 0) {
+      alert('沒有改善措施資料需要保存');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      
+      const updateData = {
+        table_name: record.TableName,
+        record_id: getRecordId(record),
+        improvement_data: improvementData
+      };
+
+      await apiUpdateImprovementData(updateData);
+      alert('改善措施保存成功！');
+      setImprovementData({});
+    } catch (error) {
+      console.error('保存改善措施失敗:', error);
+      alert('保存改善措施失敗，請稍後再試');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 獲取記錄ID的輔助函數
+  const getRecordId = (record) => {
+    const availableFields = Object.keys(record);
+    const tableName = record.TableName.trim();
+    
+    let recordId = null;
+    
+    // 先嘗試查找正確的欄位名稱格式
+    const expectedIdField = `${tableName}Id`;
+    const actualIdField = `user_${tableName}Id`;
+    
+    // 按優先順序查找 ID 欄位
+    const possibleIdFields = [
+      expectedIdField,
+      actualIdField,
+      `user_${expectedIdField}`
+    ];
+    
+    for (const fieldName of possibleIdFields) {
+      if (record[fieldName] !== undefined && record[fieldName] !== null) {
+        recordId = record[fieldName];
+        break;
+      }
+    }
+    
+    // 如果還是找不到，使用通用查找
+    if (recordId === null) {
+      for (const fieldName of availableFields) {
+        const fieldNameLower = fieldName.toLowerCase().replace(/\s+/g, '');
+        const tableNameLower = tableName.toLowerCase().replace(/\s+/g, '');
+        
+        if (fieldNameLower.includes(tableNameLower) && fieldNameLower.includes('id')) {
+          recordId = record[fieldName];
+          break;
+        }
+      }
+    }
+    
+    return recordId;
+  };
+
+  // 備用方法：從 record 的 Item 字段中推導檢查項目
+  const buildGroupedItemsFromItemFields = (record) => {
+    const groupedItems = [];
+    const items = [];
+    
+    // 查找所有的 Item 字段
+    const itemFields = Object.keys(record).filter(key => 
+      key.startsWith('Item') && 
+      key.match(/^Item\d+$/) && 
+      !key.endsWith('_Remark')
+    );
+    
+    // 為每個 Item 字段創建檢查項目
+    itemFields.forEach(itemKey => {
+      const itemId = itemKey.replace('Item', '');
+      const itemName = `檢查項目 ${itemId}`;
+      
+      items.push({
+        itemId: parseInt(itemId),
+        name: itemName,
+        description: '' // 沒有描述信息可用
+      });
+    });
+    
+    // 如果有項目，將它們放入一個默認分組
+    if (items.length > 0) {
+      groupedItems.push({
+        categoryIndex: 1,
+        categoryName: '檢查項目',
+        items: items.sort((a, b) => a.itemId - b.itemId) // 按ID排序
+      });
+    }
+    
+    return groupedItems;
   };
 
   // 解析表單結構，建立分組的檢查項目結構
@@ -48,13 +167,18 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
           description: element.Description || ''
         };
       } else if (element.ElmentType === "Div" && element.Elements) {
-        // 如果是包含單個Item的Div，返回該Item的信息
+        // 如果是包含單個Item的Div，使用Div的Name作為項目名稱，Item的Description作為描述
         if (element.Elements.length === 1 && element.Elements[0].ElmentType === "Item") {
-          return processElement(element.Elements[0], mainCategoryIndex, mainCategoryName, element.Name);
+          const item = element.Elements[0];
+          return {
+            itemId: item.ItemId,
+            name: element.Name || `檢查項目 ${item.ItemId}`, // 使用Div的名稱，不是Item的名稱
+            description: item.Description || ''
+          };
         } else {
           // 遞歸處理子元素，返回所有子項目
           return element.Elements
-            .map(child => processElement(child, mainCategoryIndex, mainCategoryName, parentName))
+            .map(child => processElement(child, mainCategoryIndex, mainCategoryName, element.Name))
             .filter(Boolean)
             .flat();
         }
@@ -100,6 +224,9 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
     const formJson = record.FormJson;
     if (formJson && formJson.Elements) {
       groupedItems = buildGroupedItemsFromSchema(formJson.Elements);
+    } else {
+      // 備用方法：從 record 的 Item 字段中推導檢查項目
+      groupedItems = buildGroupedItemsFromItemFields(record);
     }
     
     // 為每個項目添加實際的檢查結果
@@ -134,7 +261,9 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-h-[95vh] overflow-hidden ${
+        displayFormat === 'daily' ? 'max-w-[98vw]' : 'max-w-4xl'
+      }`}>
         {/* Modal Header */}
         <div className="bg-blue-600 dark:bg-blue-700 text-white p-4">
           <div className="flex justify-between items-center">
@@ -151,9 +280,31 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
-          {/* 基本信息 */}
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
+        <div className={`${displayFormat === 'daily' ? 'p-2 overflow-x-auto' : 'p-6 overflow-y-auto max-h-[60vh]'}`}>
+          {displayFormat === 'daily' && monthlyData ? (
+            /* 每日作業前格式 */
+            <div className="min-w-max">
+              <DailyInspectionTable 
+                formData={monthlyData.form_data}
+                monthlyData={monthlyData}
+                schema={record.FormJson || (monthlyData.schema_content ? JSON.parse(monthlyData.schema_content) : null)}
+                record={record}
+              />
+            </div>
+          ) : displayFormat === 'daily' && !monthlyData ? (
+            /* 載入每日作業前格式中 */
+            <div className="flex flex-col items-center justify-center py-12">
+              <svg className="animate-spin h-8 w-8 text-blue-600 mb-4" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              <p className="text-gray-600 dark:text-gray-400">正在載入每日作業前格式資料...</p>
+            </div>
+          ) : (
+            /* 一般格式 */
+            <>
+              {/* 基本信息 */}
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">基本信息</h3>
             
             {/* 表單名稱 - 獨立一行 */}
@@ -279,7 +430,8 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
                                     rows={2}
                                     className="w-full text-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-gray-100"
                                     placeholder="請描述具體的改善措施..."
-                                    value={item.improvementAction || ''}
+                                    value={improvementData[item.itemId]?.improvementAction || item.improvementAction || ''}
+                                    onChange={(e) => updateImprovementData(item.itemId, 'improvementAction', e.target.value)}
                                     readOnly={viewMode}
                                   />
                                 )}
@@ -299,7 +451,8 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
                                     <input
                                       type="date"
                                       className="w-full text-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-gray-100"
-                                      value={item.plannedDate || ''}
+                                      value={improvementData[item.itemId]?.plannedDate || item.plannedDate || ''}
+                                      onChange={(e) => updateImprovementData(item.itemId, 'plannedDate', e.target.value)}
                                       readOnly={viewMode}
                                     />
                                   )}
@@ -317,7 +470,8 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
                                     <input
                                       type="date"
                                       className="w-full text-sm px-3 py-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-gray-100"
-                                      value={item.actualDate || ''}
+                                      value={improvementData[item.itemId]?.actualDate || item.actualDate || ''}
+                                      onChange={(e) => updateImprovementData(item.itemId, 'actualDate', e.target.value)}
                                       readOnly={viewMode}
                                     />
                                   )}
@@ -350,21 +504,181 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
             </div>
           )}
 
-          {/* 顯示已有的核簽意見 - 僅在查看模式且有核簽意見時顯示 */}
-          {viewMode && record?.ReviewerComment && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">核簽意見</h3>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {record.ReviewerComment}
-                </p>
-              </div>
-            </div>
+              {/* 顯示已有的核簽意見 - 僅在查看模式且有核簽意見時顯示 */}
+              {viewMode && record?.ReviewerComment && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3">核簽意見</h3>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      {record.ReviewerComment}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-end space-x-3">
+        <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 flex justify-between items-center">
+          {/* 保存改善措施按鈕 - 僅在非查看模式且有改善措施資料時顯示 */}
+          {!viewMode && Object.keys(improvementData).length > 0 && (
+            <button
+              onClick={saveImprovementData}
+              disabled={isSubmitting}
+              className="px-4 py-2 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 flex items-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <span>保存改善措施</span>
+            </button>
+          )}
+          
+          <div className="flex space-x-3">
+          {/* 列印按鈕 - 只在每日作業前格式時顯示 */}
+          {displayFormat === 'daily' && (
+            <button
+              onClick={() => {
+                // 創建專用的列印視窗
+                const printContent = document.querySelector('.forprint');
+                if (printContent) {
+                  // 創建新視窗用於列印
+                  const printWindow = window.open('', '_blank');
+                  printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                      <title>巡檢記錄列印</title>
+                      <style>
+                        @page {
+                          size: A4 landscape;
+                          margin: 0.3cm;
+                        }
+                        
+                        body {
+                          margin: 0;
+                          padding: 5px;
+                          font-family: Arial, sans-serif;
+                          font-size: 8px;
+                          line-height: 1;
+                          height: 100vh;
+                          overflow: hidden;
+                        }
+                        
+                        /* 保持原本的表格縮放比例 */
+                        table {
+                          width: 100%;
+                          border-collapse: collapse;
+                          transform: scale(0.85);
+                          transform-origin: top left;
+                          height: calc(100vh - 100px); /* 留出標題和簽核區域的空間 */
+                        }
+                        
+                        th, td {
+                          padding: 1px 2px;
+                          font-size: 7px;
+                          line-height: 0.9;
+                          border: 1px solid #000;
+                          word-wrap: break-word;
+                          vertical-align: middle;
+                        }
+                        
+                        /* 保持原本的日期欄位寬度 */
+                        .date-header {
+                          width: 18px;
+                          min-width: 18px;
+                          max-width: 18px;
+                        }
+                        
+                        /* 讓表格行自動分配高度以填滿可用空間 */
+                        tbody tr {
+                          height: auto;
+                        }
+                        
+                        /* 檢查項目行平均分配高度 */
+                        tbody tr:not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3)):not(:nth-last-child(4)) {
+                          height: calc((100vh - 200px) / var(--row-count, 10));
+                        }
+                        
+                        /* 標題區域保持緊湊 */
+                        .text-2xl {
+                          font-size: 12px;
+                          margin-bottom: 5px;
+                          text-align: center;
+                          font-weight: bold;
+                        }
+                        
+                        .text-lg {
+                          font-size: 9px;
+                        }
+                        
+                        .text-sm {
+                          font-size: 6px;
+                        }
+                        
+                        .text-xs {
+                          font-size: 5px;
+                        }
+                        
+                        .text-purple-700 {
+                          color: #7c3aed;
+                        }
+                        
+                        .font-bold {
+                          font-weight: bold;
+                        }
+                        
+                        .text-center {
+                          text-align: center;
+                        }
+                        
+                        .text-left {
+                          text-align: left;
+                        }
+                        
+                        .bg-green-100 {
+                          background-color: #f0fdf4;
+                        }
+                        
+                        /* 緊湊的間距 */
+                        .mb-4 {
+                          margin-bottom: 3px !important;
+                        }
+                        
+                        .mt-4 {
+                          margin-top: 5px !important;
+                        }
+                        
+                        /* 主管簽核區域緊湊 */
+                        .mt-4[style*="grid"] {
+                          height: 20px !important;
+                          margin-top: 2px !important;
+                        }
+                      </style>
+                    </head>
+                    <body>
+                      ${printContent.innerHTML}
+                    </body>
+                    </html>
+                  `);
+                  printWindow.document.close();
+                  
+                  // 等待內容載入完成後列印
+                  setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                  }, 500);
+                }
+              }}
+              className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              <span>列印</span>
+            </button>
+          )}
           <button
             onClick={handleClose}
             disabled={isSubmitting}
@@ -398,6 +712,7 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false 
               <span>{isSubmitting ? '核簽中...' : '核簽'}</span>
             </button>
           )}
+          </div>
         </div>
       </div>
     </div>
