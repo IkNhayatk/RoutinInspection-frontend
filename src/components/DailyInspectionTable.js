@@ -226,7 +226,7 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
       <div className="overflow-auto w-full" style={{maxHeight: '80vh'}}>
         <div className="forprint p-4 bg-white min-w-max">
         {/* 標題 */}
-        <div className="text-center text-2xl font-bold text-purple-700 mb-4">
+        <div className="text-center text-3xl font-bold text-purple-700 mb-8">
           {/* 從 DisplayName 中提取前半部分作為標題 */}
           {(() => {
             const displayName = record?.DisplayName || formData.form_title || '';
@@ -248,19 +248,19 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
         </div>
         
         {/* 表頭信息 */}
-        <div className="text-purple-700 mb-4">
-          <div className="mb-2">
+        <div className="text-purple-700 mb-6 text-lg">
+          <div className="mb-6">
             檢查表代號(表單編號)：<span className="text-black">{formData.form_code}</span>
           </div>
-          <div className="flex justify-between items-center">
-            <div className="inline-block">
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', alignItems: 'center'}}>
+            <div style={{textAlign: 'left'}}>
               廠別：<span className="text-black">{formData.factory}</span>
             </div>
-            <div className="inline-block text-center">
+            <div style={{textAlign: 'center'}}>
               設備編號：<span className="text-black">{record?.RouteName || `路線${record?.RouteId || '未知'}`}</span>
             </div>
-            <div className="inline-block">
-              <span className="text-black">{formData.year_month_display}</span>
+            <div style={{textAlign: 'right'}}>
+              年份月份：<span className="text-black">{formData.year_month_display}</span>
             </div>
           </div>
         </div>
@@ -336,8 +336,8 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
               </td>
               <td 
                 colSpan={3 + (monthlyData.daily_data?.days_in_month || 31)} 
-                className="border border-blue-500 px-2 py-4 text-left bg-green-100"
-                style={{minHeight: '60px'}}
+                className="border border-blue-500 px-2 py-4 bg-green-100"
+                style={{minHeight: '60px', textAlign: 'left'}}
               >
                 {monthlyData.abnormal_items?.map(item => 
                   item.replace(/\(\(/g, '(').replace(/\)\)/g, ')')
@@ -352,8 +352,8 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
               </td>
               <td 
                 colSpan={3 + (monthlyData.daily_data?.days_in_month || 31)} 
-                className="border border-blue-500 px-2 py-4 text-left bg-green-100"
-                style={{minHeight: '60px'}}
+                className="border border-blue-500 px-2 py-4 bg-green-100"
+                style={{minHeight: '60px', textAlign: 'left'}}
               >
                 {monthlyData.improvement_measures?.map(item => 
                   item.replace(/\(\(/g, '(').replace(/\)\)/g, ')')
@@ -366,7 +366,7 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
               <td colSpan="2" className="border border-blue-500 px-2 py-2 text-center font-bold">
                 備註
               </td>
-              <td colSpan={3 + (monthlyData.daily_data?.days_in_month || 31)} className="border border-blue-500 px-2 py-2 text-left text-sm">
+              <td colSpan={3 + (monthlyData.daily_data?.days_in_month || 31)} className="border border-blue-500 px-2 py-2 text-sm" style={{textAlign: 'left'}}>
                 1.檢查結果應詳實記錄：正常(V)、異常(X)，並於「異常結果說明」欄記錄原因及「異常改善措施」欄記錄改善措施。<br/>
                 2.本記錄表應保存三年。
               </td>
@@ -374,13 +374,16 @@ function DailyInspectionTable({ formData, monthlyData, schema, record }) {
           </tbody>
         </table>
 
-        {/* 主管簽核區域 */}
-        <div className="mt-4" style={{
-          display: 'grid', 
-          gridTemplate: 'auto auto auto 1fr / 0.5fr 20% 20% 20% 20% 0.5fr', 
-          textAlign: 'center'
-        }}>
-          <div style={{gridRow: '1/2', gridColumn: '3/4'}} className="text-center font-medium">
+        {/* 主管簽核區域 - 螢幕顯示版本 */}
+        <div className="mt-4 screen-only">
+          <div className="text-left font-medium text-lg">
+            主管：{getUniqueReviewers()}
+          </div>
+        </div>
+        
+        {/* 主管簽核區域 - 列印專用版本 */}
+        <div className="mt-4 print-only" style={{width: '100%', display: 'flex', justifyContent: 'flex-end', paddingRight: '25%'}}>
+          <div className="font-medium text-lg">
             主管：{getUniqueReviewers()}
           </div>
         </div>

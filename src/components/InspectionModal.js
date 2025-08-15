@@ -539,11 +539,32 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false,
           {/* 列印按鈕 - 只在每日作業前格式時顯示 */}
           {displayFormat === 'daily' && (
             <button
-              onClick={() => {
-                // 創建專用的列印視窗
+              // 替換原本的列印按鈕 onClick 事件處理程序
+              onClick={async () => {
                 const printContent = document.querySelector('.forprint');
                 if (printContent) {
-                  // 創建新視窗用於列印
+                  // 獲取當前日期作為浮水印日期
+                  const checkDate = new Date().toISOString().split('T')[0];
+                  
+                  let watermarkImageUrl = '';
+                  try {
+                    // 調用後端API生成浮水印
+                    const response = await fetch('http://localhost:3001/api/watermark/generate', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ checkDate })
+                    });
+                    
+                    if (response.ok) {
+                      const blob = await response.blob();
+                      watermarkImageUrl = URL.createObjectURL(blob);
+                    }
+                  } catch (error) {
+                    console.error('生成浮水印失敗:', error);
+                  }
+                  
                   const printWindow = window.open('', '_blank');
                   printWindow.document.write(`
                     <!DOCTYPE html>
@@ -551,124 +572,340 @@ function InspectionModal({ isOpen, onClose, record, onApprove, viewMode = false,
                     <head>
                       <title>巡檢記錄列印</title>
                       <style>
+                        /* 頁面設定 - A4 橫向 */
                         @page {
                           size: A4 landscape;
-                          margin: 0.3cm;
+                          margin: 10mm 5mm 10mm 5mm;
+                        }
+                        
+                        @media print {
+                          body {
+                            margin: 0;
+                            padding: 0;
+                          }
+                        }
+                        
+                        * {
+                          box-sizing: border-box;
+                          margin: 0;
+                          padding: 0;
                         }
                         
                         body {
+                          font-family: '微軟正黑體', 'Microsoft JhengHei', 'Arial', sans-serif;
+                          background: white;
                           margin: 0;
-                          padding: 5px;
-                          font-family: Arial, sans-serif;
-                          font-size: 8px;
-                          line-height: 1;
-                          height: 100vh;
-                          overflow: hidden;
+                          padding: 0;
                         }
                         
-                        /* 保持原本的表格縮放比例 */
+                        /* 主容器 - 不使用縮放 */
+                        .print-wrapper {
+                          width: 100%;
+                          padding: 5px;
+                        }
+                        
+                        /* 標題樣式 */
+                        .title {
+                          text-align: center;
+                          font-size: 14pt;
+                          font-weight: bold;
+                          color: #7c3aed;
+                          margin-bottom: 25px;
+                        }
+                        
+                        /* 標題區域 - 確保足夠間距 */
+                        .forprint .mb-8 {
+                          margin-bottom: 25px !important;
+                        }
+                        
+                        /* 表頭信息 */
+                        .header-info {
+                          color: #7c3aed;
+                          margin-bottom: 20px;
+                          font-size: 10pt;
+                        }
+                        
+                        .header-row {
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          margin-bottom: 12px;
+                        }
+                        
+                        /* 表頭信息區域間距 */
+                        .forprint .mb-6 {
+                          margin-bottom: 20px !important;
+                        }
+                        
+                        .forprint .mb-6 > .mb-6 {
+                          margin-bottom: 15px !important;
+                        }
+                        
+                        .header-row .black-text {
+                          color: black;
+                          font-weight: normal;
+                        }
+                        
+                        /* 表格樣式 - 調整為適合 A4 橫向的大小 */
                         table {
                           width: 100%;
                           border-collapse: collapse;
-                          transform: scale(0.85);
-                          transform-origin: top left;
-                          height: calc(100vh - 100px); /* 留出標題和簽核區域的空間 */
+                          border: 2px solid #3b82f6;
+                          font-size: 8pt;
+                          margin-top: 15px;
+                          margin-bottom: 15px;
                         }
                         
                         th, td {
-                          padding: 1px 2px;
-                          font-size: 7px;
-                          line-height: 0.9;
-                          border: 1px solid #000;
-                          word-wrap: break-word;
+                          border: 1px solid #3b82f6;
+                          padding: 2px;
+                          text-align: center;
                           vertical-align: middle;
                         }
                         
-                        /* 保持原本的日期欄位寬度 */
-                        .date-header {
-                          width: 18px;
-                          min-width: 18px;
-                          max-width: 18px;
-                        }
-                        
-                        /* 讓表格行自動分配高度以填滿可用空間 */
-                        tbody tr {
-                          height: auto;
-                        }
-                        
-                        /* 檢查項目行平均分配高度 */
-                        tbody tr:not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3)):not(:nth-last-child(4)) {
-                          height: calc((100vh - 200px) / var(--row-count, 10));
-                        }
-                        
-                        /* 標題區域保持緊湊 */
-                        .text-2xl {
-                          font-size: 12px;
-                          margin-bottom: 5px;
-                          text-align: center;
+                        /* 項次欄 */
+                        .item-number {
+                          width: 25px;
                           font-weight: bold;
                         }
                         
-                        .text-lg {
-                          font-size: 9px;
-                        }
-                        
-                        .text-sm {
-                          font-size: 6px;
-                        }
-                        
-                        .text-xs {
-                          font-size: 5px;
-                        }
-                        
-                        .text-purple-700 {
-                          color: #7c3aed;
-                        }
-                        
-                        .font-bold {
+                        /* 檢查項目欄 */
+                        .category-header {
+                          width: 40px;
                           font-weight: bold;
+                          writing-mode: vertical-rl;
+                          text-orientation: mixed;
+                          background-color: #eff6ff;
+                          padding: 4px 2px;
                         }
                         
-                        .text-center {
-                          text-align: center;
-                        }
-                        
-                        .text-left {
+                        /* 檢查項目子項 */
+                        .item-cell {
                           text-align: left;
+                          padding-left: 5px;
+                          min-width: 150px;
+                          font-size: 7.5pt;
                         }
                         
-                        .bg-green-100 {
-                          background-color: #f0fdf4;
+                        /* 檢查基準欄 */
+                        .standard-cell {
+                          text-align: left;
+                          padding: 2px 4px;
+                          min-width: 100px;
+                          font-size: 7.5pt;
                         }
                         
-                        /* 緊湊的間距 */
-                        .mb-4 {
-                          margin-bottom: 3px !important;
+                        /* 檢查方法欄 */
+                        .method-cell {
+                          width: 35px;
+                          writing-mode: vertical-rl;
+                          text-orientation: mixed;
+                          font-size: 7.5pt;
+                          padding: 4px 2px;
                         }
                         
-                        .mt-4 {
-                          margin-top: 5px !important;
+                        /* 日期標題列 */
+                        .date-header {
+                          background-color: #eff6ff;
+                          font-weight: bold;
+                          font-size: 8pt;
+                          padding: 3px 1px;
                         }
                         
-                        /* 主管簽核區域緊湊 */
-                        .mt-4[style*="grid"] {
-                          height: 20px !important;
-                          margin-top: 2px !important;
+                        /* 日期欄位 */
+                        .date-cell {
+                          width: 20px;
+                          min-width: 20px;
+                          max-width: 20px;
+                          font-size: 7pt;
+                          padding: 1px;
+                          background-color: #fffef0;
+                        }
+                        
+                        /* 檢查結果格 - V 或 X */
+                        .result-cell {
+                          font-size: 8pt;
+                          font-weight: bold;
+                          color: green;
+                          padding: 1px;
+                        }
+                        
+                        .result-cell.error {
+                          color: red;
+                        }
+                        
+                        /* 本日未巡檢 - 垂直文字 */
+                        .not-inspected {
+                          writing-mode: vertical-rl;
+                          text-orientation: mixed;
+                          color: #999;
+                          font-size: 6pt;
+                          letter-spacing: -1px;
+                          line-height: 1;
+                        }
+                        
+                        /* 檢查員列 */
+                        .inspector-row td {
+                          height: 35px;
+                          vertical-align: middle;
+                        }
+                        
+                        .inspector-cell {
+                          writing-mode: vertical-rl;
+                          text-orientation: mixed;
+                          font-size: 9pt;
+                          font-weight: bold;
+                        }
+                        
+                        /* 異常說明列 */
+                        .note-row td {
+                          background-color: #fef3c7;
+                          text-align: left;
+                          padding: 4px 6px;
+                          font-size: 8pt;
+                          min-height: 25px;
+                        }
+                        
+                        .note-label {
+                          font-weight: bold;
+                          color: #92400e;
+                        }
+                        
+                        /* 備註區域 */
+                        .remarks-section {
+                          margin-top: 8px;
+                          padding: 5px;
+                          background-color: #f9fafb;
+                          border: 1px solid #d1d5db;
+                          border-radius: 4px;
+                        }
+                        
+                        .remarks-title {
+                          font-weight: bold;
+                          font-size: 9pt;
+                          margin-bottom: 4px;
+                        }
+                        
+                        .remarks-content {
+                          font-size: 8pt;
+                          line-height: 1.4;
+                          color: #4b5563;
+                        }
+                        
+                        /* 主管簽核 */
+                        .supervisor-section {
+                          margin-top: 10px;
+                          text-align: center;
+                          font-size: 10pt;
+                          font-weight: bold;
+                          padding-right: 15%;
+                        }
+                        
+                        /* 控制螢幕顯示和列印顯示 */
+                        .screen-only {
+                          display: block;
+                        }
+                        
+                        .print-only {
+                          display: none !important;
+                        }
+                        
+                        @media print {
+                          .screen-only {
+                            display: none !important;
+                          }
+                          
+                          .print-only {
+                            display: flex !important;
+                            margin-top: 15px !important;
+                          }
+                        }
+                        
+                        /* 浮水印樣式 */
+                        .watermark {
+                          position: fixed;
+                          bottom: 20px;
+                          right: 20px;
+                          width: 150px;
+                          height: auto;
+                          opacity: 0.8;
+                          z-index: 1000;
+                          pointer-events: none;
+                        }
+                        
+                        /* 防止分頁 */
+                        .no-page-break {
+                          page-break-inside: avoid;
+                        }
+                        
+                        /* 隱藏原始的 transform 樣式 */
+                        .forprint > * {
+                          transform: none !important;
+                          width: 100% !important;
+                          height: auto !important;
                         }
                       </style>
                     </head>
                     <body>
-                      ${printContent.innerHTML}
+                      <div class="print-wrapper no-page-break">
+                        ${printContent.innerHTML}
+                        ${watermarkImageUrl ? `<img src="${watermarkImageUrl}" class="watermark" alt="浮水印" />` : ''}
+                      </div>
+                      <script>
+                        // 移除原始的內聯樣式，避免衝突
+                        window.onload = function() {
+                          // 清理所有元素的 transform 樣式
+                          const allElements = document.querySelectorAll('*');
+                          allElements.forEach(el => {
+                            if (el.style.transform) {
+                              el.style.transform = 'none';
+                            }
+                            if (el.style.width && el.style.width.includes('%') && parseFloat(el.style.width) > 100) {
+                              el.style.width = '100%';
+                            }
+                          });
+                          
+                          // 調整表格以適應頁面
+                          const tables = document.querySelectorAll('table');
+                          tables.forEach(table => {
+                            table.style.width = '100%';
+                            table.style.fontSize = '8pt';
+                          });
+                          
+                          // 確保日期欄位寬度一致
+                          const dateCells = document.querySelectorAll('.date-cell');
+                          dateCells.forEach(cell => {
+                            cell.style.width = '20px';
+                            cell.style.maxWidth = '20px';
+                            cell.style.minWidth = '20px';
+                          });
+                          
+                          // 延遲列印，確保樣式套用完成
+                          setTimeout(() => {
+                            window.print();
+                            window.addEventListener('afterprint', function() {
+                              setTimeout(() => {
+                                window.close();
+                                // 清理浮水印URL
+                                if (watermarkImageUrl) {
+                                  URL.revokeObjectURL(watermarkImageUrl);
+                                }
+                              }, 100);
+                            });
+                          }, 500);
+                        };
+                      </script>
                     </body>
                     </html>
                   `);
                   printWindow.document.close();
                   
-                  // 等待內容載入完成後列印
-                  setTimeout(() => {
-                    printWindow.print();
-                    printWindow.close();
-                  }, 500);
+                  // 在主窗口也清理URL（以防萬一）
+                  if (watermarkImageUrl) {
+                    setTimeout(() => {
+                      URL.revokeObjectURL(watermarkImageUrl);
+                    }, 2000);
+                  }
                 }
               }}
               className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center space-x-2"
